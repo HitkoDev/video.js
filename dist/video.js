@@ -1,6 +1,6 @@
 /**
  * @license
- * Video.js 5.14.0 <http://videojs.com/>
+ * Video.js 5.14.1 <http://videojs.com/>
  * Copyright Brightcove, Inc. <https://www.brightcove.com/>
  * Available under Apache License Version 2.0
  * <https://github.com/videojs/video.js/blob/master/LICENSE>
@@ -1974,7 +1974,7 @@ var __extends = this && this.__extends || function(f, k) {
     d.guid = b ? b + "_" + a.guid : a.guid;
     return d;
   }, md = function(c, a) {
-    var b;
+    var b = Date.now();
     return function() {
       for (var d = [], g = 0;g < arguments.length;g++) {
         d[g] = arguments[g];
@@ -6637,7 +6637,7 @@ var __extends = this && this.__extends || function(f, k) {
   }
   q && (jc = q);
   setTimeout(lb, 1);
-  q.VERSION = "5.14.0";
+  q.VERSION = "5.14.1";
   q.options = ca.prototype.options_;
   q.getPlayers = function() {
     return ca.players;
