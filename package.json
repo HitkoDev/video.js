@@ -22,7 +22,7 @@
     "xhr": ">=2.2.0"
   },
   "name": "video.js",
-  "version": "5.14.0",
+  "version": "5.14.1",
   "copyright": "Copyright Brightcove, Inc. <https://www.brightcove.com/>",
   "license": "Apache-2.0",
   "main": "dist/video.min.js"
