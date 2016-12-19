@@ -1,6 +1,6 @@
 /**
  * @license
- * Video.js 5.12.6 <http://videojs.com/>
+ * Video.js 5.13.1 <http://videojs.com/>
  * Copyright Brightcove, Inc. <https://www.brightcove.com/>
  * Available under Apache License Version 2.0
  * <https://github.com/videojs/video.js/blob/master/LICENSE>
@@ -11,14 +11,14 @@
  */
 
 var $jscomp = {scope:{}};
-$jscomp.defineProperty = "function" == typeof Object.defineProperties ? Object.defineProperty : function(f, h, q) {
-  if (q.get || q.set) {
+$jscomp.defineProperty = "function" == typeof Object.defineProperties ? Object.defineProperty : function(k, n, y) {
+  if (y.get || y.set) {
     throw new TypeError("ES3 does not support getters and setters.");
   }
-  f != Array.prototype && f != Object.prototype && (f[h] = q.value);
+  k != Array.prototype && k != Object.prototype && (k[n] = y.value);
 };
-$jscomp.getGlobal = function(f) {
-  return "undefined" != typeof window && window === f ? f : "undefined" != typeof global && null != global ? global : f;
+$jscomp.getGlobal = function(k) {
+  return "undefined" != typeof window && window === k ? k : "undefined" != typeof global && null != global ? global : k;
 };
 $jscomp.global = $jscomp.getGlobal(this);
 $jscomp.SYMBOL_PREFIX = "jscomp_symbol_";
@@ -28,505 +28,6816 @@ $jscomp.initSymbol = function() {
   $jscomp.global.Symbol || ($jscomp.global.Symbol = $jscomp.Symbol);
 };
 $jscomp.symbolCounter_ = 0;
-$jscomp.Symbol = function(f) {
-  return $jscomp.SYMBOL_PREFIX + (f || "") + $jscomp.symbolCounter_++;
+$jscomp.Symbol = function(k) {
+  return $jscomp.SYMBOL_PREFIX + (k || "") + $jscomp.symbolCounter_++;
 };
 $jscomp.initSymbolIterator = function() {
   $jscomp.initSymbol();
-  var f = $jscomp.global.Symbol.iterator;
-  f || (f = $jscomp.global.Symbol.iterator = $jscomp.global.Symbol("iterator"));
-  "function" != typeof Array.prototype[f] && $jscomp.defineProperty(Array.prototype, f, {configurable:!0, writable:!0, value:function() {
+  var k = $jscomp.global.Symbol.iterator;
+  k || (k = $jscomp.global.Symbol.iterator = $jscomp.global.Symbol("iterator"));
+  "function" != typeof Array.prototype[k] && $jscomp.defineProperty(Array.prototype, k, {configurable:!0, writable:!0, value:function() {
     return $jscomp.arrayIterator(this);
   }});
   $jscomp.initSymbolIterator = function() {
   };
 };
-$jscomp.arrayIterator = function(f) {
-  var h = 0;
+$jscomp.arrayIterator = function(k) {
+  var n = 0;
   return $jscomp.iteratorPrototype(function() {
-    return h < f.length ? {done:!1, value:f[h++]} : {done:!0};
+    return n < k.length ? {done:!1, value:k[n++]} : {done:!0};
   });
 };
-$jscomp.iteratorPrototype = function(f) {
+$jscomp.iteratorPrototype = function(k) {
   $jscomp.initSymbolIterator();
-  f = {next:f};
-  f[$jscomp.global.Symbol.iterator] = function() {
+  k = {next:k};
+  k[$jscomp.global.Symbol.iterator] = function() {
     return this;
   };
-  return f;
+  return k;
 };
 $jscomp.array = $jscomp.array || {};
-$jscomp.iteratorFromArray = function(f, h) {
+$jscomp.iteratorFromArray = function(k, n) {
   $jscomp.initSymbolIterator();
-  f instanceof String && (f += "");
-  var q = 0, m = {next:function() {
-    if (q < f.length) {
-      var G = q++;
-      return {value:h(G, f[G]), done:!1};
+  k instanceof String && (k += "");
+  var y = 0, u = {next:function() {
+    if (y < k.length) {
+      var D = y++;
+      return {value:n(D, k[D]), done:!1};
     }
-    m.next = function() {
+    u.next = function() {
       return {done:!0, value:void 0};
     };
-    return m.next();
+    return u.next();
   }};
-  m[Symbol.iterator] = function() {
-    return m;
+  u[Symbol.iterator] = function() {
+    return u;
   };
-  return m;
+  return u;
 };
-$jscomp.polyfill = function(f, h, q, m) {
-  if (h) {
-    q = $jscomp.global;
-    f = f.split(".");
-    for (m = 0;m < f.length - 1;m++) {
-      var G = f[m];
-      G in q || (q[G] = {});
-      q = q[G];
+$jscomp.polyfill = function(k, n, y, u) {
+  if (n) {
+    y = $jscomp.global;
+    k = k.split(".");
+    for (u = 0;u < k.length - 1;u++) {
+      var D = k[u];
+      D in y || (y[D] = {});
+      y = y[D];
     }
-    f = f[f.length - 1];
-    m = q[f];
-    h = h(m);
-    h != m && null != h && $jscomp.defineProperty(q, f, {configurable:!0, writable:!0, value:h});
+    k = k[k.length - 1];
+    u = y[k];
+    n = n(u);
+    n != u && null != n && $jscomp.defineProperty(y, k, {configurable:!0, writable:!0, value:n});
   }
 };
-$jscomp.polyfill("Array.prototype.values", function(f) {
-  return f ? f : function() {
-    return $jscomp.iteratorFromArray(this, function(f, q) {
-      return q;
-    });
-  };
-}, "es6", "es3");
-$jscomp.polyfill("Array.prototype.keys", function(f) {
-  return f ? f : function() {
-    return $jscomp.iteratorFromArray(this, function(f) {
-      return f;
+$jscomp.polyfill("Array.prototype.keys", function(k) {
+  return k ? k : function() {
+    return $jscomp.iteratorFromArray(this, function(k) {
+      return k;
     });
   };
 }, "es6-impl", "es3");
-$jscomp.polyfill("Object.getOwnPropertySymbols", function(f) {
-  return f ? f : function() {
+$jscomp.polyfill("Object.getOwnPropertySymbols", function(k) {
+  return k ? k : function() {
     return [];
   };
 }, "es6-impl", "es5");
-$jscomp.owns = function(f, h) {
-  return Object.prototype.hasOwnProperty.call(f, h);
+$jscomp.owns = function(k, n) {
+  return Object.prototype.hasOwnProperty.call(k, n);
 };
-$jscomp.polyfill("Object.assign", function(f) {
-  return f ? f : function(f, q) {
-    for (var m = 1;m < arguments.length;m++) {
-      var h = arguments[m];
-      if (h) {
-        for (var ga in h) {
-          $jscomp.owns(h, ga) && (f[ga] = h[ga]);
+$jscomp.polyfill("Object.assign", function(k) {
+  return k ? k : function(k, y) {
+    for (var n = 1;n < arguments.length;n++) {
+      var D = arguments[n];
+      if (D) {
+        for (var ga in D) {
+          $jscomp.owns(D, ga) && (k[ga] = D[ga]);
         }
       }
     }
-    return f;
+    return k;
   };
 }, "es6-impl", "es3");
-$jscomp.polyfill("Array.prototype.fill", function(f) {
-  return f ? f : function(f, q, m) {
-    var h = this.length || 0;
-    0 > q && (q = Math.max(0, h + q));
-    if (null == m || m > h) {
-      m = h;
+$jscomp.polyfill("Array.prototype.fill", function(k) {
+  return k ? k : function(k, y, u) {
+    var n = this.length || 0;
+    0 > y && (y = Math.max(0, n + y));
+    if (null == u || u > n) {
+      u = n;
     }
-    m = Number(m);
-    0 > m && (m = Math.max(0, h + m));
-    for (q = Number(q || 0);q < m;q++) {
-      this[q] = f;
+    u = Number(u);
+    0 > u && (u = Math.max(0, n + u));
+    for (y = Number(y || 0);y < u;y++) {
+      this[y] = k;
     }
     return this;
   };
 }, "es6-impl", "es3");
-(function(f) {
-  var h = f.vttjs = {}, q = h.VTTCue, m = h.VTTRegion, G = f.VTTCue, ga = f.VTTRegion;
-  h.shim = function() {
-    h.VTTCue = q;
-    h.VTTRegion = m;
+$jscomp.polyfill("Array.prototype.values", function(k) {
+  return k ? k : function() {
+    return $jscomp.iteratorFromArray(this, function(k, y) {
+      return y;
+    });
   };
-  h.restore = function() {
-    h.VTTCue = G;
-    h.VTTRegion = ga;
-  };
-})(this);
-(function(f, h) {
-  function q(f) {
-    return "string" !== typeof f ? !1 : ja[f.toLowerCase()] ? f.toLowerCase() : !1;
+}, "es6", "es3");
+var __extends = this && this.__extends || function(k, n) {
+  function y() {
+    this.constructor = k;
   }
-  function m(f) {
-    for (var h = 1;h < arguments.length;h++) {
-      var m = arguments[h], q;
-      for (q in m) {
-        f[q] = m[q];
+  for (var u in n) {
+    n.hasOwnProperty(u) && (k[u] = n[u]);
+  }
+  k.prototype = null === n ? Object.create(n) : (y.prototype = n.prototype, new y);
+}, videojs = function() {
+  function k(a, b) {
+    return b = {exports:{}}, a(b, b.exports), b.exports;
+  }
+  function n(a, b) {
+    if (!(this instanceof n)) {
+      return new n(a, b);
+    }
+    this.nodeValue = this.data = a;
+    this.length = a.length;
+    this.ownerDocument = b || null;
+  }
+  function y(a, b) {
+    if (!(this instanceof y)) {
+      return new y(a);
+    }
+    this.data = a || "";
+    this.length = this.data.length;
+    this.ownerDocument = b || null;
+  }
+  function u(a) {
+    switch(a.nodeType) {
+      case 3:
+        return J(a.data);
+      case 8:
+        return "\x3c!--" + a.data + "--\x3e";
+      default:
+        var b = [], c = a.tagName;
+        "http://www.w3.org/1999/xhtml" === a.namespaceURI && (c = c.toLowerCase());
+        b.push("<" + c + pb(a) + ga(a));
+        -1 < me.indexOf(c) ? b.push(" />") : (b.push(">"), a.childNodes.length ? b.push.apply(b, a.childNodes.map(u)) : a.textContent || a.innerText ? b.push(J(a.textContent || a.innerText)) : a.innerHTML && b.push(a.innerHTML), b.push("</" + c + ">"));
+        return b.join("");
+    }
+  }
+  function D(a) {
+    if ("string" === typeof a) {
+      return a;
+    }
+    var b = "";
+    Object.keys(a).forEach(function(c) {
+      var d = a[c];
+      c = c.replace(/[A-Z]/g, function(c) {
+        return "-" + c.toLowerCase();
+      });
+      b += c + ":" + d + ";";
+    });
+    return b;
+  }
+  function ga(a) {
+    a = a.dataset;
+    var b = [], c;
+    for (c in a) {
+      b.push({name:"data-" + c, value:a[c]});
+    }
+    return b.length ? ia(b) : "";
+  }
+  function ia(a) {
+    var b = [];
+    a.forEach(function(c) {
+      var a = c.name;
+      c = c.value;
+      "style" === a && (c = D(c));
+      b.push(a + '="' + J(c).replace(/"/g, "&quot;") + '"');
+    });
+    return b.length ? " " + b.join(" ") : "";
+  }
+  function pb(a) {
+    var b = [], c;
+    for (c in a) {
+      var d;
+      d = a;
+      var f = c, g = typeof d[f];
+      d = "style" === f && 0 < Object.keys(d.style).length ? !0 : d.hasOwnProperty(f) && ("string" === g || "boolean" === g || "number" === g) && "nodeName" !== f && "className" !== f && "tagName" !== f && "textContent" !== f && "innerText" !== f && "namespaceURI" !== f && "innerHTML" !== f;
+      d && b.push({name:c, value:a[c]});
+    }
+    for (var w in a._attributes) {
+      for (var e in a._attributes[w]) {
+        c = a._attributes[w][e], b.push({name:(c.prefix ? c.prefix + ":" : "") + e, value:c.value});
       }
     }
+    a.className && b.push({name:"class", value:a.className});
+    return b.length ? ia(b) : "";
+  }
+  function J(a) {
+    var b = "";
+    "string" === typeof a ? b = a : a && (b = a.toString());
+    return b.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  function B(a, b, c) {
+    if (!(this instanceof B)) {
+      return new B(a);
+    }
+    c = void 0 === c ? "http://www.w3.org/1999/xhtml" : c || null;
+    this.nodeName = this.tagName = "http://www.w3.org/1999/xhtml" === c ? String(a).toUpperCase() : a;
+    this.className = "";
+    this.dataset = {};
+    this.childNodes = [];
+    this.parentNode = null;
+    this.style = {};
+    this.ownerDocument = b || null;
+    this.namespaceURI = c;
+    this._attributes = {};
+    "INPUT" === this.tagName && (this.type = "text");
+  }
+  function v(a) {
+    if (!(this instanceof v)) {
+      return new v;
+    }
+    this.childNodes = [];
+    this.parentNode = null;
+    this.ownerDocument = a || null;
+  }
+  function V(a) {
+  }
+  function H() {
+    if (!(this instanceof H)) {
+      return new H;
+    }
+    this.head = this.createElement("head");
+    this.body = this.createElement("body");
+    this.documentElement = this.createElement("html");
+    this.documentElement.appendChild(this.head);
+    this.documentElement.appendChild(this.body);
+    this.childNodes = [this.documentElement];
+    this.nodeType = 9;
+  }
+  function Ua(a) {
+    if (/\s/.test(a)) {
+      throw Error("class has illegal whitespace characters");
+    }
+  }
+  function Fa(a) {
+    return !!a && "object" === typeof a && 1 === a.nodeType;
+  }
+  function ua(a) {
+    return function(b, c) {
+      if ("string" !== typeof b || !/\S/.test(b)) {
+        return z[a](null);
+      }
+      "string" === typeof c && /\S/.test(c) && (c = z.querySelector(c));
+      c = Fa(c) ? c : z;
+      return c[a] && c[a](b);
+    };
+  }
+  function ja(a) {
+    0 === a.indexOf("#") && (a = a.slice(1));
+    return z.getElementById(a);
+  }
+  function r(a, b, c, d) {
+    void 0 === a && (a = "div");
+    void 0 === b && (b = {});
+    void 0 === c && (c = {});
+    var f = z.createElement(a);
+    Object.getOwnPropertyNames(b).forEach(function(c) {
+      var a = b[c];
+      -1 !== c.indexOf("aria-") || "role" === c || "type" === c ? (E.warn((d = ["Setting attributes in the second argument of createEl()\n                has been deprecated. Use the third argument instead.\n                createEl(type, properties, attributes). Attempting to set ", " to ", "."], d.raw = ["Setting attributes in the second argument of createEl()\n                has been deprecated. Use the third argument instead.\n                createEl(type, properties, attributes). Attempting to set ", 
+      " to ", "."], pc(d, c, a))), f.setAttribute(c, a)) : "textContent" === c ? e(f, a) : f[c] = a;
+      var d;
+    });
+    Object.getOwnPropertyNames(c).forEach(function(b) {
+      f.setAttribute(b, c[b]);
+    });
+    d && M(f, d);
     return f;
   }
-  function G(f, h, u) {
-    var r = this, G = /MSIE\s8\.0/.test(navigator.userAgent), z = {};
-    G ? r = document.createElement("custom") : z.enumerable = !0;
-    r.hasBeenReset = !1;
-    var ja = "", T = !1, va = f, ka = h, A = u, d = null, t = "", L = !0, Fa = "auto", l = "start", M = 50, qa = "middle", Ga = 50, C = "middle";
-    Object.defineProperty(r, "id", m({}, z, {get:function() {
-      return ja;
-    }, set:function(d) {
-      ja = "" + d;
-    }}));
-    Object.defineProperty(r, "pauseOnExit", m({}, z, {get:function() {
-      return T;
-    }, set:function(d) {
-      T = !!d;
-    }}));
-    Object.defineProperty(r, "startTime", m({}, z, {get:function() {
-      return va;
-    }, set:function(d) {
-      if ("number" !== typeof d) {
-        throw new TypeError("Start time must be set to a number.");
+  function e(a, b) {
+    "undefined" === typeof a.textContent ? a.innerText = b : a.textContent = b;
+    return a;
+  }
+  function h(a, b) {
+    b.firstChild ? b.insertBefore(a, b.firstChild) : b.appendChild(a);
+  }
+  function P(a) {
+    var b = a[va];
+    b || (b = a[va] = wa++);
+    Ga[b] || (Ga[b] = {});
+    return Ga[b];
+  }
+  function Ha(a) {
+    return (a = a[va]) ? !!Object.getOwnPropertyNames(Ga[a]).length : !1;
+  }
+  function m(a) {
+    var b = a[va];
+    if (b) {
+      delete Ga[b];
+      try {
+        delete a[va];
+      } catch (c) {
+        a.removeAttribute ? a.removeAttribute(va) : a[va] = null;
       }
-      va = d;
-      this.hasBeenReset = !0;
-    }}));
-    Object.defineProperty(r, "endTime", m({}, z, {get:function() {
-      return ka;
-    }, set:function(d) {
-      if ("number" !== typeof d) {
-        throw new TypeError("End time must be set to a number.");
-      }
-      ka = d;
-      this.hasBeenReset = !0;
-    }}));
-    Object.defineProperty(r, "text", m({}, z, {get:function() {
-      return A;
-    }, set:function(d) {
-      A = "" + d;
-      this.hasBeenReset = !0;
-    }}));
-    Object.defineProperty(r, "region", m({}, z, {get:function() {
-      return d;
-    }, set:function(t) {
-      d = t;
-      this.hasBeenReset = !0;
-    }}));
-    Object.defineProperty(r, "vertical", m({}, z, {get:function() {
-      return t;
-    }, set:function(d) {
-      d = "string" !== typeof d ? !1 : ga[d.toLowerCase()] ? d.toLowerCase() : !1;
-      if (!1 === d) {
-        throw new SyntaxError("An invalid or illegal string was specified.");
-      }
-      t = d;
-      this.hasBeenReset = !0;
-    }}));
-    Object.defineProperty(r, "snapToLines", m({}, z, {get:function() {
-      return L;
-    }, set:function(d) {
-      L = !!d;
-      this.hasBeenReset = !0;
-    }}));
-    Object.defineProperty(r, "line", m({}, z, {get:function() {
-      return Fa;
-    }, set:function(d) {
-      if ("number" !== typeof d && "auto" !== d) {
-        throw new SyntaxError("An invalid number or illegal string was specified.");
-      }
-      Fa = d;
-      this.hasBeenReset = !0;
-    }}));
-    Object.defineProperty(r, "lineAlign", m({}, z, {get:function() {
-      return l;
-    }, set:function(d) {
-      d = q(d);
-      if (!d) {
-        throw new SyntaxError("An invalid or illegal string was specified.");
-      }
-      l = d;
-      this.hasBeenReset = !0;
-    }}));
-    Object.defineProperty(r, "position", m({}, z, {get:function() {
-      return M;
-    }, set:function(d) {
-      if (0 > d || 100 < d) {
-        throw Error("Position must be between 0 and 100.");
-      }
-      M = d;
-      this.hasBeenReset = !0;
-    }}));
-    Object.defineProperty(r, "positionAlign", m({}, z, {get:function() {
-      return qa;
-    }, set:function(d) {
-      d = q(d);
-      if (!d) {
-        throw new SyntaxError("An invalid or illegal string was specified.");
-      }
-      qa = d;
-      this.hasBeenReset = !0;
-    }}));
-    Object.defineProperty(r, "size", m({}, z, {get:function() {
-      return Ga;
-    }, set:function(d) {
-      if (0 > d || 100 < d) {
-        throw Error("Size must be between 0 and 100.");
-      }
-      Ga = d;
-      this.hasBeenReset = !0;
-    }}));
-    Object.defineProperty(r, "align", m({}, z, {get:function() {
-      return C;
-    }, set:function(d) {
-      d = q(d);
-      if (!d) {
-        throw new SyntaxError("An invalid or illegal string was specified.");
-      }
-      C = d;
-      this.hasBeenReset = !0;
-    }}));
-    r.displayState = void 0;
-    if (G) {
-      return r;
     }
   }
-  var ga = {"":!0, lr:!0, rl:!0}, ja = {start:!0, middle:!0, end:!0, left:!0, right:!0};
-  G.prototype.getCueAsHTML = function() {
-    return WebVTT.convertCueToDOMTree(window, this.text);
+  function Q(a, b) {
+    Ua(b);
+    return a.classList ? a.classList.contains(b) : (new RegExp("(^|\\s)" + b + "($|\\s)")).test(a.className);
+  }
+  function ma(a, b) {
+    a.classList ? a.classList.add(b) : Q(a, b) || (a.className = (a.className + " " + b).trim());
+    return a;
+  }
+  function oa(a, b) {
+    a.classList ? a.classList.remove(b) : (Ua(b), a.className = a.className.split(/\s+/).filter(function(c) {
+      return c !== b;
+    }).join(" "));
+    return a;
+  }
+  function C(a, b, c) {
+    var d = Q(a, b);
+    "function" === typeof c && (c = c(a, b));
+    "boolean" !== typeof c && (c = !d);
+    if (c !== d) {
+      return c ? ma(a, b) : oa(a, b), a;
+    }
+  }
+  function p(a, b) {
+    Object.getOwnPropertyNames(b).forEach(function(c) {
+      var d = b[c];
+      null === d || "undefined" === typeof d || !1 === d ? a.removeAttribute(c) : a.setAttribute(c, !0 === d ? "" : d);
+    });
+  }
+  function pa(a) {
+    var b = {};
+    if (a && a.attributes && 0 < a.attributes.length) {
+      for (var c = a.attributes, d = c.length - 1;0 <= d;d--) {
+        var f = c[d].name, g = c[d].value;
+        if ("boolean" === typeof a[f] || -1 !== ",autoplay,controls,loop,muted,default,".indexOf("," + f + ",")) {
+          g = null !== g ? !0 : !1;
+        }
+        b[f] = g;
+      }
+    }
+    return b;
+  }
+  function N() {
+    z.body.focus();
+    z.onselectstart = function() {
+      return !1;
+    };
+  }
+  function ne() {
+    z.onselectstart = function() {
+      return !0;
+    };
+  }
+  function qc(a) {
+    var b;
+    a.getBoundingClientRect && a.parentNode && (b = a.getBoundingClientRect());
+    if (!b) {
+      return {left:0, top:0};
+    }
+    a = z.documentElement;
+    var c = z.body;
+    return {left:Math.round(b.left + (q.pageXOffset || c.scrollLeft) - (a.clientLeft || c.clientLeft || 0)), top:Math.round(b.top + (q.pageYOffset || c.scrollTop) - (a.clientTop || c.clientTop || 0))};
+  }
+  function rc(a, b) {
+    var c = {}, d = qc(a), f = a.offsetWidth;
+    a = a.offsetHeight;
+    var g = d.top, d = d.left, w = b.pageY, e = b.pageX;
+    b.changedTouches && (e = b.changedTouches[0].pageX, w = b.changedTouches[0].pageY);
+    c.y = Math.max(0, Math.min(1, (g - w + a) / a));
+    c.x = Math.max(0, Math.min(1, (e - d) / f));
+    return c;
+  }
+  function W(a) {
+    return !!a && "object" === typeof a && 3 === a.nodeType;
+  }
+  function F(a) {
+    for (;a.firstChild;) {
+      a.removeChild(a.firstChild);
+    }
+    return a;
+  }
+  function R(a) {
+    "function" === typeof a && (a = a());
+    return (Array.isArray(a) ? a : [a]).map(function(b) {
+      "function" === typeof b && (b = b());
+      if (Fa(b) || W(b)) {
+        return b;
+      }
+      if ("string" === typeof b && /\S/.test(b)) {
+        return z.createTextNode(b);
+      }
+    }).filter(function(b) {
+      return b;
+    });
+  }
+  function M(a, b) {
+    R(b).forEach(function(c) {
+      return a.appendChild(c);
+    });
+    return a;
+  }
+  function sc(a, b) {
+    return M(F(a), b);
+  }
+  function tc(a, b) {
+    var c = P(a);
+    0 === c.handlers[b].length && (delete c.handlers[b], a.removeEventListener ? a.removeEventListener(b, c.dispatcher, !1) : a.detachEvent && a.detachEvent("on" + b, c.dispatcher));
+    0 >= Object.getOwnPropertyNames(c.handlers).length && (delete c.handlers, delete c.dispatcher, delete c.disabled);
+    0 === Object.getOwnPropertyNames(c).length && m(a);
+  }
+  function qb(a, b, c, d) {
+    c.forEach(function(c) {
+      a(b, c, d);
+    });
+  }
+  function rb(a) {
+    function b() {
+      return !0;
+    }
+    function c() {
+      return !1;
+    }
+    if (!a || !a.isPropagationStopped) {
+      var d = a || q.event;
+      a = {};
+      for (var f in d) {
+        "layerX" !== f && "layerY" !== f && "keyLocation" !== f && "webkitMovementX" !== f && "webkitMovementY" !== f && ("returnValue" === f && d.preventDefault || (a[f] = d[f]));
+      }
+      a.target || (a.target = a.srcElement || z);
+      a.relatedTarget || (a.relatedTarget = a.fromElement === a.target ? a.toElement : a.fromElement);
+      a.preventDefault = function() {
+        d.preventDefault && d.preventDefault();
+        a.returnValue = !1;
+        d.returnValue = !1;
+        a.defaultPrevented = !0;
+      };
+      a.defaultPrevented = !1;
+      a.stopPropagation = function() {
+        d.stopPropagation && d.stopPropagation();
+        a.cancelBubble = !0;
+        d.cancelBubble = !0;
+        a.isPropagationStopped = b;
+      };
+      a.isPropagationStopped = c;
+      a.stopImmediatePropagation = function() {
+        d.stopImmediatePropagation && d.stopImmediatePropagation();
+        a.isImmediatePropagationStopped = b;
+        a.stopPropagation();
+      };
+      a.isImmediatePropagationStopped = c;
+      if (null !== a.clientX && void 0 !== a.clientX) {
+        f = z.documentElement;
+        var g = z.body;
+        a.pageX = a.clientX + (f && f.scrollLeft || g && g.scrollLeft || 0) - (f && f.clientLeft || g && g.clientLeft || 0);
+        a.pageY = a.clientY + (f && f.scrollTop || g && g.scrollTop || 0) - (f && f.clientTop || g && g.clientTop || 0);
+      }
+      a.which = a.charCode || a.keyCode;
+      null !== a.button && void 0 !== a.button && (a.button = a.button & 1 ? 0 : a.button & 4 ? 1 : a.button & 2 ? 2 : 0);
+    }
+    return a;
+  }
+  function da(a, b, c) {
+    if (Array.isArray(b)) {
+      return qb(da, a, b, c);
+    }
+    var d = P(a);
+    d.handlers || (d.handlers = {});
+    d.handlers[b] || (d.handlers[b] = []);
+    c.guid || (c.guid = wa++);
+    d.handlers[b].push(c);
+    d.dispatcher || (d.disabled = !1, d.dispatcher = function(c, b) {
+      if (!d.disabled) {
+        c = rb(c);
+        var f = d.handlers[c.type];
+        if (f) {
+          for (var f = f.slice(0), g = 0, e = f.length;g < e && !c.isImmediatePropagationStopped();g++) {
+            try {
+              f[g].call(a, c, b);
+            } catch (oe) {
+              E.error(oe);
+            }
+          }
+        }
+      }
+    });
+    1 === d.handlers[b].length && (a.addEventListener ? a.addEventListener(b, d.dispatcher, !1) : a.attachEvent && a.attachEvent("on" + b, d.dispatcher));
+  }
+  function ka(a, b, c) {
+    if (Ha(a)) {
+      var d = P(a);
+      if (d.handlers) {
+        if (Array.isArray(b)) {
+          return qb(ka, a, b, c);
+        }
+        if (b) {
+          var f = d.handlers[b];
+          if (f) {
+            if (!c) {
+              d.handlers[b] = [];
+            } else {
+              if (c.guid) {
+                for (d = 0;d < f.length;d++) {
+                  f[d].guid === c.guid && f.splice(d--, 1);
+                }
+              }
+            }
+            tc(a, b);
+          }
+        } else {
+          for (f in d.handlers) {
+            b = f, d.handlers[b] = [], tc(a, b);
+          }
+        }
+      }
+    }
+  }
+  function Va(a, b, c) {
+    var d = Ha(a) ? P(a) : {}, f = a.parentNode || a.ownerDocument;
+    "string" === typeof b && (b = {type:b, target:a});
+    b = rb(b);
+    d.dispatcher && d.dispatcher.call(a, b, c);
+    if (f && !b.isPropagationStopped() && !0 === b.bubbles) {
+      Va.call(null, f, b, c);
+    } else {
+      if (!f && !b.defaultPrevented && (a = P(b.target), b.target[b.type])) {
+        a.disabled = !0;
+        if ("function" === typeof b.target[b.type]) {
+          b.target[b.type]();
+        }
+        a.disabled = !1;
+      }
+    }
+    return !b.defaultPrevented;
+  }
+  function Ia(a, b, c) {
+    if (Array.isArray(b)) {
+      return qb(Ia, a, b, c);
+    }
+    var d = function() {
+      ka(a, b, d);
+      c.apply(this, arguments);
+    };
+    d.guid = c.guid = c.guid || wa++;
+    da(a, b, d);
+  }
+  function S(a) {
+    return "string" !== typeof a ? a : a.charAt(0).toUpperCase() + a.slice(1);
+  }
+  function uc(a, b, c, d, f) {
+    if (!pe(a)) {
+      return a;
+    }
+    var g = qe(b) && (re(b) || se(b)), w = g ? void 0 : te(b);
+    ue(w || b, function(e, h) {
+      w && (h = e, e = b[h]);
+      if (ve(e)) {
+        a: {
+          d || (d = []), f || (f = []), e = h;
+          h = d;
+          for (var ha = f, p = h.length, L = b[e];p--;) {
+            if (h[p] == L) {
+              a[e] = ha[p];
+              break a;
+            }
+          }
+          var p = a[e], l = c ? c(p, L, e, a, b) : void 0, C = void 0 === l;
+          if (C) {
+            if (l = L, vc(L) && (wc(L) || we(L))) {
+              if (wc(p)) {
+                l = p;
+              } else {
+                if (vc(p)) {
+                  var l = void 0, m = -1, k = p.length;
+                  for (l || (l = Array(k));++m < k;) {
+                    l[m] = p[m];
+                  }
+                } else {
+                  l = [];
+                }
+              }
+            } else {
+              if (xc(L) || yc(L)) {
+                if (yc(p)) {
+                  for (var l = sb(p), m = {}, k = -1, q = l.length;++k < q;) {
+                    var t = l[k];
+                    m[t] = p[t];
+                  }
+                  l = m;
+                } else {
+                  l = xc(p) ? p : {};
+                }
+              } else {
+                C = !1;
+              }
+            }
+          }
+          h.push(L);
+          ha.push(l);
+          if (C) {
+            a[e] = uc(l, L, c, h, ha);
+          } else {
+            if (l === l ? l !== p : p === p) {
+              a[e] = l;
+            }
+          }
+        }
+      } else {
+        ha = a[h], L = c ? c(ha, e, h, a, b) : void 0, (p = void 0 === L) && (L = e), void 0 === L && (!g || h in a) || !p && (L === L ? L === ha : ha !== ha) || (a[h] = L);
+      }
+    });
+    return a;
+  }
+  function zc(a) {
+    return !!a && "object" === typeof a && "[object Object]" === a.toString() && a.constructor === Object;
+  }
+  function xe(a, b) {
+    if (!zc(b)) {
+      return b;
+    }
+    if (!zc(a)) {
+      return U(b);
+    }
+  }
+  function U() {
+    for (var a = [], b = 0;b < arguments.length;b++) {
+      a[b] = arguments[b];
+    }
+    a.unshift({});
+    a.push(xe);
+    Ac.apply(null, a);
+    return a[0];
+  }
+  function Bc(a, b, c, d) {
+    void 0 === d && (E.warn("DEPRECATED: Function '" + a + "' on 'TimeRanges' called without an index argument."), d = 0);
+    var f = c.length - 1;
+    if (0 > d || d > f) {
+      throw Error("Failed to execute '" + a + "' on 'TimeRanges': The index provided (" + d + ") is greater than or equal to the maximum bound (" + f + ").");
+    }
+    return c[d][b];
+  }
+  function tb(a) {
+    return void 0 === a || 0 === a.length ? {length:0, start:function() {
+      throw Error("This TimeRanges object is empty");
+    }, end:function() {
+      throw Error("This TimeRanges object is empty");
+    }} : {length:a.length, start:Bc.bind(null, "start", 0, a), end:Bc.bind(null, "end", 1, a)};
+  }
+  function la(a, b) {
+    return Array.isArray(a) ? tb(a) : void 0 === a || void 0 === b ? tb() : tb([[a, b]]);
+  }
+  function Cc(a, b) {
+    var c = 0, d, f;
+    if (!b) {
+      return 0;
+    }
+    a && a.length || (a = la(0, 0));
+    for (var g = 0;g < a.length;g++) {
+      d = a.start(g), f = a.end(g), f > b && (f = b), c += f - d;
+    }
+    return c / b;
+  }
+  function X(a) {
+    if (a instanceof X) {
+      return a;
+    }
+    "number" === typeof a ? this.code = a : "string" === typeof a ? this.message = a : "object" === typeof a && ("number" === typeof a.code && (this.code = a.code), O(this, a));
+    this.message || (this.message = X.defaultMessages[this.code] || "");
+  }
+  function ye(a) {
+    for (var b in a) {
+      if (a.hasOwnProperty(b)) {
+        return !1;
+      }
+    }
+    return !0;
+  }
+  function Dc(a, b, c) {
+    var d = a;
+    ze(b) ? (c = b, "string" === typeof a && (d = {uri:a})) : d = Ae(b, {uri:a});
+    d.callback = c;
+    return d;
+  }
+  function na(a, b, c) {
+    b = Dc(a, b, c);
+    return Ec(b);
+  }
+  function Ec(a) {
+    function b(c) {
+      clearTimeout(k);
+      c instanceof Error || (c = Error("" + (c || "Unknown XMLHttpRequest Error")));
+      c.statusCode = 0;
+      var b = q;
+      d || (d = !0, a.callback(c, b, void 0));
+    }
+    function c() {
+      if (!w) {
+        var c;
+        clearTimeout(k);
+        c = a.useXDR && void 0 === f.status ? 200 : 1223 === f.status ? 204 : f.status;
+        var b = q, g = null;
+        if (0 !== c) {
+          f.response ? b = f.response : (b = f.responseText) || ("document" === f.responseType ? b = f.responseXML : (b = 204 === f.status && f.responseXML && "parsererror" === f.responseXML.documentElement.nodeName, b = "" !== f.responseType || b ? null : f.responseXML));
+          if (C) {
+            try {
+              b = JSON.parse(b);
+            } catch (ig) {
+            }
+          }
+          b = {body:b, statusCode:c, method:p, headers:{}, url:e, rawRequest:f};
+          f.getAllResponseHeaders && (b.headers = Be(f.getAllResponseHeaders()));
+        } else {
+          g = Error("Internal XMLHttpRequest Error");
+        }
+        c = b.body;
+        d || (d = !0, a.callback(g, b, c));
+      }
+    }
+    if ("undefined" === typeof a.callback) {
+      throw Error("callback argument missing");
+    }
+    var d = !1, f = a.xhr || null;
+    f || (f = a.cors || a.useXDR ? new na.XDomainRequest : new na.XMLHttpRequest);
+    var g, w, e = f.url = a.uri || a.url, p = f.method = a.method || "GET", h = a.body || a.data || null, l = f.headers = a.headers || {}, m = !!a.sync, C = !1, k, q = {body:void 0, headers:{}, statusCode:0, method:p, url:e, rawRequest:f};
+    "json" in a && !1 !== a.json && (C = !0, l.accept || l.Accept || (l.Accept = "application/json"), "GET" !== p && "HEAD" !== p && (l["content-type"] || l["Content-Type"] || (l["Content-Type"] = "application/json"), h = JSON.stringify(!0 === a.json ? h : a.json)));
+    f.onreadystatechange = function() {
+      4 === f.readyState && c();
+    };
+    f.onload = c;
+    f.onerror = b;
+    f.onprogress = function() {
+    };
+    f.onabort = function() {
+      w = !0;
+    };
+    f.ontimeout = b;
+    f.open(p, e, !m, a.username, a.password);
+    m || (f.withCredentials = !!a.withCredentials);
+    !m && 0 < a.timeout && (k = setTimeout(function() {
+      if (!w) {
+        w = !0;
+        f.abort("timeout");
+        var c = Error("XMLHttpRequest timeout");
+        c.code = "ETIMEDOUT";
+        b(c);
+      }
+    }, a.timeout));
+    if (f.setRequestHeader) {
+      for (g in l) {
+        l.hasOwnProperty(g) && f.setRequestHeader(g, l[g]);
+      }
+    } else {
+      if (a.headers && !ye(a.headers)) {
+        throw Error("Headers cannot be set on an XDomainRequest object");
+      }
+    }
+    "responseType" in a && (f.responseType = a.responseType);
+    "beforeSend" in a && "function" === typeof a.beforeSend && a.beforeSend(f);
+    f.send(h);
+    return f;
+  }
+  function Ce() {
+  }
+  function Fc(a, b) {
+    var c = function() {
+      var d = (new Date).getTime();
+      d - c.lastCheckTime_ >= b && (c.lastCheckTime_ = d, c.cache_ = a());
+      return c.cache_;
+    };
+    c.lastCheckTime_ = -Infinity;
+    return c;
+  }
+  function De(a) {
+    var b = a.charAt(0).toUpperCase() + a.slice(1);
+    Gc["set" + b] = function(c) {
+      return this.el_.vjs_setProperty(a, c);
+    };
+  }
+  function Hc(a) {
+    Gc[a] = function() {
+      return this.el_.vjs_getProperty(a);
+    };
+  }
+  function ub(a, b) {
+    return "rgba(" + parseInt(a[1] + a[1], 16) + "," + parseInt(a[2] + a[2], 16) + "," + parseInt(a[3] + a[3], 16) + "," + b + ")";
+  }
+  function qa(a, b) {
+    void 0 === b && (b = a);
+    a = 0 > a ? 0 : a;
+    var c = Math.floor(a % 60), d = Math.floor(a / 60 % 60), f = Math.floor(a / 3600), g = Math.floor(b / 60 % 60);
+    b = Math.floor(b / 3600);
+    if (isNaN(a) || Infinity === a) {
+      f = d = c = "-";
+    }
+    f = 0 < f || 0 < b ? f + ":" : "";
+    return f + (((f || 10 <= g) && 10 > d ? "0" + d : d) + ":") + (10 > c ? "0" + c : c);
+  }
+  function za(a, b) {
+    return a && b ? "function" === typeof q.getComputedStyle ? (a = q.getComputedStyle(a)) ? a[b] : "" : a.currentStyle[b] || "" : "";
+  }
+  function vb(a, b) {
+    Object.keys(a).forEach(function(c) {
+      return b(a[c], c);
+    });
+  }
+  function Ee(a, b, c) {
+    void 0 === c && (c = 0);
+    return Object.keys(a).reduce(function(c, f) {
+      return b(c, a[f], f);
+    }, c);
+  }
+  function Ic(a, b) {
+    b && (a = b(a));
+    if (a && "none" !== a) {
+      return a;
+    }
+  }
+  function t(a, b, c) {
+    var d;
+    b = b || {};
+    if ("string" === typeof a) {
+      0 === a.indexOf("#") && (a = a.slice(1));
+      if (t.getPlayers()[a]) {
+        return b && E.warn('Player "' + a + '" is already initialised. Options will not be applied.'), c && t.getPlayers()[a].ready(c), t.getPlayers()[a];
+      }
+      d = ja(a);
+    } else {
+      d = a;
+    }
+    if (!d || !d.nodeName) {
+      throw new TypeError("The element or ID supplied is not valid. (videojs)");
+    }
+    if (d.player || ea.players[d.playerId]) {
+      return d.player || ea.players[d.playerId];
+    }
+    t.hooks("beforesetup").forEach(function(c) {
+      c = c(d, U(b));
+      !c || "object" !== typeof c || Array.isArray(c) ? t.log.error("please return an object in beforesetup hooks") : b = U(b, c);
+    });
+    var f = new ea(d, b, c);
+    t.hooks("setup").forEach(function(c) {
+      return c(f);
+    });
+    return f;
+  }
+  var Wa = "undefined" !== typeof window ? window : "undefined" !== typeof global ? global : "undefined" !== typeof self ? self : {}, q = k(function(a) {
+    a.exports = "undefined" !== typeof window ? window : "undefined" !== typeof Wa ? Wa : "undefined" !== typeof self ? self : {};
+  }), Jc = Array.prototype.slice, Xa = function(a, b) {
+    "length" in a || (a = [a]);
+    for (a = Jc.call(a);a.length;) {
+      var c = a.shift(), d = b(c);
+      if (d) {
+        return d;
+      }
+      c.childNodes && c.childNodes.length && (a = Jc.call(c.childNodes).concat(a));
+    }
   };
-  f.VTTCue = f.VTTCue || G;
-  h.VTTCue = G;
-})(this, this.vttjs || {});
-(function(f, h) {
-  function q(f) {
-    return "number" === typeof f && 0 <= f && 100 >= f;
-  }
-  function m() {
-    var f = 100, h = 3, m = 0, T = 100, u = 0, r = 100, ba = "";
-    Object.defineProperties(this, {width:{enumerable:!0, get:function() {
-      return f;
-    }, set:function(h) {
-      if (!q(h)) {
-        throw Error("Width must be between 0 and 100.");
+  n.prototype.nodeType = 8;
+  n.prototype.nodeName = "#comment";
+  n.prototype.toString = function() {
+    return "[object Comment]";
+  };
+  y.prototype.type = "DOMTextNode";
+  y.prototype.nodeType = 3;
+  y.prototype.nodeName = "#text";
+  y.prototype.toString = function() {
+    return this.data;
+  };
+  y.prototype.replaceData = function(a, b, c) {
+    var d = this.data, f = d.substring(0, a);
+    a = d.substring(a + b, d.length);
+    this.data = f + c + a;
+    this.length = this.data.length;
+  };
+  var Kc = function(a) {
+    var b = this, c = a.type;
+    a.target || (a.target = b);
+    b.listeners || (b.listeners = {});
+    if (c = b.listeners[c]) {
+      return c.forEach(function(c) {
+        a.currentTarget = b;
+        "function" === typeof c ? c(a) : c.handleEvent(a);
+      });
+    }
+    b.parentNode && b.parentNode.dispatchEvent(a);
+  }, Lc = function(a, b) {
+    this.listeners || (this.listeners = {});
+    this.listeners[a] || (this.listeners[a] = []);
+    -1 === this.listeners[a].indexOf(b) && this.listeners[a].push(b);
+  }, Mc = function(a, b) {
+    this.listeners && this.listeners[a] && (a = this.listeners[a], b = a.indexOf(b), -1 !== b && a.splice(b, 1));
+  }, me = "area base br col embed hr img input keygen link menuitem meta param source track wbr".split(" ");
+  B.prototype.type = "DOMElement";
+  B.prototype.nodeType = 1;
+  B.prototype.appendChild = function(a) {
+    a.parentNode && a.parentNode.removeChild(a);
+    this.childNodes.push(a);
+    a.parentNode = this;
+    return a;
+  };
+  B.prototype.replaceChild = function(a, b) {
+    a.parentNode && a.parentNode.removeChild(a);
+    var c = this.childNodes.indexOf(b);
+    b.parentNode = null;
+    this.childNodes[c] = a;
+    a.parentNode = this;
+    return b;
+  };
+  B.prototype.removeChild = function(a) {
+    var b = this.childNodes.indexOf(a);
+    this.childNodes.splice(b, 1);
+    a.parentNode = null;
+    return a;
+  };
+  B.prototype.insertBefore = function(a, b) {
+    a.parentNode && a.parentNode.removeChild(a);
+    b = null === b || void 0 === b ? -1 : this.childNodes.indexOf(b);
+    -1 < b ? this.childNodes.splice(b, 0, a) : this.childNodes.push(a);
+    a.parentNode = this;
+    return a;
+  };
+  B.prototype.setAttributeNS = function(a, b, c) {
+    var d = null, f = b, g = b.indexOf(":");
+    -1 < g && (d = b.substr(0, g), f = b.substr(g + 1));
+    "INPUT" === this.tagName && "type" === b ? this.type = c : (this._attributes[a] || (this._attributes[a] = {}))[f] = {value:c, prefix:d};
+  };
+  B.prototype.getAttributeNS = function(a, b) {
+    a = (a = this._attributes[a]) && a[b] && a[b].value;
+    return "INPUT" === this.tagName && "type" === b ? this.type : "string" !== typeof a ? null : a;
+  };
+  B.prototype.removeAttributeNS = function(a, b) {
+    (a = this._attributes[a]) && delete a[b];
+  };
+  B.prototype.hasAttributeNS = function(a, b) {
+    a = this._attributes[a];
+    return !!a && b in a;
+  };
+  B.prototype.setAttribute = function(a, b) {
+    return this.setAttributeNS(null, a, b);
+  };
+  B.prototype.getAttribute = function(a) {
+    return this.getAttributeNS(null, a);
+  };
+  B.prototype.removeAttribute = function(a) {
+    return this.removeAttributeNS(null, a);
+  };
+  B.prototype.hasAttribute = function(a) {
+    return this.hasAttributeNS(null, a);
+  };
+  B.prototype.removeEventListener = Mc;
+  B.prototype.addEventListener = Lc;
+  B.prototype.dispatchEvent = Kc;
+  B.prototype.focus = function() {
+  };
+  B.prototype.toString = function() {
+    return u(this);
+  };
+  B.prototype.getElementsByClassName = function(a) {
+    var b = a.split(" "), c = [];
+    Xa(this, function(a) {
+      if (1 === a.nodeType) {
+        var d = (a.className || "").split(" ");
+        b.every(function(c) {
+          return -1 !== d.indexOf(c);
+        }) && c.push(a);
       }
-      f = h;
-    }}, lines:{enumerable:!0, get:function() {
-      return h;
-    }, set:function(f) {
-      if ("number" !== typeof f) {
-        throw new TypeError("Lines must be set to a number.");
+    });
+    return c;
+  };
+  B.prototype.getElementsByTagName = function(a) {
+    a = a.toLowerCase();
+    var b = [];
+    Xa(this.childNodes, function(c) {
+      1 !== c.nodeType || "*" !== a && c.tagName.toLowerCase() !== a || b.push(c);
+    });
+    return b;
+  };
+  B.prototype.contains = function(a) {
+    return Xa(this, function(b) {
+      return a === b;
+    }) || !1;
+  };
+  v.prototype.type = "DocumentFragment";
+  v.prototype.nodeType = 11;
+  v.prototype.nodeName = "#document-fragment";
+  v.prototype.appendChild = B.prototype.appendChild;
+  v.prototype.replaceChild = B.prototype.replaceChild;
+  v.prototype.removeChild = B.prototype.removeChild;
+  v.prototype.toString = function() {
+    return this.childNodes.map(function(a) {
+      return String(a);
+    }).join("");
+  };
+  V.prototype.initEvent = function(a, b, c) {
+    this.type = a;
+    this.bubbles = b;
+    this.cancelable = c;
+  };
+  V.prototype.preventDefault = function() {
+  };
+  var ba = H.prototype;
+  ba.createTextNode = function(a) {
+    return new y(a, this);
+  };
+  ba.createElementNS = function(a, b) {
+    return new B(b, this, null === a ? null : String(a));
+  };
+  ba.createElement = function(a) {
+    return new B(a, this);
+  };
+  ba.createDocumentFragment = function() {
+    return new v(this);
+  };
+  ba.createEvent = function(a) {
+    return new V(a);
+  };
+  ba.createComment = function(a) {
+    return new n(a, this);
+  };
+  ba.getElementById = function(a) {
+    a = String(a);
+    return Xa(this.childNodes, function(b) {
+      if (String(b.id) === a) {
+        return b;
       }
-      h = f;
-    }}, regionAnchorY:{enumerable:!0, get:function() {
-      return T;
-    }, set:function(f) {
-      if (!q(f)) {
-        throw Error("RegionAnchorX must be between 0 and 100.");
-      }
-      T = f;
-    }}, regionAnchorX:{enumerable:!0, get:function() {
-      return m;
-    }, set:function(f) {
-      if (!q(f)) {
-        throw Error("RegionAnchorY must be between 0 and 100.");
-      }
-      m = f;
-    }}, viewportAnchorY:{enumerable:!0, get:function() {
-      return r;
-    }, set:function(f) {
-      if (!q(f)) {
-        throw Error("ViewportAnchorY must be between 0 and 100.");
-      }
-      r = f;
-    }}, viewportAnchorX:{enumerable:!0, get:function() {
-      return u;
-    }, set:function(f) {
-      if (!q(f)) {
-        throw Error("ViewportAnchorX must be between 0 and 100.");
-      }
-      u = f;
-    }}, scroll:{enumerable:!0, get:function() {
-      return ba;
-    }, set:function(f) {
-      f = "string" !== typeof f ? !1 : G[f.toLowerCase()] ? f.toLowerCase() : !1;
-      if (!1 === f) {
-        throw new SyntaxError("An invalid or illegal string was specified.");
-      }
-      ba = f;
-    }}});
-  }
-  var G = {"":!0, up:!0};
-  f.VTTRegion = f.VTTRegion || m;
-  h.VTTRegion = m;
-})(this, this.vttjs || {});
-(function(f) {
-  function h(d, f) {
-    this.name = "ParsingError";
-    this.code = d.code;
-    this.message = f || d.message;
-  }
-  function q(d) {
-    d = d.match(/^(\d+):(\d{2})(:\d{2})?\.(\d{3})/);
-    if (!d) {
+    }) || null;
+  };
+  ba.getElementsByClassName = B.prototype.getElementsByClassName;
+  ba.getElementsByTagName = B.prototype.getElementsByTagName;
+  ba.contains = B.prototype.contains;
+  ba.removeEventListener = Mc;
+  ba.addEventListener = Lc;
+  ba.dispatchEvent = Kc;
+  var Fe = new H, z = k(function(a) {
+    var b = "undefined" !== typeof Wa ? Wa : "undefined" !== typeof window ? window : {};
+    if ("undefined" !== typeof document) {
+      a.exports = document;
+    } else {
+      var c = b["__GLOBAL_DOCUMENT_CACHE@4"];
+      c || (c = b["__GLOBAL_DOCUMENT_CACHE@4"] = Fe);
+      a.exports = c;
+    }
+  }), wa = 1, ca = q.navigator && q.navigator.userAgent || "", Nc = /AppleWebKit\/([\d.]+)/i.exec(ca), Ge = Nc ? parseFloat(Nc.pop()) : null, wb = /iPad/i.test(ca), xb = /iPhone/i.test(ca) && !wb, Oc = /iPod/i.test(ca), yb = xb || wb || Oc, He = function() {
+    var a = ca.match(/OS (\d+)_/i);
+    return a && a[1] ? a[1] : null;
+  }(), Ja = /Android/i.test(ca), Ya = function() {
+    var a = ca.match(/Android (\d+)(?:\.(\d+))?(?:\.(\d+))*/i);
+    if (!a) {
       return null;
     }
-    if (d[3]) {
-      var f = d[3].replace(":", "");
-      return 3600 * (d[1] | 0) + 60 * (d[2] | 0) + (f | 0) + (d[4] | 0) / 1E3;
-    }
-    return 59 < d[1] ? 3600 * (d[1] | 0) + 60 * (d[2] | 0) + 0 + (d[4] | 0) / 1E3 : 0 + 60 * (d[1] | 0) + (d[2] | 0) + (d[4] | 0) / 1E3;
-  }
-  function m() {
-    this.values = z(null);
-  }
-  function G(d, f, h, m) {
-    d = m ? d.split(m) : [d];
-    for (var t in d) {
-      "string" === typeof d[t] && (m = d[t].split(h), 2 === m.length && f(m[0], m[1]));
-    }
-  }
-  function ga(d, f, L) {
-    function t() {
-      var f = q(d);
-      if (null === f) {
-        throw new h(h.Errors.BadTimeStamp, "Malformed timestamp: " + r);
+    var b = a[1] && parseFloat(a[1]), c = a[2] && parseFloat(a[2]);
+    return b && c ? parseFloat(a[1] + "." + a[2]) : b ? b : null;
+  }(), Pc = Ja && /webkit/i.test(ca) && 2.3 > Ya, Qc = Ja && 5 > Ya && 537 > Ge, zb = /Firefox/i.test(ca), Rc = /Edge/i.test(ca), Ab = !Rc && /Chrome/i.test(ca), Y = /MSIE\s8\.0/.test(ca), Bb = function(a) {
+    return a && parseFloat(a[1]);
+  }(/MSIE\s(\d+)\.\d/.exec(ca)), Za = !!("ontouchstart" in q || q.DocumentTouch && z instanceof q.DocumentTouch), Sc = "backgroundSize" in z.createElement("video").style, Ie = Object.freeze({IS_IPAD:wb, IS_IPHONE:xb, IS_IPOD:Oc, IS_IOS:yb, IOS_VERSION:He, IS_ANDROID:Ja, ANDROID_VERSION:Ya, IS_OLD_ANDROID:Pc, IS_NATIVE_ANDROID:Qc, IS_FIREFOX:zb, IS_EDGE:Rc, IS_CHROME:Ab, IS_IE8:Y, IE_VERSION:Bb, TOUCH_ENABLED:Za, BACKGROUND_SIZE_SUPPORTED:Sc}), Aa, Cb = function(a, b, c) {
+    void 0 === c && (c = !!Bb && 11 > Bb);
+    "log" !== a && b.unshift(a.toUpperCase() + ":");
+    Aa.history.push(b);
+    b.unshift("VIDEOJS:");
+    if (a = q.console && q.console[a]) {
+      if (c && (b = b.map(function(c) {
+        if (c && "object" === typeof c || Array.isArray(c)) {
+          try {
+            return JSON.stringify(c);
+          } catch (f) {
+          }
+        }
+        return String(c);
+      }).join(" ")), a.apply) {
+        a[Array.isArray(b) ? "apply" : "call"](q.console, b);
+      } else {
+        a(b);
       }
-      d = d.replace(/^[^\sa-zA-Z-]+/, "");
+    }
+  };
+  Aa = function() {
+    for (var a = [], b = 0;b < arguments.length;b++) {
+      a[b] = arguments[b];
+    }
+    Cb("log", a);
+  };
+  Aa.history = [];
+  Aa.error = function() {
+    for (var a = [], b = 0;b < arguments.length;b++) {
+      a[b] = arguments[b];
+    }
+    return Cb("error", a);
+  };
+  Aa.warn = function() {
+    for (var a = [], b = 0;b < arguments.length;b++) {
+      a[b] = arguments[b];
+    }
+    return Cb("warn", a);
+  };
+  var E = Aa, pc = function(a) {
+    for (var b = "", c = 0;c < arguments.length;c++) {
+      b += a[c].replace(/\n\r?\s*/g, "") + (arguments[c + 1] || "");
+    }
+    return b;
+  }, Ga = {}, va = "vdata" + (new Date).getTime(), Ka = ua("querySelector"), Je = ua("querySelectorAll"), Db = !1, Tc, Eb = function() {
+    var a = z.getElementsByTagName("video"), b = z.getElementsByTagName("audio"), c = [];
+    if (a && 0 < a.length) {
+      for (var d = 0, f = a.length;d < f;d++) {
+        c.push(a[d]);
+      }
+    }
+    if (b && 0 < b.length) {
+      for (d = 0, f = b.length;d < f;d++) {
+        c.push(b[d]);
+      }
+    }
+    if (c && 0 < c.length) {
+      for (d = 0, f = c.length;d < f;d++) {
+        if ((a = c[d]) && a.getAttribute) {
+          void 0 === a.player && null !== a.getAttribute("data-setup") && Tc(a);
+        } else {
+          setTimeout(Eb, 1);
+          break;
+        }
+      }
+    } else {
+      Db || setTimeout(Eb, 1);
+    }
+  };
+  "complete" === z.readyState ? Db = !0 : Ia(q, "load", function() {
+    Db = !0;
+  });
+  var Uc = function(a) {
+    var b = z.createElement("style");
+    b.className = a;
+    return b;
+  }, Vc = function(a, b) {
+    a.styleSheet ? a.styleSheet.cssText = b : a.textContent = b;
+  }, A = function(a, b, c) {
+    b.guid || (b.guid = wa++);
+    var d = function() {
+      return b.apply(a, arguments);
+    };
+    d.guid = c ? c + "_" + b.guid : b.guid;
+    return d;
+  }, Wc = function(a, b) {
+    for (var c = -1, d = a.length;++c < d && !1 !== b(a[c], c, a);) {
+    }
+    return a;
+  }, ra = function(a) {
+    var b = typeof a;
+    return !!a && ("object" == b || "function" == b);
+  }, xa = function(a) {
+    return !!a && "object" == typeof a;
+  }, Ke = Object.prototype.toString, Fb = function(a) {
+    return "string" == typeof a || xa(a) && "[object String]" == Ke.call(a);
+  }, Xc = Error.prototype, Gb = Object.prototype.propertyIsEnumerable, Le = Array.prototype.splice, Yc, Hb, Zc, $c, ad;
+  (function(a) {
+    var b = function() {
+      this.x = a;
+    }, c = {0:a, length:a}, d = [];
+    b.prototype = {valueOf:a, y:a};
+    for (var f in new b) {
+      d.push(f);
+    }
+    Yc = Gb.call(Xc, "message") || Gb.call(Xc, "name");
+    Hb = Gb.call(b, "prototype");
+    Zc = !/valueOf/.test(d);
+    $c = "x" != d[0];
+    Le.call(c, 0, 1);
+    ad = "xx" != "x" + Object("x")[0];
+  })(1, 0);
+  var bd = function(a) {
+    if (ad && Fb(a)) {
+      for (var b = -1, c = a.length, d = Object(a);++b < c;) {
+        d[b] = a.charAt(b);
+      }
+      return d;
+    }
+    return ra(a) ? a : Object(a);
+  }, La = function(a) {
+    return "number" == typeof a && -1 < a && 0 == a % 1 && 9007199254740991 >= a;
+  }, Me = function(a) {
+    return function(b) {
+      return null == b ? void 0 : bd(b)[a];
+    };
+  }("length"), Ma = function(a) {
+    return null != a && La(Me(a));
+  }, cd = Object.prototype, Ne = cd.hasOwnProperty, Oe = cd.propertyIsEnumerable, $a = function(a) {
+    return xa(a) && Ma(a) && Ne.call(a, "callee") && !Oe.call(a, "callee");
+  }, Pe = Object.prototype.toString, Ib = function(a) {
+    return ra(a) && "[object Function]" == Pe.call(a);
+  }, dd = function() {
+    try {
+      Object("[object Object]");
+    } catch (a) {
+      return function() {
+        return !1;
+      };
+    }
+    return function(a) {
+      return "function" != typeof a.toString && "string" == typeof(a + "");
+    };
+  }(), Qe = /^\[object .+?Constructor\]$/, ed = Function.prototype.toString, fd = RegExp("^" + ed.call(Object.prototype.hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$"), Jb = function(a, b) {
+    a = null == a ? void 0 : a[b];
+    return (null == a ? 0 : Ib(a) ? fd.test(ed.call(a)) : xa(a) && (dd(a) ? fd : Qe).test(a)) ? a : void 0;
+  }, Re = Object.prototype.toString, ab = Jb(Array, "isArray") || function(a) {
+    return xa(a) && La(a.length) && "[object Array]" == Re.call(a);
+  }, Se = function(a) {
+    return function(b, c, d) {
+      var f = bd(b);
+      d = d(b);
+      for (var g = d.length, w = a ? g : -1;a ? w-- : ++w < g;) {
+        var e = d[w];
+        if (!1 === c(f[e], e, f)) {
+          break;
+        }
+      }
+      return b;
+    };
+  }(), Te = /^\d+$/, Kb = function(a, b) {
+    a = "number" == typeof a || Te.test(a) ? +a : -1;
+    return -1 < a && 0 == a % 1 && a < (null == b ? 9007199254740991 : b);
+  }, Lb = "constructor hasOwnProperty isPrototypeOf propertyIsEnumerable toLocaleString toString valueOf".split(" "), gd = Error.prototype, Na = Object.prototype, Ue = String.prototype, bb = Na.hasOwnProperty, Ve = Na.toString, aa = {};
+  aa["[object Array]"] = aa["[object Date]"] = aa["[object Number]"] = {constructor:!0, toLocaleString:!0, toString:!0, valueOf:!0};
+  aa["[object Boolean]"] = aa["[object String]"] = {constructor:!0, toString:!0, valueOf:!0};
+  aa["[object Error]"] = aa["[object Function]"] = aa["[object RegExp]"] = {constructor:!0, toString:!0};
+  aa["[object Object]"] = {constructor:!0};
+  Wc(Lb, function(a) {
+    for (var b in aa) {
+      if (bb.call(aa, b)) {
+        var c = aa[b];
+        c[a] = bb.call(c, a);
+      }
+    }
+  });
+  var sb = function(a) {
+    if (null == a) {
+      return [];
+    }
+    ra(a) || (a = Object(a));
+    for (var b = a.length, b = b && La(b) && (ab(a) || $a(a) || Fb(a)) && b || 0, c = a.constructor, d = -1, c = Ib(c) && c.prototype || Na, f = c === a, g = Array(b), w = 0 < b, e = Yc && (a === gd || a instanceof Error), p = Hb && Ib(a);++d < b;) {
+      g[d] = d + "";
+    }
+    for (var h in a) {
+      p && "prototype" == h || e && ("message" == h || "name" == h) || w && Kb(h, b) || "constructor" == h && (f || !bb.call(a, h)) || g.push(h);
+    }
+    if (Zc && a !== Na) {
+      for (b = a === Ue ? "[object String]" : a === gd ? "[object Error]" : Ve.call(a), d = aa[b] || aa["[object Object]"], "[object Object]" == b && (c = Na), b = Lb.length;b--;) {
+        h = Lb[b], w = d[h], f && w || (w ? !bb.call(a, h) : a[h] === c[h]) || g.push(h);
+      }
+    }
+    return g;
+  }, hd = function(a, b) {
+    return Se(a, b, sb);
+  }, id = Object.prototype, Mb = id.hasOwnProperty, We = id.toString, K = {};
+  K["[object Float32Array]"] = K["[object Float64Array]"] = K["[object Int8Array]"] = K["[object Int16Array]"] = K["[object Int32Array]"] = K["[object Uint8Array]"] = K["[object Uint8ClampedArray]"] = K["[object Uint16Array]"] = K["[object Uint32Array]"] = !0;
+  K["[object Arguments]"] = K["[object Array]"] = K["[object ArrayBuffer]"] = K["[object Boolean]"] = K["[object Date]"] = K["[object Error]"] = K["[object Function]"] = K["[object Map]"] = K["[object Number]"] = K["[object Object]"] = K["[object RegExp]"] = K["[object Set]"] = K["[object String]"] = K["[object WeakMap]"] = !1;
+  var Xe = Object.prototype.toString, jd = function(a) {
+    return xa(a) && La(a.length) && !!K[Xe.call(a)];
+  }, yc = $a, wc = ab, vc = Ma, xc = function(a) {
+    var b;
+    if (!xa(a) || "[object Object]" != We.call(a) || dd(a) || $a(a) || !(Mb.call(a, "constructor") || (b = a.constructor, "function" != typeof b || b instanceof b))) {
+      return !1;
+    }
+    var c;
+    if ($c) {
+      return hd(a, function(b, a, g) {
+        c = Mb.call(g, a);
+        return !1;
+      }), !1 !== c;
+    }
+    hd(a, function(b, a) {
+      c = a;
+    });
+    return void 0 === c || Mb.call(a, c);
+  }, we = jd, Ye = Object.prototype.hasOwnProperty, kd = function(a) {
+    for (var b = sb(a), c = b.length, d = c && a.length, f = !!d && La(d) && (ab(a) || $a(a) || Fb(a)), g = -1, w = [];++g < c;) {
+      var e = b[g];
+      (f && Kb(e, d) || Ye.call(a, e)) && w.push(e);
+    }
+    return w;
+  }, ld = Jb(Object, "keys"), ue = Wc, re = ab, qe = Ma, pe = ra, ve = xa, se = jd, te = ld ? function(a) {
+    var b = null == a ? void 0 : a.constructor;
+    return "function" == typeof b && b.prototype === a || ("function" == typeof a ? Hb : Ma(a)) ? kd(a) : ra(a) ? ld(a) : [];
+  } : kd, Ze = function(a) {
+    return a;
+  }, md = Math.max, $e = function(a, b, c) {
+    if ("function" != typeof a) {
+      return Ze;
+    }
+    if (void 0 === b) {
+      return a;
+    }
+    switch(c) {
+      case 1:
+        return function(c) {
+          return a.call(b, c);
+        };
+      case 3:
+        return function(c, f, g) {
+          return a.call(b, c, f, g);
+        };
+      case 4:
+        return function(c, f, g, w) {
+          return a.call(b, c, f, g, w);
+        };
+      case 5:
+        return function(c, f, g, w, e) {
+          return a.call(b, c, f, g, w, e);
+        };
+    }
+    return function() {
+      return a.apply(b, arguments);
+    };
+  }, af = function(a, b) {
+    if ("function" != typeof a) {
+      throw new TypeError("Expected a function");
+    }
+    b = md(void 0 === b ? a.length - 1 : +b || 0, 0);
+    return function() {
+      for (var c = arguments, d = -1, f = md(c.length - b, 0), g = Array(f);++d < f;) {
+        g[d] = c[b + d];
+      }
+      switch(b) {
+        case 0:
+          return a.call(this, g);
+        case 1:
+          return a.call(this, c[0], g);
+        case 2:
+          return a.call(this, c[0], c[1], g);
+      }
+      f = Array(b + 1);
+      for (d = -1;++d < b;) {
+        f[d] = c[d];
+      }
+      f[b] = g;
+      return a.apply(this, f);
+    };
+  }, Ac = function(a) {
+    return af(function(b, c) {
+      var d = -1, f = null == b ? 0 : c.length, g = 2 < f ? c[f - 2] : void 0, w = 2 < f ? c[2] : void 0, e = 1 < f ? c[f - 1] : void 0;
+      "function" == typeof g ? (g = $e(g, e, 5), f -= 2) : (g = "function" == typeof e ? e : void 0, f -= g ? 1 : 0);
+      if (e = w) {
+        var e = c[0], h = c[1];
+        if (ra(w)) {
+          var p = typeof h;
+          ("number" == p ? Ma(w) && Kb(h, w.length) : "string" == p && h in w) ? (w = w[h], e = e === e ? e === w : w !== w) : e = !1;
+        } else {
+          e = !1;
+        }
+      }
+      e && (g = 3 > f ? void 0 : g, f = 1);
+      for (;++d < f;) {
+        (w = c[d]) && a(b, w, g);
+      }
+      return b;
+    });
+  }(uc), l = function() {
+    function a(b, c, a) {
+      this.player_ = !b && this.play ? b = this : b;
+      this.options_ = U({}, this.options_);
+      c = this.options_ = U(this.options_, c);
+      this.id_ = c.id || c.el && c.el.id;
+      this.id_ || (this.id_ = (b && b.id && b.id() || "no_player") + "_component_" + wa++);
+      this.name_ = c.name || null;
+      c.el ? this.el_ = c.el : !1 !== c.createEl && (this.el_ = this.createEl());
+      this.children_ = [];
+      this.childIndex_ = {};
+      this.childNameIndex_ = {};
+      !1 !== c.initChildren && this.initChildren();
+      this.ready(a);
+      !1 !== c.reportTouchActivity && this.enableTouchActivity();
+    }
+    a.prototype.dispose = function() {
+      this.trigger({type:"dispose", bubbles:!1});
+      if (this.children_) {
+        for (var b = this.children_.length - 1;0 <= b;b--) {
+          this.children_[b].dispose && this.children_[b].dispose();
+        }
+      }
+      this.childNameIndex_ = this.childIndex_ = this.children_ = null;
+      this.off();
+      this.el_.parentNode && this.el_.parentNode.removeChild(this.el_);
+      m(this.el_);
+      this.el_ = null;
+    };
+    a.prototype.player = function() {
+      return this.player_;
+    };
+    a.prototype.options = function(b) {
+      E.warn("this.options() has been deprecated and will be moved to the constructor in 6.0");
+      return b ? this.options_ = U(this.options_, b) : this.options_;
+    };
+    a.prototype.el = function() {
+      return this.el_;
+    };
+    a.prototype.createEl = function(b, c, a) {
+      return r(b, c, a);
+    };
+    a.prototype.localize = function(b) {
+      var c = this.player_.language && this.player_.language(), a = this.player_.languages && this.player_.languages();
+      if (!c || !a) {
+        return b;
+      }
+      var f = a[c];
+      if (f && f[b]) {
+        return f[b];
+      }
+      c = c.split("-")[0];
+      return (a = a[c]) && a[b] ? a[b] : b;
+    };
+    a.prototype.contentEl = function() {
+      return this.contentEl_ || this.el_;
+    };
+    a.prototype.id = function() {
+      return this.id_;
+    };
+    a.prototype.name = function() {
+      return this.name_;
+    };
+    a.prototype.children = function() {
+      return this.children_;
+    };
+    a.prototype.getChildById = function(b) {
+      return this.childIndex_[b];
+    };
+    a.prototype.getChild = function(b) {
+      if (b) {
+        return b = S(b), this.childNameIndex_[b];
+      }
+    };
+    a.prototype.addChild = function(b, c, d) {
+      void 0 === c && (c = {});
+      void 0 === d && (d = this.children_.length);
+      var f;
+      if ("string" === typeof b) {
+        f = S(b);
+        c || (c = {});
+        !0 === c && (E.warn("Initializing a child component with `true` is deprecated. Children should be defined in an array when possible, but if necessary use an object instead of `true`."), c = {});
+        b = c.componentClass || f;
+        c.name = f;
+        var g = a.getComponent(b);
+        if (!g) {
+          throw Error("Component " + b + " does not exist");
+        }
+        if ("function" !== typeof g) {
+          return null;
+        }
+        c = new g(this.player_ || this, c);
+      } else {
+        c = b;
+      }
+      this.children_.splice(d, 0, c);
+      "function" === typeof c.id && (this.childIndex_[c.id()] = c);
+      (f = f || c.name && c.name()) && (this.childNameIndex_[f] = c);
+      "function" === typeof c.el && c.el() && (d = this.contentEl().children[d] || null, this.contentEl().insertBefore(c.el(), d));
+      return c;
+    };
+    a.prototype.removeChild = function(b) {
+      "string" === typeof b && (b = this.getChild(b));
+      if (b && this.children_) {
+        for (var c = !1, a = this.children_.length - 1;0 <= a;a--) {
+          if (this.children_[a] === b) {
+            c = !0;
+            this.children_.splice(a, 1);
+            break;
+          }
+        }
+        c && (this.childIndex_[b.id()] = null, this.childNameIndex_[b.name()] = null, (c = b.el()) && c.parentNode === this.contentEl() && this.contentEl().removeChild(b.el()));
+      }
+    };
+    a.prototype.initChildren = function() {
+      var b = this, c = this.options_.children;
+      if (c) {
+        var d = this.options_, f, g = a.getComponent("Tech");
+        f = Array.isArray(c) ? c : Object.keys(c);
+        f.concat(Object.keys(this.options_).filter(function(c) {
+          return !f.some(function(b) {
+            return "string" === typeof b ? c === b : c === b.name;
+          });
+        })).map(function(a) {
+          var d;
+          "string" === typeof a ? (d = a, a = c[d] || b.options_[d] || {}) : d = a.name;
+          return {name:d, opts:a};
+        }).filter(function(c) {
+          return (c = a.getComponent(c.opts.componentClass || S(c.name))) && !g.isTech(c);
+        }).forEach(function(c) {
+          var a = c.name;
+          c = c.opts;
+          void 0 !== d[a] && (c = d[a]);
+          !1 !== c && (!0 === c && (c = {}), c.playerOptions = b.options_.playerOptions, (c = b.addChild(a, c)) && (b[a] = c));
+        });
+      }
+    };
+    a.prototype.buildCSSClass = function() {
+      return "";
+    };
+    a.prototype.on = function(b, c, a) {
+      var d = this;
+      if ("string" === typeof b || Array.isArray(b)) {
+        da(this.el_, b, A(this, c));
+      } else {
+        var g = A(this, a), w = function() {
+          return d.off(b, c, g);
+        };
+        w.guid = g.guid;
+        this.on("dispose", w);
+        a = function() {
+          return d.off("dispose", w);
+        };
+        a.guid = g.guid;
+        b.nodeName ? (da(b, c, g), da(b, "dispose", a)) : "function" === typeof b.on && (b.on(c, g), b.on("dispose", a));
+      }
+      return this;
+    };
+    a.prototype.off = function(a, c, d) {
+      !a || "string" === typeof a || Array.isArray(a) ? ka(this.el_, a, c) : (d = A(this, d), this.off("dispose", d), a.nodeName ? (ka(a, c, d), ka(a, "dispose", d)) : (a.off(c, d), a.off("dispose", d)));
+      return this;
+    };
+    a.prototype.one = function(a, c, d) {
+      var b = this;
+      if ("string" === typeof a || Array.isArray(a)) {
+        Ia(this.el_, a, A(this, c));
+      } else {
+        var g = A(this, d), w = function() {
+          b.off(a, c, w);
+          g.apply(null, arguments);
+        };
+        w.guid = g.guid;
+        this.on(a, c, w);
+      }
+      return this;
+    };
+    a.prototype.trigger = function(a, c) {
+      Va(this.el_, a, c);
+      return this;
+    };
+    a.prototype.ready = function(a, c) {
+      void 0 === c && (c = !1);
+      a && (this.isReady_ ? c ? a.call(this) : this.setTimeout(a, 1) : (this.readyQueue_ = this.readyQueue_ || [], this.readyQueue_.push(a)));
+      return this;
+    };
+    a.prototype.triggerReady = function() {
+      this.isReady_ = !0;
+      this.setTimeout(function() {
+        var a = this.readyQueue_;
+        this.readyQueue_ = [];
+        a && 0 < a.length && a.forEach(function(c) {
+          c.call(this);
+        }, this);
+        this.trigger("ready");
+      }, 1);
+    };
+    a.prototype.$ = function(a, c) {
+      return Ka(a, c || this.contentEl());
+    };
+    a.prototype.$$ = function(a, c) {
+      return Je(a, c || this.contentEl());
+    };
+    a.prototype.hasClass = function(a) {
+      return Q(this.el_, a);
+    };
+    a.prototype.addClass = function(a) {
+      ma(this.el_, a);
+      return this;
+    };
+    a.prototype.removeClass = function(a) {
+      oa(this.el_, a);
+      return this;
+    };
+    a.prototype.toggleClass = function(a, c) {
+      C(this.el_, a, c);
+      return this;
+    };
+    a.prototype.show = function() {
+      this.removeClass("vjs-hidden");
+      return this;
+    };
+    a.prototype.hide = function() {
+      this.addClass("vjs-hidden");
+      return this;
+    };
+    a.prototype.lockShowing = function() {
+      this.addClass("vjs-lock-showing");
+      return this;
+    };
+    a.prototype.unlockShowing = function() {
+      this.removeClass("vjs-lock-showing");
+      return this;
+    };
+    a.prototype.getAttribute = function(a) {
+      return this.el_.getAttribute(a);
+    };
+    a.prototype.setAttribute = function(a, c) {
+      this.el_.setAttribute(a, c);
+      return this;
+    };
+    a.prototype.removeAttribute = function(a) {
+      this.el_.removeAttribute(a);
+      return this;
+    };
+    a.prototype.width = function(a, c) {
+      return this.dimension("width", a, c);
+    };
+    a.prototype.height = function(a, c) {
+      return this.dimension("height", a, c);
+    };
+    a.prototype.dimensions = function(a, c) {
+      return this.width(a, !0).height(c);
+    };
+    a.prototype.dimension = function(a, c, d) {
+      if (void 0 !== c) {
+        if (null === c || c !== c) {
+          c = 0;
+        }
+        -1 !== ("" + c).indexOf("%") || -1 !== ("" + c).indexOf("px") ? this.el_.style[a] = c : this.el_.style[a] = "auto" === c ? "" : c + "px";
+        d || this.trigger("resize");
+        return this;
+      }
+      if (!this.el_) {
+        return 0;
+      }
+      c = this.el_.style[a];
+      d = c.indexOf("px");
+      return -1 !== d ? parseInt(c.slice(0, d), 10) : parseInt(this.el_["offset" + S(a)], 10);
+    };
+    a.prototype.currentDimension = function(a) {
+      var c = 0;
+      if ("width" !== a && "height" !== a) {
+        throw Error("currentDimension only accepts width or height value");
+      }
+      "function" === typeof q.getComputedStyle && (c = q.getComputedStyle(this.el_), c = c.getPropertyValue(a) || c[a]);
+      c = parseFloat(c);
+      0 === c && (a = "offset" + S(a), c = this.el_[a]);
+      return c;
+    };
+    a.prototype.currentDimensions = function() {
+      return {width:this.currentDimension("width"), height:this.currentDimension("height")};
+    };
+    a.prototype.currentWidth = function() {
+      return this.currentDimension("width");
+    };
+    a.prototype.currentHeight = function() {
+      return this.currentDimension("height");
+    };
+    a.prototype.emitTapEvents = function() {
+      var a = 0, c = null, d;
+      this.on("touchstart", function(b) {
+        1 === b.touches.length && (c = {pageX:b.touches[0].pageX, pageY:b.touches[0].pageY}, a = (new Date).getTime(), d = !0);
+      });
+      this.on("touchmove", function(a) {
+        if (1 < a.touches.length) {
+          d = !1;
+        } else {
+          if (c) {
+            var b = a.touches[0].pageX - c.pageX;
+            a = a.touches[0].pageY - c.pageY;
+            10 < Math.sqrt(b * b + a * a) && (d = !1);
+          }
+        }
+      });
+      var f = function() {
+        d = !1;
+      };
+      this.on("touchleave", f);
+      this.on("touchcancel", f);
+      this.on("touchend", function(b) {
+        c = null;
+        !0 === d && 200 > (new Date).getTime() - a && (b.preventDefault(), this.trigger("tap"));
+      });
+    };
+    a.prototype.enableTouchActivity = function() {
+      if (this.player() && this.player().reportUserActivity) {
+        var a = A(this.player(), this.player().reportUserActivity), c;
+        this.on("touchstart", function() {
+          a();
+          this.clearInterval(c);
+          c = this.setInterval(a, 250);
+        });
+        var d = function(b) {
+          a();
+          this.clearInterval(c);
+        };
+        this.on("touchmove", a);
+        this.on("touchend", d);
+        this.on("touchcancel", d);
+      }
+    };
+    a.prototype.setTimeout = function(a, c) {
+      a = A(this, a);
+      var b = q.setTimeout(a, c);
+      a = function() {
+        this.clearTimeout(b);
+      };
+      a.guid = "vjs-timeout-" + b;
+      this.on("dispose", a);
+      return b;
+    };
+    a.prototype.clearTimeout = function(a) {
+      q.clearTimeout(a);
+      var c = function() {
+      };
+      c.guid = "vjs-timeout-" + a;
+      this.off("dispose", c);
+      return a;
+    };
+    a.prototype.setInterval = function(a, c) {
+      a = A(this, a);
+      var b = q.setInterval(a, c);
+      a = function() {
+        this.clearInterval(b);
+      };
+      a.guid = "vjs-interval-" + b;
+      this.on("dispose", a);
+      return b;
+    };
+    a.prototype.clearInterval = function(a) {
+      q.clearInterval(a);
+      var c = function() {
+      };
+      c.guid = "vjs-interval-" + a;
+      this.off("dispose", c);
+      return a;
+    };
+    a.registerComponent = function(b, c) {
+      if (b) {
+        return b = S(b), a.components_ || (a.components_ = {}), a.components_[b] = c;
+      }
+    };
+    a.getComponent = function(b) {
+      if (b) {
+        b = S(b);
+        if (a.components_ && a.components_[b]) {
+          return a.components_[b];
+        }
+        if (q && q.videojs && q.videojs[b]) {
+          return E.warn("The " + b + " component was added to the videojs object when it should be registered using videojs.registerComponent(name, component)"), q.videojs[b];
+        }
+      }
+    };
+    a.extend = function(b) {
+      b = b || {};
+      E.warn("Component.extend({}) has been deprecated, use videojs.extend(Component, {}) instead");
+      var c = b.init || b.init || this.prototype.init || this.prototype.init || function() {
+      }, d = function() {
+        c.apply(this, arguments);
+      };
+      d.prototype = Object.create(this.prototype);
+      d.prototype.constructor = d;
+      d.extend = a.extend;
+      for (var f in b) {
+        b.hasOwnProperty(f) && (d.prototype[f] = b[f]);
+      }
+      return d;
+    };
+    return a;
+  }();
+  l.registerComponent("Component", l);
+  var Z = function() {
+  };
+  Z.prototype.allowedEvents_ = {};
+  Z.prototype.on = function(a, b) {
+    var c = this.addEventListener;
+    this.addEventListener = function() {
+    };
+    da(this, a, b);
+    this.addEventListener = c;
+  };
+  Z.prototype.addEventListener = Z.prototype.on;
+  Z.prototype.off = function(a, b) {
+    ka(this, a, b);
+  };
+  Z.prototype.removeEventListener = Z.prototype.off;
+  Z.prototype.one = function(a, b) {
+    var c = this.addEventListener;
+    this.addEventListener = function() {
+    };
+    Ia(this, a, b);
+    this.addEventListener = c;
+  };
+  Z.prototype.trigger = function(a) {
+    var b = a.type || a;
+    "string" === typeof a && (a = {type:b});
+    a = rb(a);
+    if (this.allowedEvents_[b] && this["on" + b]) {
+      this["on" + b](a);
+    }
+    Va(this, a);
+  };
+  Z.prototype.dispatchEvent = Z.prototype.trigger;
+  for (var sa = {}, cb = ["requestFullscreen exitFullscreen fullscreenElement fullscreenEnabled fullscreenchange fullscreenerror".split(" "), "webkitRequestFullscreen webkitExitFullscreen webkitFullscreenElement webkitFullscreenEnabled webkitfullscreenchange webkitfullscreenerror".split(" "), "webkitRequestFullScreen webkitCancelFullScreen webkitCurrentFullScreenElement webkitCancelFullScreen webkitfullscreenchange webkitfullscreenerror".split(" "), "mozRequestFullScreen mozCancelFullScreen mozFullScreenElement mozFullScreenEnabled mozfullscreenchange mozfullscreenerror".split(" "), 
+  "msRequestFullscreen msExitFullscreen msFullscreenElement msFullscreenEnabled MSFullscreenChange MSFullscreenError".split(" ")], bf = cb[0], db, T = 0;T < cb.length;T++) {
+    if (cb[T][1] in z) {
+      db = cb[T];
+      break;
+    }
+  }
+  if (db) {
+    for (T = 0;T < db.length;T++) {
+      sa[bf[T]] = db[T];
+    }
+  }
+  var nd = Object.prototype.toString, eb = Object.prototype.hasOwnProperty, od = Object.prototype.toString, cf = Array.prototype.slice, pd = function(a) {
+    var b = nd.call(a), c = "[object Arguments]" === b;
+    c || (c = "[object Array]" !== b && null !== a && "object" === typeof a && "number" === typeof a.length && 0 <= a.length && "[object Function]" === nd.call(a.callee));
+    return c;
+  }, qd = Object.prototype.propertyIsEnumerable, df = !qd.call({toString:null}, "toString"), ef = qd.call(function() {
+  }, "prototype"), fb = "toString toLocaleString valueOf hasOwnProperty isPrototypeOf propertyIsEnumerable constructor".split(" "), Nb = function(a) {
+    var b = a.constructor;
+    return b && b.prototype === a;
+  }, ff = {$console:!0, $external:!0, $frame:!0, $frameElement:!0, $frames:!0, $innerHeight:!0, $innerWidth:!0, $outerHeight:!0, $outerWidth:!0, $pageXOffset:!0, $pageYOffset:!0, $parent:!0, $scrollLeft:!0, $scrollTop:!0, $scrollX:!0, $scrollY:!0, $self:!0, $webkitIndexedDB:!0, $webkitStorageInfo:!0, $window:!0}, gf = function() {
+    if ("undefined" === typeof window) {
+      return !1;
+    }
+    for (var a in window) {
+      try {
+        if (!ff["$" + a] && eb.call(window, a) && null !== window[a] && "object" === typeof window[a]) {
+          try {
+            Nb(window[a]);
+          } catch (b) {
+            return !0;
+          }
+        }
+      } catch (b) {
+        return !0;
+      }
+    }
+    return !1;
+  }(), gb = function(a) {
+    var b = null !== a && "object" === typeof a, c = "[object Function]" === od.call(a), d = pd(a), f = b && "[object String]" === od.call(a), g = [];
+    if (!b && !c && !d) {
+      throw new TypeError("Object.keys called on a non-object");
+    }
+    b = ef && c;
+    if (f && 0 < a.length && !eb.call(a, 0)) {
+      for (f = 0;f < a.length;++f) {
+        g.push(String(f));
+      }
+    }
+    if (d && 0 < a.length) {
+      for (d = 0;d < a.length;++d) {
+        g.push(String(d));
+      }
+    } else {
+      for (var w in a) {
+        b && "prototype" === w || !eb.call(a, w) || g.push(String(w));
+      }
+    }
+    if (df) {
+      var e;
+      if ("undefined" !== typeof window && gf) {
+        try {
+          e = Nb(a);
+        } catch (L) {
+          e = !1;
+        }
+      } else {
+        e = Nb(a);
+      }
+      for (d = 0;d < fb.length;++d) {
+        e && "constructor" === fb[d] || !eb.call(a, fb[d]) || g.push(fb[d]);
+      }
+    }
+    return g;
+  };
+  gb.shim = function() {
+    if (Object.keys) {
+      if (!function() {
+        return 2 === (Object.keys(arguments) || "").length;
+      }(1, 2)) {
+        var a = Object.keys;
+        Object.keys = function(b) {
+          return pd(b) ? a(cf.call(b)) : a(b);
+        };
+      }
+    } else {
+      Object.keys = gb;
+    }
+    return Object.keys || gb;
+  };
+  var hf = Object.prototype.hasOwnProperty, jf = Object.prototype.toString, kf = function(a, b, c) {
+    if ("[object Function]" !== jf.call(b)) {
+      throw new TypeError("iterator must be a function");
+    }
+    var d = a.length;
+    if (d === +d) {
+      for (var f = 0;f < d;f++) {
+        b.call(c, a[f], f, a);
+      }
+    } else {
+      for (f in a) {
+        hf.call(a, f) && b.call(c, a[f], f, a);
+      }
+    }
+  }, lf = "function" === typeof Symbol && "symbol" === typeof Symbol(), mf = Object.prototype.toString, nf = function() {
+    var a = {};
+    try {
+      Object.defineProperty(a, "x", {enumerable:!1, value:a});
+      for (var b in a) {
+        return !1;
+      }
+      return a.x === a;
+    } catch (c) {
+      return !1;
+    }
+  }, rd = Object.defineProperty && nf(), Ob = function(a, b) {
+    var c = 2 < arguments.length ? arguments[2] : {}, d = gb(b);
+    lf && (d = d.concat(Object.getOwnPropertySymbols(b)));
+    kf(d, function(d) {
+      var f = b[d], w = c[d];
+      if (!(d in a) || "function" === typeof w && "[object Function]" === mf.call(w) && w()) {
+        rd ? Object.defineProperty(a, d, {configurable:!0, enumerable:!1, value:f, writable:!0}) : a[d] = f;
+      }
+    });
+  };
+  Ob.supportsDescriptors = !!rd;
+  var sd = Object.prototype.toString, hb = Object.prototype.hasOwnProperty, td = Object.prototype.toString, of = Array.prototype.slice, ud = function(a) {
+    var b = sd.call(a), c = "[object Arguments]" === b;
+    c || (c = "[object Array]" !== b && null !== a && "object" === typeof a && "number" === typeof a.length && 0 <= a.length && "[object Function]" === sd.call(a.callee));
+    return c;
+  }, vd = Object.prototype.propertyIsEnumerable, pf = !vd.call({toString:null}, "toString"), qf = vd.call(function() {
+  }, "prototype"), ib = "toString toLocaleString valueOf hasOwnProperty isPrototypeOf propertyIsEnumerable constructor".split(" "), Pb = function(a) {
+    var b = a.constructor;
+    return b && b.prototype === a;
+  }, rf = {$console:!0, $external:!0, $frame:!0, $frameElement:!0, $frames:!0, $innerHeight:!0, $innerWidth:!0, $outerHeight:!0, $outerWidth:!0, $pageXOffset:!0, $pageYOffset:!0, $parent:!0, $scrollLeft:!0, $scrollTop:!0, $scrollX:!0, $scrollY:!0, $self:!0, $webkitIndexedDB:!0, $webkitStorageInfo:!0, $window:!0}, sf = function() {
+    if ("undefined" === typeof window) {
+      return !1;
+    }
+    for (var a in window) {
+      try {
+        if (!rf["$" + a] && hb.call(window, a) && null !== window[a] && "object" === typeof window[a]) {
+          try {
+            Pb(window[a]);
+          } catch (b) {
+            return !0;
+          }
+        }
+      } catch (b) {
+        return !0;
+      }
+    }
+    return !1;
+  }(), Oa = function(a) {
+    var b = null !== a && "object" === typeof a, c = "[object Function]" === td.call(a), d = ud(a), f = b && "[object String]" === td.call(a), g = [];
+    if (!b && !c && !d) {
+      throw new TypeError("Object.keys called on a non-object");
+    }
+    b = qf && c;
+    if (f && 0 < a.length && !hb.call(a, 0)) {
+      for (f = 0;f < a.length;++f) {
+        g.push(String(f));
+      }
+    }
+    if (d && 0 < a.length) {
+      for (d = 0;d < a.length;++d) {
+        g.push(String(d));
+      }
+    } else {
+      for (var w in a) {
+        b && "prototype" === w || !hb.call(a, w) || g.push(String(w));
+      }
+    }
+    if (pf) {
+      var e;
+      if ("undefined" !== typeof window && sf) {
+        try {
+          e = Pb(a);
+        } catch (L) {
+          e = !1;
+        }
+      } else {
+        e = Pb(a);
+      }
+      for (d = 0;d < ib.length;++d) {
+        e && "constructor" === ib[d] || !hb.call(a, ib[d]) || g.push(ib[d]);
+      }
+    }
+    return g;
+  };
+  Oa.shim = function() {
+    if (Object.keys) {
+      if (!function() {
+        return 2 === (Object.keys(arguments) || "").length;
+      }(1, 2)) {
+        var a = Object.keys;
+        Object.keys = function(b) {
+          return ud(b) ? a(of.call(b)) : a(b);
+        };
+      }
+    } else {
+      Object.keys = Oa;
+    }
+    return Object.keys || Oa;
+  };
+  var Qb = Array.prototype.slice, tf = Object.prototype.toString, uf = function(a) {
+    var b = this;
+    if ("function" !== typeof b || "[object Function]" !== tf.call(b)) {
+      throw new TypeError("Function.prototype.bind called on incompatible " + b);
+    }
+    for (var c = Qb.call(arguments, 1), d, f = Math.max(0, b.length - c.length), g = [], w = 0;w < f;w++) {
+      g.push("$" + w);
+    }
+    d = Function("binder", "return function (" + g.join(",") + "){ return binder.apply(this,arguments); }")(function() {
+      if (this instanceof d) {
+        var f = b.apply(this, c.concat(Qb.call(arguments)));
+        return Object(f) === f ? f : this;
+      }
+      return b.apply(a, c.concat(Qb.call(arguments)));
+    });
+    b.prototype && (f = function() {
+    }, f.prototype = b.prototype, d.prototype = new f, f.prototype = null);
+    return d;
+  }, wd = Function.prototype.bind || uf, xd = function() {
+    if ("function" !== typeof Symbol || "function" !== typeof Object.getOwnPropertySymbols) {
+      return !1;
+    }
+    if ("symbol" === typeof Symbol.iterator) {
+      return !0;
+    }
+    var a = {}, b = Symbol("test"), c = Object(b);
+    if ("string" === typeof b || "[object Symbol]" !== Object.prototype.toString.call(b) || "[object Symbol]" !== Object.prototype.toString.call(c)) {
+      return !1;
+    }
+    a[b] = 42;
+    for (b in a) {
+      return !1;
+    }
+    if (0 !== Oa(a).length || "function" === typeof Object.keys && 0 !== Object.keys(a).length || "function" === typeof Object.getOwnPropertyNames && 0 !== Object.getOwnPropertyNames(a).length) {
+      return !1;
+    }
+    c = Object.getOwnPropertySymbols(a);
+    return 1 !== c.length || c[0] !== b || !Object.prototype.propertyIsEnumerable.call(a, b) || "function" === typeof Object.getOwnPropertyDescriptor && (a = Object.getOwnPropertyDescriptor(a, b), 42 !== a.value || !0 !== a.enumerable) ? !1 : !0;
+  }(), yd = Object, vf = wd.call(Function.call, Array.prototype.push), zd = wd.call(Function.call, Object.prototype.propertyIsEnumerable), wf = xd ? Object.getOwnPropertySymbols : null, Rb = function(a, b) {
+    if ("undefined" === typeof a || null === a) {
+      throw new TypeError("target must be an object");
+    }
+    var c = yd(a), d, f, g, w, e, h;
+    for (d = 1;d < arguments.length;++d) {
+      f = yd(arguments[d]);
+      w = Oa(f);
+      if (g = xd && (Object.getOwnPropertySymbols || wf)) {
+        for (e = g(f), g = 0;g < e.length;++g) {
+          h = e[g], zd(f, h) && vf(w, h);
+        }
+      }
+      for (g = 0;g < w.length;++g) {
+        h = w[g], e = f[h], zd(f, h) && (c[h] = e);
+      }
+    }
+    return c;
+  }, xf = function() {
+    if (!Object.assign || !Object.preventExtensions) {
+      return !1;
+    }
+    var a = Object.preventExtensions({1:2});
+    try {
+      Object.assign(a, "xy");
+    } catch (b) {
+      return "y" === a[1];
+    }
+    return !1;
+  }, Sb = function() {
+    if (!Object.assign) {
+      return Rb;
+    }
+    var a;
+    if (Object.assign) {
+      for (var b = "abcdefghijklmnopqrst".split(""), c = {}, d = 0;d < b.length;++d) {
+        c[b[d]] = b[d];
+      }
+      b = Object.assign({}, c);
+      c = "";
+      for (a in b) {
+        c += a;
+      }
+      a = "abcdefghijklmnopqrst" !== c;
+    } else {
+      a = !1;
+    }
+    return a || xf() ? Rb : Object.assign;
+  }, Ad = Sb();
+  Ob(Ad, {implementation:Rb, getPolyfill:Sb, shim:function() {
+    var a = Sb();
+    Ob(Object, {assign:a}, {assign:function() {
+      return Object.assign !== a;
+    }});
+    return a;
+  }});
+  var O = Ad;
+  X.prototype.code = 0;
+  X.prototype.message = "";
+  X.prototype.status = null;
+  X.errorTypes = "MEDIA_ERR_CUSTOM MEDIA_ERR_ABORTED MEDIA_ERR_NETWORK MEDIA_ERR_DECODE MEDIA_ERR_SRC_NOT_SUPPORTED MEDIA_ERR_ENCRYPTED".split(" ");
+  X.defaultMessages = {1:"You aborted the media playback", 2:"A network error caused the media download to fail part-way.", 3:"The media playback was aborted due to a corruption problem or because the media used features your browser did not support.", 4:"The media could not be loaded, either because the server or network failed or because the format is not supported.", 5:"The media is encrypted and we do not have the keys to decrypt it."};
+  for (var Ba = 0;Ba < X.errorTypes.length;Ba++) {
+    X[X.errorTypes[Ba]] = Ba, X.prototype[X.errorTypes[Ba]] = Ba;
+  }
+  var Tb = function(a) {
+    return "kind label language id inBandMetadataTrackDispatchType mode src".split(" ").reduce(function(b, c, d) {
+      a[c] && (b[c] = a[c]);
+      return b;
+    }, {cues:a.cues && Array.prototype.map.call(a.cues, function(a) {
+      return {startTime:a.startTime, endTime:a.endTime, text:a.text, id:a.id};
+    })});
+  }, Bd = {textTracksToJson:function(a) {
+    var b = a.$$("track"), c = Array.prototype.map.call(b, function(c) {
+      return c.track;
+    });
+    return Array.prototype.map.call(b, function(c) {
+      var a = Tb(c.track);
+      c.src && (a.src = c.src);
+      return a;
+    }).concat(Array.prototype.filter.call(a.textTracks(), function(a) {
+      return -1 === c.indexOf(a);
+    }).map(Tb));
+  }, jsonToTextTracks:function(a, b) {
+    a.forEach(function(c) {
+      var a = b.addRemoteTextTrack(c).track;
+      !c.src && c.cues && c.cues.forEach(function(c) {
+        return a.addCue(c);
+      });
+    });
+    return b.textTracks();
+  }, trackToJson_:Tb}, Pa = function(a) {
+    function b(c, b) {
+      c = a.call(this, c, b) || this;
+      c.opened_ = c.hasBeenOpened_ = c.hasBeenFilled_ = !1;
+      c.closeable(!c.options_.uncloseable);
+      c.content(c.options_.content);
+      c.contentEl_ = r("div", {className:"vjs-modal-dialog-content"}, {role:"document"});
+      c.descEl_ = r("p", {className:"vjs-modal-dialog-description vjs-offscreen", id:c.el().getAttribute("aria-describedby")});
+      e(c.descEl_, c.description());
+      c.el_.appendChild(c.descEl_);
+      c.el_.appendChild(c.contentEl_);
+      return c;
+    }
+    __extends(b, a);
+    b.prototype.createEl = function() {
+      return a.prototype.createEl.call(this, "div", {className:this.buildCSSClass(), tabIndex:-1}, {"aria-describedby":this.id() + "_description", "aria-hidden":"true", "aria-label":this.label(), role:"dialog"});
+    };
+    b.prototype.buildCSSClass = function() {
+      return "vjs-modal-dialog vjs-hidden " + a.prototype.buildCSSClass.call(this);
+    };
+    b.prototype.handleKeyPress = function(c) {
+      27 === c.which && this.closeable() && this.close();
+    };
+    b.prototype.label = function() {
+      return this.options_.label || this.localize("Modal Window");
+    };
+    b.prototype.description = function() {
+      var c = this.options_.description || this.localize("This is a modal window.");
+      this.closeable() && (c += " " + this.localize("This modal can be closed by pressing the Escape key or activating the close button."));
+      return c;
+    };
+    b.prototype.open = function() {
+      if (!this.opened_) {
+        var c = this.player();
+        this.trigger("beforemodalopen");
+        this.opened_ = !0;
+        (this.options_.fillAlways || !this.hasBeenOpened_ && !this.hasBeenFilled_) && this.fill();
+        (this.wasPlaying_ = !c.paused()) && c.pause();
+        if (this.closeable()) {
+          this.on(this.el_.ownerDocument, "keydown", A(this, this.handleKeyPress));
+        }
+        c.controls(!1);
+        this.show();
+        this.el().setAttribute("aria-hidden", "false");
+        this.trigger("modalopen");
+        this.hasBeenOpened_ = !0;
+      }
+      return this;
+    };
+    b.prototype.opened = function(c) {
+      if ("boolean" === typeof c) {
+        this[c ? "open" : "close"]();
+      }
+      return this.opened_;
+    };
+    b.prototype.close = function() {
+      if (this.opened_) {
+        var c = this.player();
+        this.trigger("beforemodalclose");
+        this.opened_ = !1;
+        this.wasPlaying_ && c.play();
+        this.closeable() && this.off(this.el_.ownerDocument, "keydown", A(this, this.handleKeyPress));
+        c.controls(!0);
+        this.hide();
+        this.el().setAttribute("aria-hidden", "true");
+        this.trigger("modalclose");
+        this.options_.temporary && this.dispose();
+      }
+      return this;
+    };
+    b.prototype.closeable = function(c) {
+      if ("boolean" === typeof c) {
+        c = this.closeable_ = !!c;
+        var a = this.getChild("closeButton");
+        if (c && !a) {
+          var b = this.contentEl_;
+          this.contentEl_ = this.el_;
+          a = this.addChild("closeButton", {controlText:"Close Modal Dialog"});
+          this.contentEl_ = b;
+          this.on(a, "close", this.close);
+        }
+        !c && a && (this.off(a, "close", this.close), this.removeChild(a), a.dispose());
+      }
+      return this.closeable_;
+    };
+    b.prototype.fill = function() {
+      return this.fillWith(this.content());
+    };
+    b.prototype.fillWith = function(c) {
+      var a = this.contentEl(), b = a.parentNode, g = a.nextSibling;
+      this.trigger("beforemodalfill");
+      this.hasBeenFilled_ = !0;
+      b.removeChild(a);
+      this.empty();
+      sc(a, c);
+      this.trigger("modalfill");
+      g ? b.insertBefore(a, g) : b.appendChild(a);
+      return this;
+    };
+    b.prototype.empty = function() {
+      this.trigger("beforemodalempty");
+      F(this.contentEl());
+      this.trigger("modalempty");
+      return this;
+    };
+    b.prototype.content = function(c) {
+      "undefined" !== typeof c && (this.content_ = c);
+      return this.content_;
+    };
+    return b;
+  }(l);
+  Pa.prototype.options_ = {temporary:!0};
+  l.registerComponent("ModalDialog", Pa);
+  var Cd = function() {
+    function a(b) {
+      var c = this;
+      if (Y) {
+        var c = z.createElement("custom"), d;
+        for (d in a.prototype) {
+          "constructor" !== d && (c[d] = a.prototype[d]);
+        }
+      }
+      a.prototype.setCues_.call(c, b);
+      Object.defineProperty(c, "length", {get:function() {
+        return this.length_;
+      }});
+      if (Y) {
+        return c;
+      }
+    }
+    a.prototype.setCues_ = function(a) {
+      var c = this.length || 0, b = 0, f = a.length;
+      this.cues_ = a;
+      this.length_ = a.length;
+      a = function(c) {
+        "" + c in this || Object.defineProperty(this, "" + c, {get:function() {
+          return this.cues_[c];
+        }});
+      };
+      if (c < f) {
+        for (b = c;b < f;b++) {
+          a.call(this, b);
+        }
+      }
+    };
+    a.prototype.getCueById = function(a) {
+      for (var c = null, b = 0, f = this.length;b < f;b++) {
+        var g = this[b];
+        if (g.id === a) {
+          c = g;
+          break;
+        }
+      }
+      return c;
+    };
+    return a;
+  }(), yf = {alternative:"alternative", captions:"captions", main:"main", sign:"sign", subtitles:"subtitles", commentary:"commentary"}, zf = {alternative:"alternative", descriptions:"descriptions", main:"main", "main-desc":"main-desc", translation:"translation", commentary:"commentary"}, Af = {subtitles:"subtitles", captions:"captions", descriptions:"descriptions", chapters:"chapters", metadata:"metadata"}, Dd = {disabled:"disabled", hidden:"hidden", showing:"showing"}, Ub = function(a) {
+    function b(c) {
+      void 0 === c && (c = {});
+      var d = a.call(this) || this;
+      if (Y) {
+        var d = z.createElement("custom"), f;
+        for (f in b.prototype) {
+          "constructor" !== f && (d[f] = b.prototype[f]);
+        }
+      }
+      var g = {id:c.id || "vjs_track_" + wa++, kind:c.kind || "", label:c.label || "", language:c.language || ""};
+      c = function(c) {
+        Object.defineProperty(d, c, {get:function() {
+          return g[c];
+        }, set:function() {
+        }});
+      };
+      for (var e in g) {
+        c(e);
+      }
+      return d;
+    }
+    __extends(b, a);
+    return b;
+  }(Z), Ed = function(a) {
+    var b = "protocol hostname port pathname search hash host".split(" "), c = z.createElement("a");
+    c.href = a;
+    var d = "" === c.host && "file:" !== c.protocol, f;
+    d && (f = z.createElement("div"), f.innerHTML = '<a href="' + a + '"></a>', c = f.firstChild, f.setAttribute("style", "display:none; position:absolute;"), z.body.appendChild(f));
+    a = {};
+    for (var g = 0;g < b.length;g++) {
+      a[b[g]] = c[b[g]];
+    }
+    "http:" === a.protocol && (a.host = a.host.replace(/:80$/, ""));
+    "https:" === a.protocol && (a.host = a.host.replace(/:443$/, ""));
+    d && z.body.removeChild(f);
+    return a;
+  }, Bf = function(a) {
+    if (!a.match(/^https?:\/\//)) {
+      var b = z.createElement("div");
+      b.innerHTML = '<a href="' + a + '">x</a>';
+      a = b.firstChild.href;
+    }
+    return a;
+  }, Fd = function(a) {
+    return "string" === typeof a && (a = /^(\/?)([\s\S]*?)((?:\.{1,2}|[^\/]+?)(\.([^\.\/\?]+)))(?:[\/]*|[\?].*)$/i.exec(a)) ? a.pop().toLowerCase() : "";
+  }, Vb = function(a) {
+    var b = q.location;
+    a = Ed(a);
+    return (":" === a.protocol ? b.protocol : a.protocol) + a.host !== b.protocol + b.host;
+  }, Gd = function(a) {
+    var b = Cf.call(a);
+    return "[object Function]" === b || "function" === typeof a && "[object RegExp]" !== b || "undefined" !== typeof window && (a === window.setTimeout || a === window.alert || a === window.confirm || a === window.prompt);
+  }, Cf = Object.prototype.toString, Wb = k(function(a, b) {
+    b = a.exports = function(c) {
+      return c.replace(/^\s*|\s*$/g, "");
+    };
+    b.left = function(c) {
+      return c.replace(/^\s*/, "");
+    };
+    b.right = function(c) {
+      return c.replace(/\s*$/, "");
+    };
+  }), Df = Object.prototype.toString, Hd = Object.prototype.hasOwnProperty, Ef = function(a, b, c) {
+    if (!Gd(b)) {
+      throw new TypeError("iterator must be a function");
+    }
+    3 > arguments.length && (c = this);
+    if ("[object Array]" === Df.call(a)) {
+      for (var d = c, f = 0, g = a.length;f < g;f++) {
+        Hd.call(a, f) && b.call(d, a[f], f, a);
+      }
+    } else {
+      if ("string" === typeof a) {
+        for (d = c, f = 0, g = a.length;f < g;f++) {
+          b.call(d, a.charAt(f), f, a);
+        }
+      } else {
+        for (f in d = c, a) {
+          Hd.call(a, f) && b.call(d, a[f], f, a);
+        }
+      }
+    }
+  }, Ff = Object.prototype.hasOwnProperty, Id = q, ze = Gd, Be = function(a) {
+    if (!a) {
+      return {};
+    }
+    var b = {};
+    Ef(Wb(a).split("\n"), function(c) {
+      var a = c.indexOf(":"), f = Wb(c.slice(0, a)).toLowerCase();
+      c = Wb(c.slice(a + 1));
+      "undefined" === typeof b[f] ? b[f] = c : "[object Array]" === Object.prototype.toString.call(b[f]) ? b[f].push(c) : b[f] = [b[f], c];
+    });
+    return b;
+  }, Ae = function() {
+    for (var a = {}, b = 0;b < arguments.length;b++) {
+      var c = arguments[b], d;
+      for (d in c) {
+        Ff.call(c, d) && (a[d] = c[d]);
+      }
+    }
+    return a;
+  };
+  na.XMLHttpRequest = Id.XMLHttpRequest || Ce;
+  na.XDomainRequest = "withCredentials" in new na.XMLHttpRequest ? na.XMLHttpRequest : Id.XDomainRequest;
+  (function(a, b) {
+    for (var c = 0;c < a.length;c++) {
+      b(a[c]);
+    }
+  })("get put post patch head delete".split(" "), function(a) {
+    na["delete" === a ? "del" : a] = function(b, c, d) {
+      c = Dc(b, c, d);
+      c.method = a.toUpperCase();
+      return Ec(c);
+    };
+  });
+  var Jd = function(a, b) {
+    var c = new q.WebVTT.Parser(q, q.vttjs, q.WebVTT.StringDecoder()), d = [];
+    c.oncue = function(c) {
+      b.addCue(c);
+    };
+    c.onparsingerror = function(c) {
+      d.push(c);
+    };
+    c.onflush = function() {
+      b.trigger({type:"loadeddata", target:b});
+    };
+    c.parse(a);
+    0 < d.length && (q.console && q.console.groupCollapsed && q.console.groupCollapsed("Text Track parsing errors for " + b.src), d.forEach(function(c) {
+      return E.error(c);
+    }), q.console && q.console.groupEnd && q.console.groupEnd());
+    c.flush();
+  }, Gf = function(a, b) {
+    var c = {uri:a};
+    if (a = Vb(a)) {
+      c.cors = a;
+    }
+    na(c, A(this, function(c, a, g) {
+      if (c) {
+        return E.error(c, a);
+      }
+      b.loaded_ = !0;
+      if ("function" !== typeof q.WebVTT) {
+        if (b.tech_) {
+          var d = function() {
+            return Jd(g, b);
+          };
+          b.tech_.on("vttjsloaded", d);
+          b.tech_.on("vttjserror", function() {
+            E.error("vttjs failed to load, stopping trying to process " + b.src);
+            b.tech_.off("vttjsloaded", d);
+          });
+        }
+      } else {
+        Jd(g, b);
+      }
+    }));
+  }, jb = function(a) {
+    function b(c) {
+      void 0 === c && (c = {});
+      if (!c.tech) {
+        throw Error("A tech was not provided.");
+      }
+      c = U(c, {kind:Af[c.kind] || "subtitles", language:c.language || c.srclang || ""});
+      var d = Dd[c.mode] || "disabled", f = c["default"];
+      if ("metadata" === c.kind || "chapters" === c.kind) {
+        d = "hidden";
+      }
+      var g = a.call(this, c) || this;
+      g.tech_ = c.tech;
+      if (Y) {
+        for (var e in b.prototype) {
+          "constructor" !== e && (g[e] = b.prototype[e]);
+        }
+      }
+      g.cues_ = [];
+      g.activeCues_ = [];
+      var h = new Cd(g.cues_), p = new Cd(g.activeCues_), l = !1, m = A(g, function() {
+        this.activeCues;
+        l && (this.trigger("cuechange"), l = !1);
+      });
+      if ("disabled" !== d) {
+        g.tech_.on("timeupdate", m);
+      }
+      Object.defineProperty(g, "default", {get:function() {
+        return f;
+      }, set:function() {
+      }});
+      Object.defineProperty(g, "mode", {get:function() {
+        return d;
+      }, set:function(c) {
+        if (Dd[c]) {
+          d = c;
+          if ("showing" === d) {
+            this.tech_.on("timeupdate", m);
+          }
+          this.trigger("modechange");
+        }
+      }});
+      Object.defineProperty(g, "cues", {get:function() {
+        return this.loaded_ ? h : null;
+      }, set:function() {
+      }});
+      Object.defineProperty(g, "activeCues", {get:function() {
+        if (!this.loaded_) {
+          return null;
+        }
+        if (0 === this.cues.length) {
+          return p;
+        }
+        for (var c = this.tech_.currentTime(), a = [], b = 0, d = this.cues.length;b < d;b++) {
+          var f = this.cues[b];
+          f.startTime <= c && f.endTime >= c ? a.push(f) : f.startTime === f.endTime && f.startTime <= c && f.startTime + .5 >= c && a.push(f);
+        }
+        l = !1;
+        if (a.length !== this.activeCues_.length) {
+          l = !0;
+        } else {
+          for (b = 0;b < a.length;b++) {
+            -1 === this.activeCues_.indexOf(a[b]) && (l = !0);
+          }
+        }
+        this.activeCues_ = a;
+        p.setCues_(this.activeCues_);
+        return p;
+      }, set:function() {
+      }});
+      c.src ? (g.src = c.src, Gf(c.src, g)) : g.loaded_ = !0;
+      return g;
+    }
+    __extends(b, a);
+    b.prototype.addCue = function(c) {
+      var a = this.tech_.textTracks();
+      if (a) {
+        for (var b = 0;b < a.length;b++) {
+          a[b] !== this && a[b].removeCue(c);
+        }
+      }
+      this.cues_.push(c);
+      this.cues.setCues_(this.cues_);
+    };
+    b.prototype.removeCue = function(c) {
+      for (var a = !1, b = 0, g = this.cues_.length;b < g;b++) {
+        this.cues_[b] === c && (this.cues_.splice(b, 1), a = !0);
+      }
+      a && this.cues.setCues_(this.cues_);
+    };
+    return b;
+  }(Ub);
+  jb.prototype.allowedEvents_ = {cuechange:"cuechange"};
+  var Ca = function(a) {
+    function b(c) {
+      void 0 === c && (c = {});
+      var d = a.call(this) || this, f, g = d;
+      if (Y) {
+        var g = z.createElement("custom"), e;
+        for (e in b.prototype) {
+          "constructor" !== e && (g[e] = b.prototype[e]);
+        }
+      }
+      var h = new jb(c);
+      g.kind = h.kind;
+      g.src = h.src;
+      g.srclang = h.language;
+      g.label = h.label;
+      g["default"] = h["default"];
+      Object.defineProperty(g, "readyState", {get:function() {
+        return f;
+      }});
+      Object.defineProperty(g, "track", {get:function() {
+        return h;
+      }});
+      f = 0;
+      h.addEventListener("loadeddata", function() {
+        f = 2;
+        g.trigger({type:"load", target:g});
+      });
+      return Y ? g : d;
+    }
+    __extends(b, a);
+    return b;
+  }(Z);
+  Ca.prototype.allowedEvents_ = {load:"load"};
+  Ca.NONE = 0;
+  Ca.LOADING = 1;
+  Ca.LOADED = 2;
+  Ca.ERROR = 3;
+  var Hf = function() {
+    function a(b) {
+      void 0 === b && (b = []);
+      var c = this;
+      if (Y) {
+        var c = z.createElement("custom"), d;
+        for (d in a.prototype) {
+          "constructor" !== d && (c[d] = a.prototype[d]);
+        }
+      }
+      c.trackElements_ = [];
+      Object.defineProperty(c, "length", {get:function() {
+        return this.trackElements_.length;
+      }});
+      d = 0;
+      for (var f = b.length;d < f;d++) {
+        c.addTrackElement_(b[d]);
+      }
+      if (Y) {
+        return c;
+      }
+    }
+    a.prototype.addTrackElement_ = function(a) {
+      this.trackElements_.push(a);
+    };
+    a.prototype.getTrackElementByTrack_ = function(a) {
+      for (var c, b = 0, f = this.trackElements_.length;b < f;b++) {
+        if (a === this.trackElements_[b].track) {
+          c = this.trackElements_[b];
+          break;
+        }
+      }
+      return c;
+    };
+    a.prototype.removeTrackElement_ = function(a) {
+      for (var c = 0, b = this.trackElements_.length;c < b;c++) {
+        if (a === this.trackElements_[c]) {
+          this.trackElements_.splice(c, 1);
+          break;
+        }
+      }
+    };
+    return a;
+  }(), fa = function(a) {
+    function b(c, d) {
+      void 0 === c && (c = []);
+      void 0 === d && (d = null);
+      var f = a.call(this) || this;
+      if (!d && (d = f, Y)) {
+        d = z.createElement("custom");
+        for (var g in b.prototype) {
+          "constructor" !== g && (d[g] = b.prototype[g]);
+        }
+      }
+      d.tracks_ = [];
+      Object.defineProperty(d, "length", {get:function() {
+        return this.tracks_.length;
+      }});
+      for (f = 0;f < c.length;f++) {
+        d.addTrack_(c[f]);
+      }
+      return d;
+    }
+    __extends(b, a);
+    b.prototype.addTrack_ = function(c) {
+      var a = this.tracks_.length;
+      "" + a in this || Object.defineProperty(this, a, {get:function() {
+        return this.tracks_[a];
+      }});
+      -1 === this.tracks_.indexOf(c) && (this.tracks_.push(c), this.trigger({track:c, type:"addtrack"}));
+    };
+    b.prototype.removeTrack_ = function(c) {
+      for (var a, b = 0, g = this.length;b < g;b++) {
+        if (this[b] === c) {
+          a = this[b];
+          a.off && a.off();
+          this.tracks_.splice(b, 1);
+          break;
+        }
+      }
+      a && this.trigger({track:a, type:"removetrack"});
+    };
+    b.prototype.getTrackById = function(c) {
+      for (var a = null, b = 0, g = this.length;b < g;b++) {
+        var e = this[b];
+        if (e.id === c) {
+          a = e;
+          break;
+        }
+      }
+      return a;
+    };
+    return b;
+  }(Z);
+  fa.prototype.allowedEvents_ = {change:"change", addtrack:"addtrack", removetrack:"removetrack"};
+  for (var If in fa.prototype.allowedEvents_) {
+    fa.prototype["on" + If] = null;
+  }
+  var Xb = function(a) {
+    function b(c) {
+      void 0 === c && (c = []);
+      var d;
+      if (Y) {
+        d = z.createElement("custom");
+        for (var f in fa.prototype) {
+          "constructor" !== f && (d[f] = fa.prototype[f]);
+        }
+        for (f in b.prototype) {
+          "constructor" !== f && (d[f] = b.prototype[f]);
+        }
+      }
+      return d = a.call(this, c, d) || this;
+    }
+    __extends(b, a);
+    b.prototype.addTrack_ = function(c) {
+      a.prototype.addTrack_.call(this, c);
+      c.addEventListener("modechange", A(this, function() {
+        this.trigger("change");
+      }));
+    };
+    b.prototype.removeTrack_ = function(c) {
+      for (var a, b = 0, g = this.length;b < g;b++) {
+        if (this[b] === c) {
+          a = this[b];
+          a.off && a.off();
+          this.tracks_.splice(b, 1);
+          break;
+        }
+      }
+      a && this.trigger({track:a, type:"removetrack"});
+    };
+    b.prototype.getTrackById = function(c) {
+      for (var a = null, b = 0, g = this.length;b < g;b++) {
+        var e = this[b];
+        if (e.id === c) {
+          a = e;
+          break;
+        }
+      }
+      return a;
+    };
+    return b;
+  }(fa), Yb = function(a, b) {
+    for (var c = 0;c < a.length;c++) {
+      b.id !== a[c].id && (a[c].selected = !1);
+    }
+  }, Kd = function(a) {
+    function b(c) {
+      void 0 === c && (c = []);
+      for (var d, f = c.length - 1;0 <= f;f--) {
+        if (c[f].selected) {
+          Yb(c, c[f]);
+          break;
+        }
+      }
+      if (Y) {
+        d = z.createElement("custom");
+        for (var g in fa.prototype) {
+          "constructor" !== g && (d[g] = fa.prototype[g]);
+        }
+        for (g in b.prototype) {
+          "constructor" !== g && (d[g] = b.prototype[g]);
+        }
+      }
+      d = a.call(this, c, d) || this;
+      d.changing_ = !1;
+      Object.defineProperty(d, "selectedIndex", {get:function() {
+        for (var c = 0;c < this.length;c++) {
+          if (this[c].selected) {
+            return c;
+          }
+        }
+        return -1;
+      }, set:function() {
+      }});
+      return d;
+    }
+    __extends(b, a);
+    b.prototype.addTrack_ = function(c) {
+      var b = this;
+      c.selected && Yb(this, c);
+      a.prototype.addTrack_.call(this, c);
+      c.addEventListener && c.addEventListener("selectedchange", function() {
+        b.changing_ || (b.changing_ = !0, Yb(b, c), b.changing_ = !1, b.trigger("change"));
+      });
+    };
+    b.prototype.addTrack = function(c) {
+      this.addTrack_(c);
+    };
+    b.prototype.removeTrack = function(c) {
+      a.prototype.removeTrack_.call(this, c);
+    };
+    return b;
+  }(fa), Zb = function(a, b) {
+    for (var c = 0;c < a.length;c++) {
+      b.id !== a[c].id && (a[c].enabled = !1);
+    }
+  }, Ld = function(a) {
+    function b(c) {
+      void 0 === c && (c = []);
+      for (var d, f = c.length - 1;0 <= f;f--) {
+        if (c[f].enabled) {
+          Zb(c, c[f]);
+          break;
+        }
+      }
+      if (Y) {
+        d = z.createElement("custom");
+        for (var g in fa.prototype) {
+          "constructor" !== g && (d[g] = fa.prototype[g]);
+        }
+        for (g in b.prototype) {
+          "constructor" !== g && (d[g] = b.prototype[g]);
+        }
+      }
+      d = a.call(this, c, d) || this;
+      d.changing_ = !1;
+      return d;
+    }
+    __extends(b, a);
+    b.prototype.addTrack_ = function(c) {
+      var b = this;
+      c.enabled && Zb(this, c);
+      a.prototype.addTrack_.call(this, c);
+      c.addEventListener && c.addEventListener("enabledchange", function() {
+        b.changing_ || (b.changing_ = !0, Zb(b, c), b.changing_ = !1, b.trigger("change"));
+      });
+    };
+    b.prototype.addTrack = function(c) {
+      this.addTrack_(c);
+    };
+    b.prototype.removeTrack = function(c) {
+      a.prototype.removeTrack_.call(this, c);
+    };
+    return b;
+  }(fa), I = function(a) {
+    function b(c, b) {
+      void 0 === c && (c = {});
+      void 0 === b && (b = function() {
+      });
+      c.reportTouchActivity = !1;
+      b = a.call(this, null, c, b) || this;
+      b.hasStarted_ = !1;
+      b.on("playing", function() {
+        this.hasStarted_ = !0;
+      });
+      b.on("loadstart", function() {
+        this.hasStarted_ = !1;
+      });
+      b.textTracks_ = c.textTracks;
+      b.videoTracks_ = c.videoTracks;
+      b.audioTracks_ = c.audioTracks;
+      b.featuresProgressEvents || b.manualProgressOn();
+      b.featuresTimeupdateEvents || b.manualTimeUpdatesOn();
+      if (!1 === c.nativeCaptions || !1 === c.nativeTextTracks) {
+        b.featuresNativeTextTracks = !1;
+      }
+      b.featuresNativeTextTracks || b.emulateTextTracks();
+      b.autoRemoteTextTracks_ = new Xb;
+      b.initTextTrackListeners();
+      b.initTrackListeners();
+      b.emitTapEvents();
+      return b;
+    }
+    __extends(b, a);
+    b.prototype.manualProgressOn = function() {
+      this.on("durationchange", this.onDurationChange);
+      this.manualProgress = !0;
+      this.one("ready", this.trackProgress);
+    };
+    b.prototype.manualProgressOff = function() {
+      this.manualProgress = !1;
+      this.stopTrackingProgress();
+      this.off("durationchange", this.onDurationChange);
+    };
+    b.prototype.trackProgress = function() {
+      this.stopTrackingProgress();
+      this.progressInterval = this.setInterval(A(this, function() {
+        var c = this.bufferedPercent();
+        this.bufferedPercent_ !== c && this.trigger("progress");
+        this.bufferedPercent_ = c;
+        1 === c && this.stopTrackingProgress();
+      }), 500);
+    };
+    b.prototype.onDurationChange = function() {
+      this.duration_ = this.duration();
+    };
+    b.prototype.buffered = function() {
+      return la(0, 0);
+    };
+    b.prototype.bufferedPercent = function() {
+      return Cc(this.buffered(), this.duration_);
+    };
+    b.prototype.stopTrackingProgress = function() {
+      this.clearInterval(this.progressInterval);
+    };
+    b.prototype.manualTimeUpdatesOn = function() {
+      this.manualTimeUpdates = !0;
+      this.on("play", this.trackCurrentTime);
+      this.on("pause", this.stopTrackingCurrentTime);
+    };
+    b.prototype.manualTimeUpdatesOff = function() {
+      this.manualTimeUpdates = !1;
+      this.stopTrackingCurrentTime();
+      this.off("play", this.trackCurrentTime);
+      this.off("pause", this.stopTrackingCurrentTime);
+    };
+    b.prototype.trackCurrentTime = function() {
+      this.currentTimeInterval && this.stopTrackingCurrentTime();
+      this.currentTimeInterval = this.setInterval(function() {
+        this.trigger({type:"timeupdate", target:this, manuallyTriggered:!0});
+      }, 250);
+    };
+    b.prototype.stopTrackingCurrentTime = function() {
+      this.clearInterval(this.currentTimeInterval);
+      this.trigger({type:"timeupdate", target:this, manuallyTriggered:!0});
+    };
+    b.prototype.dispose = function() {
+      this.clearTracks(["audio", "video", "text"]);
+      this.manualProgress && this.manualProgressOff();
+      this.manualTimeUpdates && this.manualTimeUpdatesOff();
+      a.prototype.dispose.call(this);
+    };
+    b.prototype.clearTracks = function(c) {
+      var a = this;
+      c = [].concat(c);
+      c.forEach(function(c) {
+        for (var b = a[c + "Tracks"]() || [], d = b.length;d--;) {
+          var f = b[d];
+          "text" === c && a.removeRemoteTextTrack(f);
+          b.removeTrack_(f);
+        }
+      });
+    };
+    b.prototype.cleanupAutoTextTracks = function() {
+      for (var c = this.autoRemoteTextTracks_ || [], a = c.length;a--;) {
+        this.removeRemoteTextTrack(c[a]);
+      }
+    };
+    b.prototype.reset = function() {
+    };
+    b.prototype.error = function(c) {
+      void 0 !== c && (this.error_ = new X(c), this.trigger("error"));
+      return this.error_;
+    };
+    b.prototype.played = function() {
+      return this.hasStarted_ ? la(0, 0) : la();
+    };
+    b.prototype.setCurrentTime = function() {
+      this.manualTimeUpdates && this.trigger({type:"timeupdate", target:this, manuallyTriggered:!0});
+    };
+    b.prototype.initTextTrackListeners = function() {
+      var c = A(this, function() {
+        this.trigger("texttrackchange");
+      }), a = this.textTracks();
+      a && (a.addEventListener("removetrack", c), a.addEventListener("addtrack", c), this.on("dispose", A(this, function() {
+        a.removeEventListener("removetrack", c);
+        a.removeEventListener("addtrack", c);
+      })));
+    };
+    b.prototype.initTrackListeners = function() {
+      var c = this;
+      ["video", "audio"].forEach(function(a) {
+        var b = function() {
+          c.trigger(a + "trackchange");
+        }, d = c[a + "Tracks"]();
+        d.addEventListener("removetrack", b);
+        d.addEventListener("addtrack", b);
+        c.on("dispose", function() {
+          d.removeEventListener("removetrack", b);
+          d.removeEventListener("addtrack", b);
+        });
+      });
+    };
+    b.prototype.addWebVttScript_ = function() {
+      var c = this;
+      if (!q.WebVTT && null !== this.el().parentNode && void 0 !== this.el().parentNode) {
+        var a = z.createElement("script");
+        a.src = this.options_["vtt.js"] || "../node_modules/videojs-vtt.js/dist/vtt.js";
+        a.onload = function() {
+          c.trigger("vttjsloaded");
+        };
+        a.onerror = function() {
+          c.trigger("vttjserror");
+        };
+        this.on("dispose", function() {
+          a.onload = null;
+          a.onerror = null;
+        });
+        q.WebVTT = !0;
+        this.el().parentNode.appendChild(a);
+      }
+    };
+    b.prototype.emulateTextTracks = function() {
+      var c = this, a = this.textTracks();
+      if (a) {
+        this.remoteTextTracks().on("addtrack", function(a) {
+          c.textTracks().addTrack_(a.track);
+        });
+        this.remoteTextTracks().on("removetrack", function(a) {
+          c.textTracks().removeTrack_(a.track);
+        });
+        this.on("ready", this.addWebVttScript_);
+        var b = function() {
+          return c.trigger("texttrackchange");
+        }, g = function() {
+          b();
+          for (var c = 0;c < a.length;c++) {
+            var d = a[c];
+            d.removeEventListener("cuechange", b);
+            "showing" === d.mode && d.addEventListener("cuechange", b);
+          }
+        };
+        g();
+        a.addEventListener("change", g);
+        this.on("dispose", function() {
+          a.removeEventListener("change", g);
+        });
+      }
+    };
+    b.prototype.videoTracks = function() {
+      return this.videoTracks_ = this.videoTracks_ || new Kd;
+    };
+    b.prototype.audioTracks = function() {
+      return this.audioTracks_ = this.audioTracks_ || new Ld;
+    };
+    b.prototype.textTracks = function() {
+      return this.textTracks_ = this.textTracks_ || new Xb;
+    };
+    b.prototype.remoteTextTracks = function() {
+      return this.remoteTextTracks_ = this.remoteTextTracks_ || new Xb;
+    };
+    b.prototype.remoteTextTrackEls = function() {
+      return this.remoteTextTrackEls_ = this.remoteTextTrackEls_ || new Hf;
+    };
+    b.prototype.addTextTrack = function(c, a, b) {
+      if (!c) {
+        throw Error("TextTrack kind is required but was not provided");
+      }
+      var d = void 0;
+      void 0 === d && (d = {});
+      var f = this.textTracks();
+      d.kind = c;
+      a && (d.label = a);
+      b && (d.language = b);
+      d.tech = this;
+      c = new jb(d);
+      f.addTrack_(c);
+      return c;
+    };
+    b.prototype.createRemoteTextTrack = function(c) {
+      c = U(c, {tech:this});
+      return new Ca(c);
+    };
+    b.prototype.addRemoteTextTrack = function(c, a) {
+      void 0 === c && (c = {});
+      c = this.createRemoteTextTrack(c);
+      !0 !== a && !1 !== a && (E.warn('Calling addRemoteTextTrack without explicitly setting the "manualCleanup" parameter to `true` is deprecated and default to `false` in future version of video.js'), a = !0);
+      this.remoteTextTrackEls().addTrackElement_(c);
+      this.remoteTextTracks().addTrack_(c.track);
+      !0 !== a && this.autoRemoteTextTracks_.addTrack_(c.track);
+      return c;
+    };
+    b.prototype.removeRemoteTextTrack = function(c) {
+      var a = this.remoteTextTrackEls().getTrackElementByTrack_(c);
+      this.remoteTextTrackEls().removeTrackElement_(a);
+      this.remoteTextTracks().removeTrack_(c);
+      this.autoRemoteTextTracks_.removeTrack_(c);
+    };
+    b.prototype.setPoster = function() {
+    };
+    b.prototype.canPlayType = function() {
+      return "";
+    };
+    b.isTech = function(c) {
+      return c.prototype instanceof b || c instanceof b || c === b;
+    };
+    b.registerTech = function(c, a) {
+      b.techs_ || (b.techs_ = {});
+      if (!b.isTech(a)) {
+        throw Error("Tech " + c + " must be a Tech");
+      }
+      return b.techs_[c] = a;
+    };
+    b.getTech = function(c) {
+      if (b.techs_ && b.techs_[c]) {
+        return b.techs_[c];
+      }
+      if (q && q.videojs && q.videojs[c]) {
+        return E.warn("The " + c + " tech was added to the videojs object when it should be registered using videojs.registerTech(name, tech)"), q.videojs[c];
+      }
+    };
+    return b;
+  }(l);
+  I.prototype.featuresVolumeControl = !0;
+  I.prototype.featuresFullscreenResize = !1;
+  I.prototype.featuresPlaybackRate = !1;
+  I.prototype.featuresProgressEvents = !1;
+  I.prototype.featuresTimeupdateEvents = !1;
+  I.prototype.featuresNativeTextTracks = !1;
+  I.withSourceHandlers = function(a) {
+    a.registerSourceHandler = function(b, c) {
+      var d = a.sourceHandlers;
+      d || (d = a.sourceHandlers = []);
+      void 0 === c && (c = d.length);
+      d.splice(c, 0, b);
+    };
+    a.canPlayType = function(b) {
+      for (var c = a.sourceHandlers || [], d, f = 0;f < c.length;f++) {
+        if (d = c[f].canPlayType(b)) {
+          return d;
+        }
+      }
+      return "";
+    };
+    a.selectSourceHandler = function(b, c) {
+      for (var d = a.sourceHandlers || [], f, g = 0;g < d.length;g++) {
+        if (f = d[g].canHandleSource(b, c)) {
+          return d[g];
+        }
+      }
+      return null;
+    };
+    a.canPlaySource = function(b, c) {
+      var d = a.selectSourceHandler(b, c);
+      return d ? d.canHandleSource(b, c) : "";
+    };
+    ["seekable", "duration"].forEach(function(a) {
+      var c = this[a];
+      "function" === typeof c && (this[a] = function() {
+        return this.sourceHandler_ && this.sourceHandler_[a] ? this.sourceHandler_[a].apply(this.sourceHandler_, arguments) : c.apply(this, arguments);
+      });
+    }, a.prototype);
+    a.prototype.setSource = function(b) {
+      var c = a.selectSourceHandler(b, this.options_);
+      c || (a.nativeSourceHandler ? c = a.nativeSourceHandler : E.error("No source hander found for the current source."));
+      this.disposeSourceHandler();
+      this.off("dispose", this.disposeSourceHandler);
+      c !== a.nativeSourceHandler && (this.currentSource_ = b, this.off(this.el_, "loadstart", a.prototype.firstLoadStartListener_), this.off(this.el_, "loadstart", a.prototype.successiveLoadStartListener_), this.one(this.el_, "loadstart", a.prototype.firstLoadStartListener_));
+      this.sourceHandler_ = c.handleSource(b, this, this.options_);
+      this.on("dispose", this.disposeSourceHandler);
+      return this;
+    };
+    a.prototype.firstLoadStartListener_ = function() {
+      this.one(this.el_, "loadstart", a.prototype.successiveLoadStartListener_);
+    };
+    a.prototype.successiveLoadStartListener_ = function() {
+      this.disposeSourceHandler();
+      this.one(this.el_, "loadstart", a.prototype.successiveLoadStartListener_);
+    };
+    a.prototype.disposeSourceHandler = function() {
+      this.currentSource_ && (this.clearTracks(["audio", "video"]), this.currentSource_ = null);
+      this.cleanupAutoTextTracks();
+      this.sourceHandler_ && (this.off(this.el_, "loadstart", a.prototype.firstLoadStartListener_), this.off(this.el_, "loadstart", a.prototype.successiveLoadStartListener_), this.sourceHandler_.dispose && this.sourceHandler_.dispose(), this.sourceHandler_ = null);
+    };
+  };
+  l.registerComponent("Tech", I);
+  l.registerComponent("MediaTechController", I);
+  I.registerTech("Tech", I);
+  var Jf = function(a) {
+    function b(c, b, f) {
+      f = a.call(this, c, b, f) || this;
+      if (b.playerOptions.sources && 0 !== b.playerOptions.sources.length) {
+        c.src(b.playerOptions.sources);
+      } else {
+        var d = 0;
+        for (b = b.playerOptions.techOrder;d < b.length;d++) {
+          var e = S(b[d]), h = I.getTech(e);
+          e || (h = l.getComponent(e));
+          if (h && h.isSupported()) {
+            c.loadTech_(e);
+            break;
+          }
+        }
+      }
       return f;
     }
-    function l() {
-      d = d.replace(/^\s+/, "");
+    __extends(b, a);
+    return b;
+  }(l);
+  l.registerComponent("MediaLoader", Jf);
+  for (var $b = q.navigator, G = function(a) {
+    function b(c, d) {
+      var f = a.call(this, c, d) || this;
+      c.source && f.ready(function() {
+        this.setSource(c.source);
+      }, !0);
+      c.startTime && f.ready(function() {
+        this.load();
+        this.play();
+        this.currentTime(c.startTime);
+      }, !0);
+      q.videojs = q.videojs || {};
+      q.videojs.Flash = q.videojs.Flash || {};
+      q.videojs.Flash.onReady = b.onReady;
+      q.videojs.Flash.onEvent = b.onEvent;
+      q.videojs.Flash.onError = b.onError;
+      f.on("seeked", function() {
+        this.lastSeekTarget_ = void 0;
+      });
+      var g = Fc(function() {
+        return f.el_.vjs_getProperty("currentTime");
+      }, 100);
+      f.currentTime = function(c) {
+        return f.seeking() ? f.lastSeekTarget_ || 0 : g();
+      };
+      f.buffered = Fc(function() {
+        var c = f.el_.vjs_getProperty("buffered");
+        return 0 === c.length ? la() : la(c[0][0], c[0][1]);
+      }, 100);
+      return f;
     }
-    var r = d;
-    l();
-    f.startTime = t();
-    l();
-    if ("--\x3e" !== d.substr(0, 3)) {
-      throw new h(h.Errors.BadTimeStamp, "Malformed time stamp (time stamps must be separated by '--\x3e'): " + r);
+    __extends(b, a);
+    b.prototype.createEl = function() {
+      var c = this.options_;
+      c.swf || (c.swf = "//vjs.zencdn.net/swf/5.1.0/video-js.swf");
+      var a = c.techId, f = O({readyFunction:"videojs.Flash.onReady", eventProxyFunction:"videojs.Flash.onEvent", errorEventProxyFunction:"videojs.Flash.onError", autoplay:c.autoplay, preload:c.preload, loop:c.loop, muted:c.muted}, c.flashVars), g = O({wmode:"opaque", bgcolor:"#000000"}, c.params), a = O({id:a, name:a, "class":"vjs-tech"}, c.attributes);
+      this.el_ = b.embed(c.swf, f, g, a);
+      this.el_.tech = this;
+      return this.el_;
+    };
+    b.prototype.play = function() {
+      this.ended() && this.setCurrentTime(0);
+      this.el_.vjs_play();
+    };
+    b.prototype.pause = function() {
+      this.el_.vjs_pause();
+    };
+    b.prototype.src = function(c) {
+      return void 0 === c ? this.currentSrc() : this.setSrc(c);
+    };
+    b.prototype.setSrc = function(c) {
+      var a = this;
+      c = Bf(c);
+      this.el_.vjs_src(c);
+      this.autoplay() && this.setTimeout(function() {
+        return a.play();
+      }, 0);
+    };
+    b.prototype.seeking = function() {
+      return void 0 !== this.lastSeekTarget_;
+    };
+    b.prototype.setCurrentTime = function(c) {
+      var b = this.seekable();
+      b.length && (c = c > b.start(0) ? c : b.start(0), this.lastSeekTarget_ = c = c < b.end(b.length - 1) ? c : b.end(b.length - 1), this.trigger("seeking"), this.el_.vjs_setProperty("currentTime", c), a.prototype.setCurrentTime.call(this));
+    };
+    b.prototype.currentSrc = function() {
+      return this.currentSource_ ? this.currentSource_.src : this.el_.vjs_getProperty("currentSrc");
+    };
+    b.prototype.duration = function() {
+      if (0 === this.readyState()) {
+        return NaN;
+      }
+      var c = this.el_.vjs_getProperty("duration");
+      return 0 <= c ? c : Infinity;
+    };
+    b.prototype.load = function() {
+      this.el_.vjs_load();
+    };
+    b.prototype.poster = function() {
+      this.el_.vjs_getProperty("poster");
+    };
+    b.prototype.setPoster = function() {
+    };
+    b.prototype.seekable = function() {
+      var c = this.duration();
+      return 0 === c ? la() : la(0, c);
+    };
+    b.prototype.supportsFullScreen = function() {
+      return !1;
+    };
+    b.prototype.enterFullScreen = function() {
+      return !1;
+    };
+    return b;
+  }(I), Gc = G.prototype, ac = "rtmpConnection rtmpStream preload defaultPlaybackRate playbackRate autoplay loop mediaGroup controller controls volume muted defaultMuted".split(" "), Md = "networkState readyState initialTime startOffsetTime paused ended videoWidth videoHeight".split(" "), T = 0;T < ac.length;T++) {
+    Hc(ac[T]), De(ac[T]);
+  }
+  for (T = 0;T < Md.length;T++) {
+    Hc(Md[T]);
+  }
+  G.isSupported = function() {
+    return 10 <= G.version()[0];
+  };
+  I.withSourceHandlers(G);
+  G.nativeSourceHandler = {};
+  G.nativeSourceHandler.canPlayType = function(a) {
+    return a in G.formats ? "maybe" : "";
+  };
+  G.nativeSourceHandler.canHandleSource = function(a, b) {
+    a = a.type ? a.type.replace(/;.*/, "").toLowerCase() : (a = Fd(a.src)) ? "video/" + a : "";
+    return G.nativeSourceHandler.canPlayType(a);
+  };
+  G.nativeSourceHandler.handleSource = function(a, b, c) {
+    b.setSrc(a.src);
+  };
+  G.nativeSourceHandler.dispose = function() {
+  };
+  G.registerSourceHandler(G.nativeSourceHandler);
+  G.formats = {"video/flv":"FLV", "video/x-flv":"FLV", "video/mp4":"MP4", "video/m4v":"MP4"};
+  G.onReady = function(a) {
+    (a = (a = ja(a)) && a.tech) && a.el() && G.checkReady(a);
+  };
+  G.checkReady = function(a) {
+    a.el() && (a.el().vjs_getProperty ? a.triggerReady() : this.setTimeout(function() {
+      G.checkReady(a);
+    }, 50));
+  };
+  G.onEvent = function(a, b) {
+    var c = ja(a).tech, d = Array.prototype.slice.call(arguments, 2);
+    c.setTimeout(function() {
+      c.trigger(b, d);
+    }, 1);
+  };
+  G.onError = function(a, b) {
+    a = ja(a).tech;
+    if ("srcnotfound" === b) {
+      return a.error(4);
     }
-    d = d.substr(3);
-    l();
-    f.endTime = t();
-    l();
-    (function(d, f) {
-      var t = new m;
-      G(d, function(d, f) {
-        switch(d) {
+    a.error("FLASH: " + b);
+  };
+  G.version = function() {
+    var a = "0,0,0";
+    try {
+      a = (new q.ActiveXObject("ShockwaveFlash.ShockwaveFlash")).GetVariable("$version").replace(/\D+/g, ",").match(/^,?(.+),?$/)[1];
+    } catch (b) {
+      try {
+        $b.mimeTypes["application/x-shockwave-flash"].enabledPlugin && (a = ($b.plugins["Shockwave Flash 2.0"] || $b.plugins["Shockwave Flash"]).description.replace(/\D+/g, ",").match(/^,?(.+),?$/)[1]);
+      } catch (c) {
+      }
+    }
+    return a.split(",");
+  };
+  G.embed = function(a, b, c, d) {
+    a = G.getEmbedCode(a, b, c, d);
+    return r("div", {innerHTML:a}).childNodes[0];
+  };
+  G.getEmbedCode = function(a, b, c, d) {
+    var f = "", g = "", e = "";
+    b && Object.getOwnPropertyNames(b).forEach(function(c) {
+      f += c + "=" + b[c] + "&amp;";
+    });
+    c = O({movie:a, flashvars:f, allowScriptAccess:"always", allowNetworking:"all"}, c);
+    Object.getOwnPropertyNames(c).forEach(function(a) {
+      g += '<param name="' + a + '" value="' + c[a] + '" />';
+    });
+    d = O({data:a, width:"100%", height:"100%"}, d);
+    Object.getOwnPropertyNames(d).forEach(function(c) {
+      e += c + '="' + d[c] + '" ';
+    });
+    return '<object type="application/x-shockwave-flash" ' + e + ">" + g + "</object>";
+  };
+  (function(a) {
+    a.streamingFormats = {"rtmp/mp4":"MP4", "rtmp/flv":"FLV"};
+    a.streamFromParts = function(a, c) {
+      return a + "&" + c;
+    };
+    a.streamToParts = function(a) {
+      var c = {connection:"", stream:""};
+      if (!a) {
+        return c;
+      }
+      var b = a.search(/&(?!\w+=)/), f;
+      -1 !== b ? f = b + 1 : (b = f = a.lastIndexOf("/") + 1, 0 === b && (b = f = a.length));
+      c.connection = a.substring(0, b);
+      c.stream = a.substring(f, a.length);
+      return c;
+    };
+    a.isStreamingType = function(b) {
+      return b in a.streamingFormats;
+    };
+    a.RTMP_RE = /^rtmp[set]?:\/\//i;
+    a.isStreamingSrc = function(b) {
+      return a.RTMP_RE.test(b);
+    };
+    a.rtmpSourceHandler = {};
+    a.rtmpSourceHandler.canPlayType = function(b) {
+      return a.isStreamingType(b) ? "maybe" : "";
+    };
+    a.rtmpSourceHandler.canHandleSource = function(b, c) {
+      return (c = a.rtmpSourceHandler.canPlayType(b.type)) ? c : a.isStreamingSrc(b.src) ? "maybe" : "";
+    };
+    a.rtmpSourceHandler.handleSource = function(b, c, d) {
+      b = a.streamToParts(b.src);
+      c.setRtmpConnection(b.connection);
+      c.setRtmpStream(b.stream);
+    };
+    a.registerSourceHandler(a.rtmpSourceHandler);
+    return a;
+  })(G);
+  l.registerComponent("Flash", G);
+  I.registerTech("Flash", G);
+  var Da = function(a) {
+    function b(c, b) {
+      c = a.call(this, c, b) || this;
+      c.emitTapEvents();
+      c.enable();
+      return c;
+    }
+    __extends(b, a);
+    b.prototype.createEl = function(c, b, f) {
+      void 0 === c && (c = "div");
+      void 0 === b && (b = {});
+      void 0 === f && (f = {});
+      b = O({className:this.buildCSSClass(), tabIndex:0}, b);
+      "button" === c && E.error("Creating a ClickableComponent with an HTML element of " + c + " is not supported; use a Button instead.");
+      f = O({role:"button", "aria-live":"polite"}, f);
+      this.tabIndex_ = b.tabIndex;
+      c = a.prototype.createEl.call(this, c, b, f);
+      this.createControlTextEl(c);
+      return c;
+    };
+    b.prototype.createControlTextEl = function(c) {
+      this.controlTextEl_ = r("span", {className:"vjs-control-text"});
+      c && c.appendChild(this.controlTextEl_);
+      this.controlText(this.controlText_, c);
+      return this.controlTextEl_;
+    };
+    b.prototype.controlText = function(c, a) {
+      void 0 === a && (a = this.el());
+      if (!c) {
+        return this.controlText_ || "Need Text";
+      }
+      var b = this.localize(c);
+      this.controlText_ = c;
+      this.controlTextEl_.innerHTML = b;
+      a.setAttribute("title", b);
+      return this;
+    };
+    b.prototype.buildCSSClass = function() {
+      return "vjs-control vjs-button " + a.prototype.buildCSSClass.call(this);
+    };
+    b.prototype.enable = function() {
+      this.removeClass("vjs-disabled");
+      this.el_.setAttribute("aria-disabled", "false");
+      "undefined" !== typeof this.tabIndex_ && this.el_.setAttribute("tabIndex", this.tabIndex_);
+      this.on("tap", this.handleClick);
+      this.on("click", this.handleClick);
+      this.on("focus", this.handleFocus);
+      this.on("blur", this.handleBlur);
+      return this;
+    };
+    b.prototype.disable = function() {
+      this.addClass("vjs-disabled");
+      this.el_.setAttribute("aria-disabled", "true");
+      "undefined" !== typeof this.tabIndex_ && this.el_.removeAttribute("tabIndex");
+      this.off("tap", this.handleClick);
+      this.off("click", this.handleClick);
+      this.off("focus", this.handleFocus);
+      this.off("blur", this.handleBlur);
+      return this;
+    };
+    b.prototype.handleClick = function() {
+    };
+    b.prototype.handleFocus = function() {
+      da(z, "keydown", A(this, this.handleKeyPress));
+    };
+    b.prototype.handleKeyPress = function(c) {
+      32 === c.which || 13 === c.which ? (c.preventDefault(), this.handleClick(c)) : a.prototype.handleKeyPress && a.prototype.handleKeyPress.call(this, c);
+    };
+    b.prototype.handleBlur = function() {
+      ka(z, "keydown", A(this, this.handleKeyPress));
+    };
+    return b;
+  }(l);
+  l.registerComponent("ClickableComponent", Da);
+  var Kf = function(a) {
+    function b(c, b) {
+      b = a.call(this, c, b) || this;
+      b.update();
+      c.on("posterchange", A(b, b.update));
+      return b;
+    }
+    __extends(b, a);
+    b.prototype.dispose = function() {
+      this.player().off("posterchange", this.update);
+      a.prototype.dispose.call(this);
+    };
+    b.prototype.createEl = function() {
+      var c = r("div", {className:"vjs-poster", tabIndex:-1});
+      Sc || (this.fallbackImg_ = r("img"), c.appendChild(this.fallbackImg_));
+      return c;
+    };
+    b.prototype.update = function() {
+      var c = this.player().poster();
+      this.setSrc(c);
+      c ? this.show() : this.hide();
+    };
+    b.prototype.setSrc = function(c) {
+      if (this.fallbackImg_) {
+        this.fallbackImg_.src = c;
+      } else {
+        var a = "";
+        c && (a = 'url("' + c + '")');
+        this.el_.style.backgroundImage = a;
+      }
+    };
+    b.prototype.handleClick = function() {
+      this.player_.paused() ? this.player_.play() : this.player_.pause();
+    };
+    return b;
+  }(Da);
+  l.registerComponent("PosterImage", Kf);
+  var Lf = {monospace:"monospace", sansSerif:"sans-serif", serif:"serif", monospaceSansSerif:'"Andale Mono", "Lucida Console", monospace', monospaceSerif:'"Courier New", monospace', proportionalSansSerif:"sans-serif", proportionalSerif:"serif", casual:'"Comic Sans MS", Impact, fantasy', script:'"Monotype Corsiva", cursive', smallcaps:'"Andale Mono", "Lucida Console", monospace, sans-serif'}, Mf = function(a) {
+    function b(c, b, f) {
+      b = a.call(this, c, b, f) || this;
+      c.on("loadstart", A(b, b.toggleDisplay));
+      c.on("texttrackchange", A(b, b.updateDisplay));
+      c.ready(A(b, function() {
+        if (c.tech_ && c.tech_.featuresNativeTextTracks) {
+          this.hide();
+        } else {
+          c.on("fullscreenchange", A(this, this.updateDisplay));
+          for (var a = this.options_.playerOptions.tracks || [], b = 0;b < a.length;b++) {
+            this.player_.addRemoteTextTrack(a[b]);
+          }
+          var a = {captions:1, subtitles:1}, d = this.player_.textTracks(), f, e;
+          if (d) {
+            for (b = 0;b < d.length;b++) {
+              var h = d[b];
+              h["default"] && ("descriptions" !== h.kind || f ? h.kind in a && !e && (e = h) : f = h);
+            }
+            e ? e.mode = "showing" : f && (f.mode = "showing");
+          }
+        }
+      }));
+      return b;
+    }
+    __extends(b, a);
+    b.prototype.toggleDisplay = function() {
+      this.player_.tech_ && this.player_.tech_.featuresNativeTextTracks ? this.hide() : this.show();
+    };
+    b.prototype.createEl = function() {
+      return a.prototype.createEl.call(this, "div", {className:"vjs-text-track-display"}, {"aria-live":"off", "aria-atomic":"true"});
+    };
+    b.prototype.clearDisplay = function() {
+      "function" === typeof q.WebVTT && q.WebVTT.processCues(q, [], this.el_);
+    };
+    b.prototype.updateDisplay = function() {
+      var c = this.player_.textTracks();
+      this.clearDisplay();
+      if (c) {
+        for (var a = null, b = null, g = c.length;g--;) {
+          var e = c[g];
+          "showing" === e.mode && ("descriptions" === e.kind ? a = e : b = e);
+        }
+        b ? ("off" !== this.getAttribute("aria-live") && this.setAttribute("aria-live", "off"), this.updateForTrack(b)) : a && ("assertive" !== this.getAttribute("aria-live") && this.setAttribute("aria-live", "assertive"), this.updateForTrack(a));
+      }
+    };
+    b.prototype.updateForTrack = function(c) {
+      if ("function" === typeof q.WebVTT && c.activeCues) {
+        for (var a = this.player_.textTrackSettings.getValues(), b = [], g = 0;g < c.activeCues.length;g++) {
+          b.push(c.activeCues[g]);
+        }
+        q.WebVTT.processCues(q, b, this.el_);
+        for (c = b.length;c--;) {
+          if (g = b[c]) {
+            g = g.displayState;
+            a.color && (g.firstChild.style.color = a.color);
+            if (a.textOpacity) {
+              var e = ub(a.color || "#fff", a.textOpacity);
+              try {
+                g.firstChild.style.color = e;
+              } catch (ha) {
+              }
+            }
+            a.backgroundColor && (g.firstChild.style.backgroundColor = a.backgroundColor);
+            if (a.backgroundOpacity) {
+              e = ub(a.backgroundColor || "#000", a.backgroundOpacity);
+              try {
+                g.firstChild.style.backgroundColor = e;
+              } catch (ha) {
+              }
+            }
+            if (a.windowColor) {
+              if (a.windowOpacity) {
+                e = ub(a.windowColor, a.windowOpacity);
+                try {
+                  g.style.backgroundColor = e;
+                } catch (ha) {
+                }
+              } else {
+                g.style.backgroundColor = a.windowColor;
+              }
+            }
+            a.edgeStyle && ("dropshadow" === a.edgeStyle ? g.firstChild.style.textShadow = "2px 2px 3px #222, 2px 2px 4px #222, 2px 2px 5px #222" : "raised" === a.edgeStyle ? g.firstChild.style.textShadow = "1px 1px #222, 2px 2px #222, 3px 3px #222" : "depressed" === a.edgeStyle ? g.firstChild.style.textShadow = "1px 1px #ccc, 0 1px #ccc, -1px -1px #222, 0 -1px #222" : "uniform" === a.edgeStyle && (g.firstChild.style.textShadow = "0 0 4px #222, 0 0 4px #222, 0 0 4px #222, 0 0 4px #222"));
+            a.fontPercent && 1 !== a.fontPercent && (e = q.parseFloat(g.style.fontSize), g.style.fontSize = e * a.fontPercent + "px", g.style.height = "auto", g.style.top = "auto", g.style.bottom = "2px");
+            a.fontFamily && "default" !== a.fontFamily && ("small-caps" === a.fontFamily ? g.firstChild.style.fontVariant = "small-caps" : g.firstChild.style.fontFamily = Lf[a.fontFamily]);
+          }
+        }
+      }
+    };
+    return b;
+  }(l);
+  l.registerComponent("TextTrackDisplay", Mf);
+  var Nf = function(a) {
+    function b() {
+      return a.apply(this, arguments) || this;
+    }
+    __extends(b, a);
+    b.prototype.createEl = function() {
+      return a.prototype.createEl.call(this, "div", {className:"vjs-loading-spinner", dir:"ltr"});
+    };
+    return b;
+  }(l);
+  l.registerComponent("LoadingSpinner", Nf);
+  var Ea = function(a) {
+    function b() {
+      return a.apply(this, arguments) || this;
+    }
+    __extends(b, a);
+    b.prototype.createEl = function(c, a, b) {
+      void 0 === c && (c = "button");
+      void 0 === a && (a = {});
+      void 0 === b && (b = {});
+      a = O({className:this.buildCSSClass()}, a);
+      "button" !== c && (E.warn("Creating a Button with an HTML element of " + c + " is deprecated; use ClickableComponent instead."), a = O({tabIndex:0}, a), b = O({role:"button"}, b));
+      b = O({type:"button", "aria-live":"polite"}, b);
+      c = l.prototype.createEl.call(this, c, a, b);
+      this.createControlTextEl(c);
+      return c;
+    };
+    b.prototype.addChild = function(c, a) {
+      void 0 === a && (a = {});
+      E.warn("Adding an actionable (user controllable) child to a Button (" + this.constructor.name + ") is not supported; use a ClickableComponent instead.");
+      return l.prototype.addChild.call(this, c, a);
+    };
+    b.prototype.enable = function() {
+      a.prototype.enable.call(this);
+      this.el_.removeAttribute("disabled");
+    };
+    b.prototype.disable = function() {
+      a.prototype.disable.call(this);
+      this.el_.setAttribute("disabled", "disabled");
+    };
+    b.prototype.handleKeyPress = function(c) {
+      32 !== c.which && 13 !== c.which && a.prototype.handleKeyPress.call(this, c);
+    };
+    return b;
+  }(Da);
+  l.registerComponent("Button", Ea);
+  var Nd = function(a) {
+    function b() {
+      return a.apply(this, arguments) || this;
+    }
+    __extends(b, a);
+    b.prototype.buildCSSClass = function() {
+      return "vjs-big-play-button";
+    };
+    b.prototype.handleClick = function() {
+      this.player_.play();
+    };
+    return b;
+  }(Ea);
+  Nd.prototype.controlText_ = "Play Video";
+  l.registerComponent("BigPlayButton", Nd);
+  var Of = function(a) {
+    function b(c, b) {
+      c = a.call(this, c, b) || this;
+      c.controlText(b && b.controlText || c.localize("Close"));
+      return c;
+    }
+    __extends(b, a);
+    b.prototype.buildCSSClass = function() {
+      return "vjs-close-button " + a.prototype.buildCSSClass.call(this);
+    };
+    b.prototype.handleClick = function() {
+      this.trigger({type:"close", bubbles:!1});
+    };
+    return b;
+  }(Ea);
+  l.registerComponent("CloseButton", Of);
+  var Od = function(a) {
+    function b(c, b) {
+      b = a.call(this, c, b) || this;
+      b.on(c, "play", b.handlePlay);
+      b.on(c, "pause", b.handlePause);
+      return b;
+    }
+    __extends(b, a);
+    b.prototype.buildCSSClass = function() {
+      return "vjs-play-control " + a.prototype.buildCSSClass.call(this);
+    };
+    b.prototype.handleClick = function() {
+      this.player_.paused() ? this.player_.play() : this.player_.pause();
+    };
+    b.prototype.handlePlay = function() {
+      this.removeClass("vjs-paused");
+      this.addClass("vjs-playing");
+      this.controlText("Pause");
+    };
+    b.prototype.handlePause = function() {
+      this.removeClass("vjs-playing");
+      this.addClass("vjs-paused");
+      this.controlText("Play");
+    };
+    return b;
+  }(Ea);
+  Od.prototype.controlText_ = "Play";
+  l.registerComponent("PlayToggle", Od);
+  var Pf = function(a) {
+    function b(c, b) {
+      b = a.call(this, c, b) || this;
+      b.on(c, "timeupdate", b.updateContent);
+      return b;
+    }
+    __extends(b, a);
+    b.prototype.createEl = function() {
+      var c = a.prototype.createEl.call(this, "div", {className:"vjs-current-time vjs-time-control vjs-control"});
+      this.contentEl_ = r("div", {className:"vjs-current-time-display", innerHTML:'<span class="vjs-control-text">Current Time </span>0:00'}, {"aria-live":"off"});
+      c.appendChild(this.contentEl_);
+      return c;
+    };
+    b.prototype.updateContent = function() {
+      var c = this.player_.scrubbing() ? this.player_.getCache().currentTime : this.player_.currentTime(), a = this.localize("Current Time"), c = qa(c, this.player_.duration());
+      c !== this.formattedTime_ && (this.formattedTime_ = c, this.contentEl_.innerHTML = '<span class="vjs-control-text">' + a + "</span> " + c);
+    };
+    return b;
+  }(l);
+  l.registerComponent("CurrentTimeDisplay", Pf);
+  var Qf = function(a) {
+    function b(c, b) {
+      b = a.call(this, c, b) || this;
+      b.on(c, "durationchange", b.updateContent);
+      b.on(c, "timeupdate", b.updateContent);
+      b.on(c, "loadedmetadata", b.updateContent);
+      return b;
+    }
+    __extends(b, a);
+    b.prototype.createEl = function() {
+      var c = a.prototype.createEl.call(this, "div", {className:"vjs-duration vjs-time-control vjs-control"});
+      this.contentEl_ = r("div", {className:"vjs-duration-display", innerHTML:'<span class="vjs-control-text">' + this.localize("Duration Time") + "</span> 0:00"}, {"aria-live":"off"});
+      c.appendChild(this.contentEl_);
+      return c;
+    };
+    b.prototype.updateContent = function() {
+      var c = this.player_.duration();
+      if (c && this.duration_ !== c) {
+        this.duration_ = c;
+        var a = this.localize("Duration Time"), c = qa(c);
+        this.contentEl_.innerHTML = '<span class="vjs-control-text">' + a + "</span> " + c;
+      }
+    };
+    return b;
+  }(l);
+  l.registerComponent("DurationDisplay", Qf);
+  var Rf = function(a) {
+    function b() {
+      return a.apply(this, arguments) || this;
+    }
+    __extends(b, a);
+    b.prototype.createEl = function() {
+      return a.prototype.createEl.call(this, "div", {className:"vjs-time-control vjs-time-divider", innerHTML:"<div><span>/</span></div>"});
+    };
+    return b;
+  }(l);
+  l.registerComponent("TimeDivider", Rf);
+  var Sf = function(a) {
+    function b(c, b) {
+      b = a.call(this, c, b) || this;
+      b.on(c, "timeupdate", b.updateContent);
+      b.on(c, "durationchange", b.updateContent);
+      return b;
+    }
+    __extends(b, a);
+    b.prototype.createEl = function() {
+      var c = a.prototype.createEl.call(this, "div", {className:"vjs-remaining-time vjs-time-control vjs-control"});
+      this.contentEl_ = r("div", {className:"vjs-remaining-time-display", innerHTML:'<span class="vjs-control-text">' + this.localize("Remaining Time") + "</span> -0:00"}, {"aria-live":"off"});
+      c.appendChild(this.contentEl_);
+      return c;
+    };
+    b.prototype.updateContent = function() {
+      if (this.player_.duration()) {
+        var c = this.localize("Remaining Time"), a = qa(this.player_.remainingTime());
+        a !== this.formattedTime_ && (this.formattedTime_ = a, this.contentEl_.innerHTML = '<span class="vjs-control-text">' + c + "</span> -" + a);
+      }
+    };
+    return b;
+  }(l);
+  l.registerComponent("RemainingTimeDisplay", Sf);
+  var Tf = function(a) {
+    function b(c, b) {
+      c = a.call(this, c, b) || this;
+      c.updateShowing();
+      c.on(c.player(), "durationchange", c.updateShowing);
+      return c;
+    }
+    __extends(b, a);
+    b.prototype.createEl = function() {
+      var c = a.prototype.createEl.call(this, "div", {className:"vjs-live-control vjs-control"});
+      this.contentEl_ = r("div", {className:"vjs-live-display", innerHTML:'<span class="vjs-control-text">' + this.localize("Stream Type") + "</span>" + this.localize("LIVE")}, {"aria-live":"off"});
+      c.appendChild(this.contentEl_);
+      return c;
+    };
+    b.prototype.updateShowing = function() {
+      Infinity === this.player().duration() ? this.show() : this.hide();
+    };
+    return b;
+  }(l);
+  l.registerComponent("LiveDisplay", Tf);
+  var bc = function(a) {
+    function b(c, b) {
+      b = a.call(this, c, b) || this;
+      b.bar = b.getChild(b.options_.barName);
+      b.vertical(!!b.options_.vertical);
+      b.on("mousedown", b.handleMouseDown);
+      b.on("touchstart", b.handleMouseDown);
+      b.on("focus", b.handleFocus);
+      b.on("blur", b.handleBlur);
+      b.on("click", b.handleClick);
+      b.on(c, "controlsvisible", b.update);
+      b.on(c, b.playerEvent, b.update);
+      return b;
+    }
+    __extends(b, a);
+    b.prototype.createEl = function(c, b, f) {
+      void 0 === b && (b = {});
+      void 0 === f && (f = {});
+      b.className += " vjs-slider";
+      b = O({tabIndex:0}, b);
+      f = O({role:"slider", "aria-valuenow":0, "aria-valuemin":0, "aria-valuemax":100, tabIndex:0}, f);
+      return a.prototype.createEl.call(this, c, b, f);
+    };
+    b.prototype.handleMouseDown = function(c) {
+      var a = this.bar.el_.ownerDocument;
+      c.preventDefault();
+      N();
+      this.addClass("vjs-sliding");
+      this.trigger("slideractive");
+      this.on(a, "mousemove", this.handleMouseMove);
+      this.on(a, "mouseup", this.handleMouseUp);
+      this.on(a, "touchmove", this.handleMouseMove);
+      this.on(a, "touchend", this.handleMouseUp);
+      this.handleMouseMove(c);
+    };
+    b.prototype.handleMouseMove = function() {
+    };
+    b.prototype.handleMouseUp = function() {
+      var c = this.bar.el_.ownerDocument;
+      ne();
+      this.removeClass("vjs-sliding");
+      this.trigger("sliderinactive");
+      this.off(c, "mousemove", this.handleMouseMove);
+      this.off(c, "mouseup", this.handleMouseUp);
+      this.off(c, "touchmove", this.handleMouseMove);
+      this.off(c, "touchend", this.handleMouseUp);
+      this.update();
+    };
+    b.prototype.update = function() {
+      if (this.el_) {
+        var c = this.getPercent(), a = this.bar;
+        if (a) {
+          if ("number" !== typeof c || c !== c || 0 > c || Infinity === c) {
+            c = 0;
+          }
+          c = (100 * c).toFixed(2) + "%";
+          this.vertical() ? a.el().style.height = c : a.el().style.width = c;
+        }
+      }
+    };
+    b.prototype.calculateDistance = function(c) {
+      c = rc(this.el_, c);
+      return this.vertical() ? c.y : c.x;
+    };
+    b.prototype.handleFocus = function() {
+      this.on(this.bar.el_.ownerDocument, "keydown", this.handleKeyPress);
+    };
+    b.prototype.handleKeyPress = function(c) {
+      if (37 === c.which || 40 === c.which) {
+        c.preventDefault(), this.stepBack();
+      } else {
+        if (38 === c.which || 39 === c.which) {
+          c.preventDefault(), this.stepForward();
+        }
+      }
+    };
+    b.prototype.handleBlur = function() {
+      this.off(this.bar.el_.ownerDocument, "keydown", this.handleKeyPress);
+    };
+    b.prototype.handleClick = function(c) {
+      c.stopImmediatePropagation();
+      c.preventDefault();
+    };
+    b.prototype.vertical = function(c) {
+      if (void 0 === c) {
+        return this.vertical_ || !1;
+      }
+      (this.vertical_ = !!c) ? this.addClass("vjs-slider-vertical") : this.addClass("vjs-slider-horizontal");
+      return this;
+    };
+    return b;
+  }(l);
+  l.registerComponent("Slider", bc);
+  var Uf = function(a) {
+    function b(c, b) {
+      b = a.call(this, c, b) || this;
+      b.partEls_ = [];
+      b.on(c, "progress", b.update);
+      return b;
+    }
+    __extends(b, a);
+    b.prototype.createEl = function() {
+      return a.prototype.createEl.call(this, "div", {className:"vjs-load-progress", innerHTML:'<span class="vjs-control-text"><span>' + this.localize("Loaded") + "</span>: 0%</span>"});
+    };
+    b.prototype.update = function() {
+      var c = this.player_.buffered(), a = this.player_.duration(), b = this.player_.bufferedEnd(), g = this.partEls_, e = function(c, a) {
+        c = c / a || 0;
+        return 100 * (1 <= c ? 1 : c) + "%";
+      };
+      this.el_.style.width = e(b, a);
+      for (a = 0;a < c.length;a++) {
+        var h = c.start(a), p = c.end(a), l = g[a];
+        l || (l = this.el_.appendChild(r()), g[a] = l);
+        l.style.left = e(h, b);
+        l.style.width = e(p - h, b);
+      }
+      for (a = g.length;a > c.length;a--) {
+        this.el_.removeChild(g[a - 1]);
+      }
+      g.length = c.length;
+    };
+    return b;
+  }(l);
+  l.registerComponent("LoadProgressBar", Uf);
+  var Vf = function(a) {
+    function b(c, b) {
+      var d = a.call(this, c, b) || this;
+      d.updateDataAttr();
+      d.on(c, "timeupdate", d.updateDataAttr);
+      c.ready(A(d, d.updateDataAttr));
+      b.playerOptions && b.playerOptions.controlBar && b.playerOptions.controlBar.progressControl && b.playerOptions.controlBar.progressControl.keepTooltipsInside && (d.keepTooltipsInside = b.playerOptions.controlBar.progressControl.keepTooltipsInside);
+      d.keepTooltipsInside && d.addClass("vjs-keep-tooltips-inside");
+      return d;
+    }
+    __extends(b, a);
+    b.prototype.createEl = function() {
+      return a.prototype.createEl.call(this, "div", {className:"vjs-play-progress vjs-slider-bar", innerHTML:'<span class="vjs-control-text"><span>' + this.localize("Progress") + "</span>: 0%</span>"});
+    };
+    b.prototype.updateDataAttr = function() {
+      var c = this.player_.scrubbing() ? this.player_.getCache().currentTime : this.player_.currentTime();
+      this.el_.setAttribute("data-current-time", qa(c, this.player_.duration()));
+    };
+    return b;
+  }(l);
+  l.registerComponent("PlayProgressBar", Vf);
+  var Wf = function(a) {
+    function b(c, b) {
+      b = a.call(this, c, b) || this;
+      b.updateDataAttr();
+      b.on(c, "timeupdate", b.updateDataAttr);
+      c.ready(A(b, b.updateDataAttr));
+      return b;
+    }
+    __extends(b, a);
+    b.prototype.createEl = function() {
+      var c = a.prototype.createEl.call(this, "div", {className:"vjs-tooltip-progress-bar vjs-slider-bar", innerHTML:'<div class="vjs-time-tooltip"></div>\n        <span class="vjs-control-text"><span>' + this.localize("Progress") + "</span>: 0%</span>"});
+      this.tooltip = c.querySelector(".vjs-time-tooltip");
+      return c;
+    };
+    b.prototype.updateDataAttr = function() {
+      var c = this.player_.scrubbing() ? this.player_.getCache().currentTime : this.player_.currentTime(), c = qa(c, this.player_.duration());
+      this.el_.setAttribute("data-current-time", c);
+      this.tooltip.innerHTML = c;
+    };
+    return b;
+  }(l);
+  l.registerComponent("TooltipProgressBar", Wf);
+  var cc = function(a) {
+    function b(c, b) {
+      var d = a.call(this, c, b) || this;
+      d.on(c, "timeupdate", d.updateProgress);
+      d.on(c, "ended", d.updateProgress);
+      c.ready(A(d, d.updateProgress));
+      b.playerOptions && b.playerOptions.controlBar && b.playerOptions.controlBar.progressControl && b.playerOptions.controlBar.progressControl.keepTooltipsInside && (d.keepTooltipsInside = b.playerOptions.controlBar.progressControl.keepTooltipsInside);
+      d.keepTooltipsInside && (d.tooltipProgressBar = d.addChild("TooltipProgressBar"));
+      return d;
+    }
+    __extends(b, a);
+    b.prototype.createEl = function() {
+      return a.prototype.createEl.call(this, "div", {className:"vjs-progress-holder"}, {"aria-label":"progress bar"});
+    };
+    b.prototype.updateProgress = function() {
+      this.updateAriaAttributes(this.el_);
+      if (this.keepTooltipsInside) {
+        this.updateAriaAttributes(this.tooltipProgressBar.el_);
+        this.tooltipProgressBar.el_.style.width = this.bar.el_.style.width;
+        var c = parseFloat(za(this.player().el(), "width")), a = parseFloat(za(this.tooltipProgressBar.tooltip, "width")), b = this.tooltipProgressBar.el().style;
+        b.maxWidth = Math.floor(c - a / 2) + "px";
+        b.minWidth = Math.ceil(a / 2) + "px";
+        b.right = "-" + a / 2 + "px";
+      }
+    };
+    b.prototype.updateAriaAttributes = function(c) {
+      var a = this.player_.scrubbing() ? this.player_.getCache().currentTime : this.player_.currentTime();
+      c.setAttribute("aria-valuenow", (100 * this.getPercent()).toFixed(2));
+      c.setAttribute("aria-valuetext", qa(a, this.player_.duration()));
+    };
+    b.prototype.getPercent = function() {
+      var c = this.player_.currentTime() / this.player_.duration();
+      return 1 <= c ? 1 : c;
+    };
+    b.prototype.handleMouseDown = function(c) {
+      a.prototype.handleMouseDown.call(this, c);
+      this.player_.scrubbing(!0);
+      this.videoWasPlaying = !this.player_.paused();
+      this.player_.pause();
+    };
+    b.prototype.handleMouseMove = function(c) {
+      c = this.calculateDistance(c) * this.player_.duration();
+      c === this.player_.duration() && (c -= .1);
+      this.player_.currentTime(c);
+    };
+    b.prototype.handleMouseUp = function(c) {
+      a.prototype.handleMouseUp.call(this, c);
+      this.player_.scrubbing(!1);
+      this.videoWasPlaying && this.player_.play();
+    };
+    b.prototype.stepForward = function() {
+      this.player_.currentTime(this.player_.currentTime() + 5);
+    };
+    b.prototype.stepBack = function() {
+      this.player_.currentTime(this.player_.currentTime() - 5);
+    };
+    return b;
+  }(bc);
+  cc.prototype.options_ = {children:["loadProgressBar", "mouseTimeDisplay", "playProgressBar"], barName:"playProgressBar"};
+  cc.prototype.playerEvent = "timeupdate";
+  l.registerComponent("SeekBar", cc);
+  var dc = Jb(Date, "now") || function() {
+    return (new Date).getTime();
+  }, Xf = Math.max, Yf = function(a, b, c) {
+    function d(c, b) {
+      b && clearTimeout(b);
+      p = k = q = void 0;
+      c && (t = dc(), l = a.apply(C, h), k || p || (h = C = void 0));
+    }
+    function f() {
+      var c = b - (dc() - m);
+      0 >= c || c > b ? d(q, p) : k = setTimeout(f, c);
+    }
+    function g() {
+      d(x, k);
+    }
+    function e() {
+      h = arguments;
+      m = dc();
+      C = this;
+      q = x && (k || !z);
+      if (!1 === n) {
+        var c = z && !k;
+      } else {
+        p || z || (t = m);
+        var d = n - (m - t), e = 0 >= d || d > n;
+        e ? (p && (p = clearTimeout(p)), t = m, l = a.apply(C, h)) : p || (p = setTimeout(g, d));
+      }
+      e && k ? k = clearTimeout(k) : k || b === n || (k = setTimeout(f, b));
+      c && (e = !0, l = a.apply(C, h));
+      !e || k || p || (h = C = void 0);
+      return l;
+    }
+    var h, p, l, m, C, k, q, t = 0, n = !1, x = !0;
+    if ("function" != typeof a) {
+      throw new TypeError("Expected a function");
+    }
+    b = 0 > b ? 0 : +b || 0;
+    if (!0 === c) {
+      var z = !0, x = !1;
+    } else {
+      ra(c) && (z = !!c.leading, n = "maxWait" in c && Xf(+c.maxWait || 0, b), x = "trailing" in c ? !!c.trailing : x);
+    }
+    e.cancel = function() {
+      k && clearTimeout(k);
+      p && clearTimeout(p);
+      t = 0;
+      p = k = q = void 0;
+    };
+    return e;
+  }, Zf = function(a, b, c) {
+    var d = !0, f = !0;
+    if ("function" != typeof a) {
+      throw new TypeError("Expected a function");
+    }
+    !1 === c ? d = !1 : ra(c) && (d = "leading" in c ? !!c.leading : d, f = "trailing" in c ? !!c.trailing : f);
+    return Yf(a, b, {leading:d, maxWait:+b, trailing:f});
+  }, $f = function(a) {
+    function b(c, b) {
+      var d = a.call(this, c, b) || this;
+      b.playerOptions && b.playerOptions.controlBar && b.playerOptions.controlBar.progressControl && b.playerOptions.controlBar.progressControl.keepTooltipsInside && (d.keepTooltipsInside = b.playerOptions.controlBar.progressControl.keepTooltipsInside);
+      d.keepTooltipsInside && (d.tooltip = r("div", {className:"vjs-time-tooltip"}), d.el().appendChild(d.tooltip), d.addClass("vjs-keep-tooltips-inside"));
+      d.update(0, 0);
+      c.on("ready", function() {
+        d.on(c.controlBar.progressControl.el(), "mousemove", Zf(A(d, d.handleMouseMove), 25));
+      });
+      return d;
+    }
+    __extends(b, a);
+    b.prototype.createEl = function() {
+      return a.prototype.createEl.call(this, "div", {className:"vjs-mouse-display"});
+    };
+    b.prototype.handleMouseMove = function(c) {
+      var a = this.player_.duration(), a = this.calculateDistance(c) * a;
+      c = c.pageX - qc(this.el().parentNode).left;
+      this.update(a, c);
+    };
+    b.prototype.update = function(c, a) {
+      c = qa(c, this.player_.duration());
+      this.el().style.left = a + "px";
+      this.el().setAttribute("data-current-time", c);
+      if (this.keepTooltipsInside) {
+        var b = this.clampPosition_(a);
+        a = a - b + 1;
+        b = parseFloat(za(this.tooltip, "width"));
+        this.tooltip.innerHTML = c;
+        this.tooltip.style.right = "-" + (b / 2 - a) + "px";
+      }
+    };
+    b.prototype.calculateDistance = function(c) {
+      return rc(this.el().parentNode, c).x;
+    };
+    b.prototype.clampPosition_ = function(c) {
+      if (!this.keepTooltipsInside) {
+        return c;
+      }
+      var a = parseFloat(za(this.player().el(), "width")), b = parseFloat(za(this.tooltip, "width")) / 2, g = c;
+      c < b ? g = Math.ceil(b) : c > a - b && (g = Math.floor(a - b));
+      return g;
+    };
+    return b;
+  }(l);
+  l.registerComponent("MouseTimeDisplay", $f);
+  var Pd = function(a) {
+    function b() {
+      return a.apply(this, arguments) || this;
+    }
+    __extends(b, a);
+    b.prototype.createEl = function() {
+      return a.prototype.createEl.call(this, "div", {className:"vjs-progress-control vjs-control"});
+    };
+    return b;
+  }(l);
+  Pd.prototype.options_ = {children:["seekBar"]};
+  l.registerComponent("ProgressControl", Pd);
+  var Qd = function(a) {
+    function b(c, b) {
+      b = a.call(this, c, b) || this;
+      b.on(c, "fullscreenchange", b.handleFullscreenChange);
+      return b;
+    }
+    __extends(b, a);
+    b.prototype.buildCSSClass = function() {
+      return "vjs-fullscreen-control " + a.prototype.buildCSSClass.call(this);
+    };
+    b.prototype.handleFullscreenChange = function() {
+      this.player_.isFullscreen() ? this.controlText("Non-Fullscreen") : this.controlText("Fullscreen");
+    };
+    b.prototype.handleClick = function() {
+      this.player_.isFullscreen() ? this.player_.exitFullscreen() : this.player_.requestFullscreen();
+    };
+    return b;
+  }(Ea);
+  Qd.prototype.controlText_ = "Fullscreen";
+  l.registerComponent("FullscreenToggle", Qd);
+  var ag = function(a) {
+    function b() {
+      return a.apply(this, arguments) || this;
+    }
+    __extends(b, a);
+    b.prototype.createEl = function() {
+      return a.prototype.createEl.call(this, "div", {className:"vjs-volume-level", innerHTML:'<span class="vjs-control-text"></span>'});
+    };
+    return b;
+  }(l);
+  l.registerComponent("VolumeLevel", ag);
+  var kb = function(a) {
+    function b(c, b) {
+      b = a.call(this, c, b) || this;
+      b.on(c, "volumechange", b.updateARIAAttributes);
+      c.ready(A(b, b.updateARIAAttributes));
+      return b;
+    }
+    __extends(b, a);
+    b.prototype.createEl = function() {
+      return a.prototype.createEl.call(this, "div", {className:"vjs-volume-bar vjs-slider-bar"}, {"aria-label":"volume level"});
+    };
+    b.prototype.handleMouseMove = function(c) {
+      this.checkMuted();
+      this.player_.volume(this.calculateDistance(c));
+    };
+    b.prototype.checkMuted = function() {
+      this.player_.muted() && this.player_.muted(!1);
+    };
+    b.prototype.getPercent = function() {
+      return this.player_.muted() ? 0 : this.player_.volume();
+    };
+    b.prototype.stepForward = function() {
+      this.checkMuted();
+      this.player_.volume(this.player_.volume() + .1);
+    };
+    b.prototype.stepBack = function() {
+      this.checkMuted();
+      this.player_.volume(this.player_.volume() - .1);
+    };
+    b.prototype.updateARIAAttributes = function() {
+      var c = (100 * this.player_.volume()).toFixed(2);
+      this.el_.setAttribute("aria-valuenow", c);
+      this.el_.setAttribute("aria-valuetext", c + "%");
+    };
+    return b;
+  }(bc);
+  kb.prototype.options_ = {children:["volumeLevel"], barName:"volumeLevel"};
+  kb.prototype.playerEvent = "volumechange";
+  l.registerComponent("VolumeBar", kb);
+  var Rd = function(a) {
+    function b(c, b) {
+      b = a.call(this, c, b) || this;
+      c.tech_ && !1 === c.tech_.featuresVolumeControl && b.addClass("vjs-hidden");
+      b.on(c, "loadstart", function() {
+        !1 === c.tech_.featuresVolumeControl ? this.addClass("vjs-hidden") : this.removeClass("vjs-hidden");
+      });
+      return b;
+    }
+    __extends(b, a);
+    b.prototype.createEl = function() {
+      return a.prototype.createEl.call(this, "div", {className:"vjs-volume-control vjs-control"});
+    };
+    return b;
+  }(l);
+  Rd.prototype.options_ = {children:["volumeBar"]};
+  l.registerComponent("VolumeControl", Rd);
+  var Sd = function(a) {
+    function b() {
+      return a.apply(this, arguments) || this;
+    }
+    __extends(b, a);
+    b.prototype.addItem = function(c) {
+      this.addChild(c);
+      c.on("click", A(this, function() {
+        this.unlockShowing();
+      }));
+    };
+    b.prototype.createEl = function() {
+      this.contentEl_ = r(this.options_.contentElType || "ul", {className:"vjs-menu-content"});
+      var c = a.prototype.createEl.call(this, "div", {append:this.contentEl_, className:"vjs-menu"});
+      c.appendChild(this.contentEl_);
+      da(c, "click", function(c) {
+        c.preventDefault();
+        c.stopImmediatePropagation();
+      });
+      return c;
+    };
+    return b;
+  }(l);
+  l.registerComponent("Popup", Sd);
+  var Td = function(a) {
+    function b(c, b) {
+      void 0 === b && (b = {});
+      c = a.call(this, c, b) || this;
+      c.update();
+      return c;
+    }
+    __extends(b, a);
+    b.prototype.update = function() {
+      var c = this.createPopup();
+      this.popup && this.removeChild(this.popup);
+      this.popup = c;
+      this.addChild(c);
+      this.items && 0 === this.items.length ? this.hide() : this.items && 1 < this.items.length && this.show();
+    };
+    b.prototype.createPopup = function() {
+    };
+    b.prototype.createEl = function() {
+      return a.prototype.createEl.call(this, "div", {className:this.buildCSSClass()});
+    };
+    b.prototype.buildCSSClass = function() {
+      var c = "vjs-menu-button", c = !0 === this.options_.inline ? c + "-inline" : c + "-popup";
+      return "vjs-menu-button " + c + " " + a.prototype.buildCSSClass.call(this);
+    };
+    return b;
+  }(Da);
+  l.registerComponent("PopupButton", Td);
+  var lb = function(a) {
+    function b(c, b) {
+      b = a.call(this, c, b) || this;
+      b.on(c, "volumechange", b.update);
+      c.tech_ && !1 === c.tech_.featuresVolumeControl && b.addClass("vjs-hidden");
+      b.on(c, "loadstart", function() {
+        this.update();
+        !1 === c.tech_.featuresVolumeControl ? this.addClass("vjs-hidden") : this.removeClass("vjs-hidden");
+      });
+      return b;
+    }
+    __extends(b, a);
+    b.prototype.buildCSSClass = function() {
+      return "vjs-mute-control " + a.prototype.buildCSSClass.call(this);
+    };
+    b.prototype.handleClick = function() {
+      this.player_.muted(this.player_.muted() ? !1 : !0);
+    };
+    b.prototype.update = function() {
+      var c = this.player_.volume(), a = 3;
+      0 === c || this.player_.muted() ? a = 0 : .33 > c ? a = 1 : .67 > c && (a = 2);
+      c = this.player_.muted() ? "Unmute" : "Mute";
+      this.controlText() !== c && this.controlText(c);
+      for (c = 0;4 > c;c++) {
+        oa(this.el_, "vjs-vol-" + c);
+      }
+      ma(this.el_, "vjs-vol-" + a);
+    };
+    return b;
+  }(Ea);
+  lb.prototype.controlText_ = "Mute";
+  l.registerComponent("MuteToggle", lb);
+  var ec = function(a) {
+    function b(c, b) {
+      function d() {
+        c.tech_ && !1 === c.tech_.featuresVolumeControl ? this.addClass("vjs-hidden") : this.removeClass("vjs-hidden");
+      }
+      void 0 === b && (b = {});
+      void 0 === b.inline && (b.inline = !0);
+      void 0 === b.vertical && (b.vertical = b.inline ? !1 : !0);
+      b.volumeBar = b.volumeBar || {};
+      b.volumeBar.vertical = !!b.vertical;
+      b = a.call(this, c, b) || this;
+      b.on(c, "volumechange", b.volumeUpdate);
+      b.on(c, "loadstart", b.volumeUpdate);
+      d.call(b);
+      b.on(c, "loadstart", d);
+      b.on(b.volumeBar, ["slideractive", "focus"], function() {
+        this.addClass("vjs-slider-active");
+      });
+      b.on(b.volumeBar, ["sliderinactive", "blur"], function() {
+        this.removeClass("vjs-slider-active");
+      });
+      b.on(b.volumeBar, ["focus"], function() {
+        this.addClass("vjs-lock-showing");
+      });
+      b.on(b.volumeBar, ["blur"], function() {
+        this.removeClass("vjs-lock-showing");
+      });
+      return b;
+    }
+    __extends(b, a);
+    b.prototype.buildCSSClass = function() {
+      var c;
+      c = this.options_.vertical ? "vjs-volume-menu-button-vertical" : "vjs-volume-menu-button-horizontal";
+      return "vjs-volume-menu-button " + a.prototype.buildCSSClass.call(this) + " " + c;
+    };
+    b.prototype.createPopup = function() {
+      var c = new Sd(this.player_, {contentElType:"div"}), a = new kb(this.player_, this.options_.volumeBar);
+      c.addChild(a);
+      this.menuContent = c;
+      this.volumeBar = a;
+      this.attachVolumeBarEvents();
+      return c;
+    };
+    b.prototype.handleClick = function() {
+      lb.prototype.handleClick.call(this);
+      a.prototype.handleClick.call(this);
+    };
+    b.prototype.attachVolumeBarEvents = function() {
+      this.menuContent.on(["mousedown", "touchdown"], A(this, this.handleMouseDown));
+    };
+    b.prototype.handleMouseDown = function(c) {
+      this.on(["mousemove", "touchmove"], A(this.volumeBar, this.volumeBar.handleMouseMove));
+      this.on(this.el_.ownerDocument, ["mouseup", "touchend"], this.handleMouseUp);
+    };
+    b.prototype.handleMouseUp = function(c) {
+      this.off(["mousemove", "touchmove"], A(this.volumeBar, this.volumeBar.handleMouseMove));
+    };
+    return b;
+  }(Td);
+  ec.prototype.volumeUpdate = lb.prototype.update;
+  ec.prototype.controlText_ = "Mute";
+  l.registerComponent("VolumeMenuButton", ec);
+  var mb = function(a) {
+    function b(c, b) {
+      c = a.call(this, c, b) || this;
+      c.focusedChild_ = -1;
+      c.on("keydown", c.handleKeyPress);
+      return c;
+    }
+    __extends(b, a);
+    b.prototype.addItem = function(c) {
+      this.addChild(c);
+      c.on("click", A(this, function() {
+        this.unlockShowing();
+      }));
+    };
+    b.prototype.createEl = function() {
+      this.contentEl_ = r(this.options_.contentElType || "ul", {className:"vjs-menu-content"});
+      this.contentEl_.setAttribute("role", "menu");
+      var c = a.prototype.createEl.call(this, "div", {append:this.contentEl_, className:"vjs-menu"});
+      c.setAttribute("role", "presentation");
+      c.appendChild(this.contentEl_);
+      da(c, "click", function(c) {
+        c.preventDefault();
+        c.stopImmediatePropagation();
+      });
+      return c;
+    };
+    b.prototype.handleKeyPress = function(c) {
+      if (37 === c.which || 40 === c.which) {
+        c.preventDefault(), this.stepForward();
+      } else {
+        if (38 === c.which || 39 === c.which) {
+          c.preventDefault(), this.stepBack();
+        }
+      }
+    };
+    b.prototype.stepForward = function() {
+      var c = 0;
+      void 0 !== this.focusedChild_ && (c = this.focusedChild_ + 1);
+      this.focus(c);
+    };
+    b.prototype.stepBack = function() {
+      var c = 0;
+      void 0 !== this.focusedChild_ && (c = this.focusedChild_ - 1);
+      this.focus(c);
+    };
+    b.prototype.focus = function(c) {
+      void 0 === c && (c = 0);
+      var a = this.children().slice();
+      a.length && a[0].className && /vjs-menu-title/.test(a[0].className) && a.shift();
+      0 < a.length && (0 > c ? c = 0 : c >= a.length && (c = a.length - 1), this.focusedChild_ = c, a[c].el_.focus());
+    };
+    return b;
+  }(l);
+  l.registerComponent("Menu", mb);
+  var fc = function(a) {
+    function b(c, b) {
+      void 0 === b && (b = {});
+      c = a.call(this, c, b) || this;
+      c.update();
+      c.enabled_ = !0;
+      c.el_.setAttribute("aria-haspopup", "true");
+      c.el_.setAttribute("role", "menuitem");
+      c.on("keydown", c.handleSubmenuKeyPress);
+      return c;
+    }
+    __extends(b, a);
+    b.prototype.update = function() {
+      var c = this.createMenu();
+      this.menu && this.removeChild(this.menu);
+      this.menu = c;
+      this.addChild(c);
+      this.buttonPressed_ = !1;
+      this.el_.setAttribute("aria-expanded", "false");
+      this.items && 0 === this.items.length ? this.hide() : this.items && 1 < this.items.length && this.show();
+    };
+    b.prototype.createMenu = function() {
+      var c = new mb(this.player_);
+      if (this.options_.title) {
+        var a = r("li", {className:"vjs-menu-title", innerHTML:S(this.options_.title), tabIndex:-1});
+        c.children_.unshift(a);
+        h(a, c.contentEl());
+      }
+      if (this.items = this.createItems()) {
+        for (a = 0;a < this.items.length;a++) {
+          c.addItem(this.items[a]);
+        }
+      }
+      return c;
+    };
+    b.prototype.createItems = function() {
+    };
+    b.prototype.createEl = function() {
+      return a.prototype.createEl.call(this, "div", {className:this.buildCSSClass()});
+    };
+    b.prototype.buildCSSClass = function() {
+      var c = "vjs-menu-button", c = !0 === this.options_.inline ? c + "-inline" : c + "-popup";
+      return "vjs-menu-button " + c + " " + a.prototype.buildCSSClass.call(this);
+    };
+    b.prototype.handleClick = function() {
+      this.one(this.menu.contentEl(), "mouseleave", A(this, function(c) {
+        this.unpressButton();
+        this.el_.blur();
+      }));
+      this.buttonPressed_ ? this.unpressButton() : this.pressButton();
+    };
+    b.prototype.handleKeyPress = function(c) {
+      27 === c.which || 9 === c.which ? (this.buttonPressed_ && this.unpressButton(), 9 !== c.which && c.preventDefault()) : 38 === c.which || 40 === c.which ? this.buttonPressed_ || (this.pressButton(), c.preventDefault()) : a.prototype.handleKeyPress.call(this, c);
+    };
+    b.prototype.handleSubmenuKeyPress = function(c) {
+      if (27 === c.which || 9 === c.which) {
+        this.buttonPressed_ && this.unpressButton(), 9 !== c.which && c.preventDefault();
+      }
+    };
+    b.prototype.pressButton = function() {
+      this.enabled_ && (this.buttonPressed_ = !0, this.menu.lockShowing(), this.el_.setAttribute("aria-expanded", "true"), this.menu.focus());
+    };
+    b.prototype.unpressButton = function() {
+      this.enabled_ && (this.buttonPressed_ = !1, this.menu.unlockShowing(), this.el_.setAttribute("aria-expanded", "false"), this.el_.focus());
+    };
+    b.prototype.disable = function() {
+      this.buttonPressed_ = !1;
+      this.menu.unlockShowing();
+      this.el_.setAttribute("aria-expanded", "false");
+      this.enabled_ = !1;
+      return a.prototype.disable.call(this);
+    };
+    b.prototype.enable = function() {
+      this.enabled_ = !0;
+      return a.prototype.enable.call(this);
+    };
+    return b;
+  }(Da);
+  l.registerComponent("MenuButton", fc);
+  var gc = function(a) {
+    function b(c, b) {
+      var d = b.tracks;
+      c = a.call(this, c, b) || this;
+      1 >= c.items.length && c.hide();
+      if (d) {
+        var g = A(c, c.update);
+        d.addEventListener("removetrack", g);
+        d.addEventListener("addtrack", g);
+        c.player_.on("dispose", function() {
+          d.removeEventListener("removetrack", g);
+          d.removeEventListener("addtrack", g);
+        });
+        return c;
+      }
+    }
+    __extends(b, a);
+    return b;
+  }(fc);
+  l.registerComponent("TrackButton", gc);
+  var Qa = function(a) {
+    function b(c, b) {
+      c = a.call(this, c, b) || this;
+      c.selectable = b.selectable;
+      c.selected(b.selected);
+      c.selectable ? c.el_.setAttribute("role", "menuitemcheckbox") : c.el_.setAttribute("role", "menuitem");
+      return c;
+    }
+    __extends(b, a);
+    b.prototype.createEl = function(c, b, f) {
+      return a.prototype.createEl.call(this, "li", O({className:"vjs-menu-item", innerHTML:this.localize(this.options_.label), tabIndex:-1}, b), f);
+    };
+    b.prototype.handleClick = function() {
+      this.selected(!0);
+    };
+    b.prototype.selected = function(c) {
+      this.selectable && (c ? (this.addClass("vjs-selected"), this.el_.setAttribute("aria-checked", "true"), this.controlText(", selected")) : (this.removeClass("vjs-selected"), this.el_.setAttribute("aria-checked", "false"), this.controlText(" ")));
+    };
+    return b;
+  }(Da);
+  l.registerComponent("MenuItem", Qa);
+  var Ra = function(a) {
+    function b(c, b) {
+      var d = b.track, g = c.textTracks();
+      b.label = d.label || d.language || "Unknown";
+      b.selected = d["default"] || "showing" === d.mode;
+      c = a.call(this, c, b) || this;
+      c.track = d;
+      if (g) {
+        var e = A(c, c.handleTracksChange);
+        g.addEventListener("change", e);
+        c.on("dispose", function() {
+          g.removeEventListener("change", e);
+        });
+      }
+      if (g && void 0 === g.onchange) {
+        var h;
+        c.on(["tap", "click"], function() {
+          if ("object" !== typeof q.Event) {
+            try {
+              h = new q.Event("change");
+            } catch (L) {
+            }
+          }
+          h || (h = z.createEvent("Event"), h.initEvent("change", !0, !0));
+          g.dispatchEvent(h);
+        });
+      }
+      return c;
+    }
+    __extends(b, a);
+    b.prototype.handleClick = function(c) {
+      var b = this.track.kind, f = this.player_.textTracks();
+      a.prototype.handleClick.call(this, c);
+      if (f) {
+        for (c = 0;c < f.length;c++) {
+          var g = f[c];
+          g.kind === b && (g.mode = g === this.track ? "showing" : "disabled");
+        }
+      }
+    };
+    b.prototype.handleTracksChange = function(c) {
+      this.selected("showing" === this.track.mode);
+    };
+    return b;
+  }(Qa);
+  l.registerComponent("TextTrackMenuItem", Ra);
+  var Ud = function(a) {
+    function b(c, b) {
+      b.track = {player:c, kind:b.kind, label:b.kind + " off", "default":!1, mode:"disabled"};
+      b.selectable = !0;
+      c = a.call(this, c, b) || this;
+      c.selected(!0);
+      return c;
+    }
+    __extends(b, a);
+    b.prototype.handleTracksChange = function(c) {
+      c = this.player().textTracks();
+      for (var a = !0, b = 0, g = c.length;b < g;b++) {
+        var e = c[b];
+        if (e.kind === this.track.kind && "showing" === e.mode) {
+          a = !1;
+          break;
+        }
+      }
+      this.selected(a);
+    };
+    return b;
+  }(Ra);
+  l.registerComponent("OffTextTrackMenuItem", Ud);
+  var Sa = function(a) {
+    function b(c, b) {
+      void 0 === b && (b = {});
+      b.tracks = c.textTracks();
+      return a.call(this, c, b) || this;
+    }
+    __extends(b, a);
+    b.prototype.createItems = function(c) {
+      void 0 === c && (c = []);
+      c.push(new Ud(this.player_, {kind:this.kind_}));
+      var a = this.player_.textTracks();
+      if (!a) {
+        return c;
+      }
+      for (var b = 0;b < a.length;b++) {
+        var g = a[b];
+        g.kind === this.kind_ && c.push(new Ra(this.player_, {track:g, selectable:!0}));
+      }
+      return c;
+    };
+    return b;
+  }(gc);
+  l.registerComponent("TextTrackButton", Sa);
+  var Vd = function(a) {
+    function b(c, b) {
+      var d = b.track, g = b.cue, e = c.currentTime();
+      b.label = g.text;
+      b.selected = g.startTime <= e && e < g.endTime;
+      c = a.call(this, c, b) || this;
+      c.track = d;
+      c.cue = g;
+      d.addEventListener("cuechange", A(c, c.update));
+      return c;
+    }
+    __extends(b, a);
+    b.prototype.handleClick = function() {
+      a.prototype.handleClick.call(this);
+      this.player_.currentTime(this.cue.startTime);
+      this.update(this.cue.startTime);
+    };
+    b.prototype.update = function() {
+      var c = this.cue, a = this.player_.currentTime();
+      this.selected(c.startTime <= a && a < c.endTime);
+    };
+    return b;
+  }(Qa);
+  l.registerComponent("ChaptersTrackMenuItem", Vd);
+  var hc = function(a) {
+    function b(c, b, f) {
+      c = a.call(this, c, b, f) || this;
+      c.el_.setAttribute("aria-label", "Chapters Menu");
+      return c;
+    }
+    __extends(b, a);
+    b.prototype.buildCSSClass = function() {
+      return "vjs-chapters-button " + a.prototype.buildCSSClass.call(this);
+    };
+    b.prototype.createItems = function() {
+      var c = [], a = this.player_.textTracks();
+      if (!a) {
+        return c;
+      }
+      for (var b = 0;b < a.length;b++) {
+        var g = a[b];
+        g.kind === this.kind_ && c.push(new Ra(this.player_, {track:g}));
+      }
+      return c;
+    };
+    b.prototype.createMenu = function() {
+      for (var c = this, a = this.player_.textTracks() || [], b, g = this.items || [], e = a.length - 1;0 <= e;e--) {
+        var p = a[e];
+        if (p.kind === this.kind_) {
+          b = p;
+          break;
+        }
+      }
+      var l = this.menu;
+      void 0 === l ? (l = new mb(this.player_), e = r("li", {className:"vjs-menu-title", innerHTML:S(this.kind_), tabIndex:-1}), l.children_.unshift(e), h(e, l.contentEl())) : (g.forEach(function(c) {
+        return l.removeChild(c);
+      }), g = []);
+      !b || null !== b.cues && void 0 !== b.cues || (b.mode = "hidden", (e = this.player_.remoteTextTrackEls().getTrackElementByTrack_(b)) && e.addEventListener("load", function(a) {
+        return c.update();
+      }));
+      if (b && b.cues && 0 < b.cues.length) {
+        for (a = b.cues, e = 0, p = a.length;e < p;e++) {
+          var k = new Vd(this.player_, {cue:a[e], track:b});
+          g.push(k);
+          l.addChild(k);
+        }
+      }
+      0 < g.length && this.show();
+      this.items = g;
+      return l;
+    };
+    return b;
+  }(Sa);
+  hc.prototype.kind_ = "chapters";
+  hc.prototype.controlText_ = "Chapters";
+  l.registerComponent("ChaptersButton", hc);
+  var ic = function(a) {
+    function b(c, b, f) {
+      b = a.call(this, c, b, f) || this;
+      b.el_.setAttribute("aria-label", "Descriptions Menu");
+      var d = c.textTracks();
+      if (d) {
+        var e = A(b, b.handleTracksChange);
+        d.addEventListener("change", e);
+        b.on("dispose", function() {
+          d.removeEventListener("change", e);
+        });
+      }
+      return b;
+    }
+    __extends(b, a);
+    b.prototype.handleTracksChange = function(c) {
+      c = this.player().textTracks();
+      for (var a = !1, b = 0, g = c.length;b < g;b++) {
+        var e = c[b];
+        if (e.kind !== this.kind_ && "showing" === e.mode) {
+          a = !0;
+          break;
+        }
+      }
+      a ? this.disable() : this.enable();
+    };
+    b.prototype.buildCSSClass = function() {
+      return "vjs-descriptions-button " + a.prototype.buildCSSClass.call(this);
+    };
+    return b;
+  }(Sa);
+  ic.prototype.kind_ = "descriptions";
+  ic.prototype.controlText_ = "Descriptions";
+  l.registerComponent("DescriptionsButton", ic);
+  var jc = function(a) {
+    function b(c, b, f) {
+      c = a.call(this, c, b, f) || this;
+      c.el_.setAttribute("aria-label", "Subtitles Menu");
+      return c;
+    }
+    __extends(b, a);
+    b.prototype.buildCSSClass = function() {
+      return "vjs-subtitles-button " + a.prototype.buildCSSClass.call(this);
+    };
+    return b;
+  }(Sa);
+  jc.prototype.kind_ = "subtitles";
+  jc.prototype.controlText_ = "Subtitles";
+  l.registerComponent("SubtitlesButton", jc);
+  var Wd = function(a) {
+    function b(c, b) {
+      b.track = {player:c, kind:b.kind, label:b.kind + " settings", selectable:!1, "default":!1, mode:"disabled"};
+      b.selectable = !1;
+      c = a.call(this, c, b) || this;
+      c.addClass("vjs-texttrack-settings");
+      c.controlText(", opens " + b.kind + " settings dialog");
+      return c;
+    }
+    __extends(b, a);
+    b.prototype.handleClick = function() {
+      this.player().getChild("textTrackSettings").show();
+      this.player().getChild("textTrackSettings").el_.focus();
+    };
+    return b;
+  }(Ra);
+  l.registerComponent("CaptionSettingsMenuItem", Wd);
+  var kc = function(a) {
+    function b(c, b, f) {
+      c = a.call(this, c, b, f) || this;
+      c.el_.setAttribute("aria-label", "Captions Menu");
+      return c;
+    }
+    __extends(b, a);
+    b.prototype.buildCSSClass = function() {
+      return "vjs-captions-button " + a.prototype.buildCSSClass.call(this);
+    };
+    b.prototype.update = function() {
+      var c = 2;
+      a.prototype.update.call(this);
+      this.player().tech_ && this.player().tech_.featuresNativeTextTracks && (c = 1);
+      this.items && this.items.length > c ? this.show() : this.hide();
+    };
+    b.prototype.createItems = function() {
+      var c = [];
+      this.player().tech_ && this.player().tech_.featuresNativeTextTracks || c.push(new Wd(this.player_, {kind:this.kind_}));
+      return a.prototype.createItems.call(this, c);
+    };
+    return b;
+  }(Sa);
+  kc.prototype.kind_ = "captions";
+  kc.prototype.controlText_ = "Captions";
+  l.registerComponent("CaptionsButton", kc);
+  var Xd = function(a) {
+    function b(c, b) {
+      var d = b.track, g = c.audioTracks();
+      b.label = d.label || d.language || "Unknown";
+      b.selected = d.enabled;
+      c = a.call(this, c, b) || this;
+      c.track = d;
+      if (g) {
+        var e = A(c, c.handleTracksChange);
+        g.addEventListener("change", e);
+        c.on("dispose", function() {
+          g.removeEventListener("change", e);
+        });
+      }
+      return c;
+    }
+    __extends(b, a);
+    b.prototype.handleClick = function(c) {
+      var b = this.player_.audioTracks();
+      a.prototype.handleClick.call(this, c);
+      if (b) {
+        for (c = 0;c < b.length;c++) {
+          var f = b[c];
+          f.enabled = f === this.track;
+        }
+      }
+    };
+    b.prototype.handleTracksChange = function(c) {
+      this.selected(this.track.enabled);
+    };
+    return b;
+  }(Qa);
+  l.registerComponent("AudioTrackMenuItem", Xd);
+  var Yd = function(a) {
+    function b(c, b) {
+      void 0 === b && (b = {});
+      b.tracks = c.audioTracks && c.audioTracks();
+      c = a.call(this, c, b) || this;
+      c.el_.setAttribute("aria-label", "Audio Menu");
+      return c;
+    }
+    __extends(b, a);
+    b.prototype.buildCSSClass = function() {
+      return "vjs-audio-button " + a.prototype.buildCSSClass.call(this);
+    };
+    b.prototype.createItems = function(c) {
+      void 0 === c && (c = []);
+      var a = this.player_.audioTracks && this.player_.audioTracks();
+      if (!a) {
+        return c;
+      }
+      for (var b = 0;b < a.length;b++) {
+        c.push(new Xd(this.player_, {track:a[b], selectable:!0}));
+      }
+      return c;
+    };
+    return b;
+  }(gc);
+  Yd.prototype.controlText_ = "Audio Track";
+  l.registerComponent("AudioTrackButton", Yd);
+  var lc = function(a) {
+    function b(c, b) {
+      var d = b.rate, g = parseFloat(d, 10);
+      b.label = d;
+      b.selected = 1 === g;
+      b = a.call(this, c, b) || this;
+      b.label = d;
+      b.rate = g;
+      b.on(c, "ratechange", b.update);
+      return b;
+    }
+    __extends(b, a);
+    b.prototype.handleClick = function() {
+      a.prototype.handleClick.call(this);
+      this.player().playbackRate(this.rate);
+    };
+    b.prototype.update = function() {
+      this.selected(this.player().playbackRate() === this.rate);
+    };
+    return b;
+  }(Qa);
+  lc.prototype.contentElType = "button";
+  l.registerComponent("PlaybackRateMenuItem", lc);
+  var Zd = function(a) {
+    function b(c, b) {
+      b = a.call(this, c, b) || this;
+      b.updateVisibility();
+      b.updateLabel();
+      b.on(c, "loadstart", b.updateVisibility);
+      b.on(c, "ratechange", b.updateLabel);
+      return b;
+    }
+    __extends(b, a);
+    b.prototype.createEl = function() {
+      var c = a.prototype.createEl.call(this);
+      this.labelEl_ = r("div", {className:"vjs-playback-rate-value", innerHTML:1});
+      c.appendChild(this.labelEl_);
+      return c;
+    };
+    b.prototype.buildCSSClass = function() {
+      return "vjs-playback-rate " + a.prototype.buildCSSClass.call(this);
+    };
+    b.prototype.createMenu = function() {
+      var c = new mb(this.player()), a = this.playbackRates();
+      if (a) {
+        for (var b = a.length - 1;0 <= b;b--) {
+          c.addChild(new lc(this.player(), {rate:a[b] + "x"}));
+        }
+      }
+      return c;
+    };
+    b.prototype.updateARIAAttributes = function() {
+      this.el().setAttribute("aria-valuenow", this.player().playbackRate());
+    };
+    b.prototype.handleClick = function() {
+      for (var c = this.player().playbackRate(), a = this.playbackRates(), b = a[0], g = 0;g < a.length;g++) {
+        if (a[g] > c) {
+          b = a[g];
+          break;
+        }
+      }
+      this.player().playbackRate(b);
+    };
+    b.prototype.playbackRates = function() {
+      return this.options_.playbackRates || this.options_.playerOptions && this.options_.playerOptions.playbackRates;
+    };
+    b.prototype.playbackRateSupported = function() {
+      return this.player().tech_ && this.player().tech_.featuresPlaybackRate && this.playbackRates() && 0 < this.playbackRates().length;
+    };
+    b.prototype.updateVisibility = function() {
+      this.playbackRateSupported() ? this.removeClass("vjs-hidden") : this.addClass("vjs-hidden");
+    };
+    b.prototype.updateLabel = function() {
+      this.playbackRateSupported() && (this.labelEl_.innerHTML = this.player().playbackRate() + "x");
+    };
+    return b;
+  }(fc);
+  Zd.prototype.controlText_ = "Playback Rate";
+  l.registerComponent("PlaybackRateMenuButton", Zd);
+  var $d = function(a) {
+    function b() {
+      return a.apply(this, arguments) || this;
+    }
+    __extends(b, a);
+    b.prototype.buildCSSClass = function() {
+      return "vjs-spacer " + a.prototype.buildCSSClass.call(this);
+    };
+    b.prototype.createEl = function() {
+      return a.prototype.createEl.call(this, "div", {className:this.buildCSSClass()});
+    };
+    return b;
+  }(l);
+  l.registerComponent("Spacer", $d);
+  var bg = function(a) {
+    function b() {
+      return a.apply(this, arguments) || this;
+    }
+    __extends(b, a);
+    b.prototype.buildCSSClass = function() {
+      return "vjs-custom-control-spacer " + a.prototype.buildCSSClass.call(this);
+    };
+    b.prototype.createEl = function() {
+      var c = a.prototype.createEl.call(this, {className:this.buildCSSClass()});
+      c.innerHTML = "&nbsp;";
+      return c;
+    };
+    return b;
+  }($d);
+  l.registerComponent("CustomControlSpacer", bg);
+  var ae = function(a) {
+    function b() {
+      return a.apply(this, arguments) || this;
+    }
+    __extends(b, a);
+    b.prototype.createEl = function() {
+      return a.prototype.createEl.call(this, "div", {className:"vjs-control-bar", dir:"ltr"}, {role:"group"});
+    };
+    return b;
+  }(l);
+  ae.prototype.options_ = {children:"playToggle volumeMenuButton currentTimeDisplay timeDivider durationDisplay progressControl liveDisplay remainingTimeDisplay customControlSpacer playbackRateMenuButton chaptersButton descriptionsButton subtitlesButton captionsButton audioTrackButton fullscreenToggle".split(" ")};
+  l.registerComponent("ControlBar", ae);
+  var be = function(a) {
+    function b(c, b) {
+      b = a.call(this, c, b) || this;
+      b.on(c, "error", b.open);
+      return b;
+    }
+    __extends(b, a);
+    b.prototype.buildCSSClass = function() {
+      return "vjs-error-display " + a.prototype.buildCSSClass.call(this);
+    };
+    b.prototype.content = function() {
+      var c = this.player().error();
+      return c ? this.localize(c.message) : "";
+    };
+    return b;
+  }(Pa);
+  be.prototype.options_ = U(Pa.prototype.options_, {fillAlways:!0, temporary:!1, uncloseable:!0});
+  l.registerComponent("ErrorDisplay", be);
+  var ce = ["#000", "Black"], de = ["#00F", "Blue"], ee = ["#0FF", "Cyan"], fe = ["#0F0", "Green"], ge = ["#F0F", "Magenta"], he = ["#F00", "Red"], ie = ["#FFF", "White"], je = ["#FF0", "Yellow"], mc = ["1", "Opaque"], nc = ["0.5", "Semi-Transparent"], ke = ["0", "Transparent"], ya = {backgroundColor:{selector:".vjs-bg-color > select", id:"captions-background-color-%s", label:"Color", options:[ce, ie, he, fe, de, je, ge, ee]}, backgroundOpacity:{selector:".vjs-bg-opacity > select", id:"captions-background-opacity-%s", 
+  label:"Transparency", options:[mc, nc, ke]}, color:{selector:".vjs-fg-color > select", id:"captions-foreground-color-%s", label:"Color", options:[ie, ce, he, fe, de, je, ge, ee]}, edgeStyle:{selector:".vjs-edge-style > select", id:"%s", label:"Text Edge Style", options:[["none", "None"], ["raised", "Raised"], ["depressed", "Depressed"], ["uniform", "Uniform"], ["dropshadow", "Dropshadow"]]}, fontFamily:{selector:".vjs-font-family > select", id:"captions-font-family-%s", label:"Font Family", options:[["proportionalSansSerif", 
+  "Proportional Sans-Serif"], ["monospaceSansSerif", "Monospace Sans-Serif"], ["proportionalSerif", "Proportional Serif"], ["monospaceSerif", "Monospace Serif"], ["casual", "Casual"], ["script", "Script"], ["small-caps", "Small Caps"]]}, fontPercent:{selector:".vjs-font-percent > select", id:"captions-font-size-%s", label:"Font Size", options:[["0.50", "50%"], ["0.75", "75%"], ["1.00", "100%"], ["1.25", "125%"], ["1.50", "150%"], ["1.75", "175%"], ["2.00", "200%"], ["3.00", "300%"], ["4.00", "400%"]], 
+  "default":2, parser:function(a) {
+    return "1.00" === a ? null : Number(a);
+  }}, textOpacity:{selector:".vjs-text-opacity > select", id:"captions-foreground-opacity-%s", label:"Transparency", options:[mc, nc]}, windowColor:{selector:".vjs-window-color > select", id:"captions-window-color-%s", label:"Color"}, windowOpacity:{selector:".vjs-window-opacity > select", id:"captions-window-opacity-%s", label:"Transparency", options:[ke, nc, mc]}};
+  ya.windowColor.options = ya.backgroundColor.options;
+  var cg = function(a) {
+    function b(c, b) {
+      var d = a.call(this, c, b) || this;
+      d.setDefaults();
+      d.hide();
+      d.updateDisplay = A(d, d.updateDisplay);
+      void 0 === b.persistTextTrackSettings && (d.options_.persistTextTrackSettings = d.options_.playerOptions.persistTextTrackSettings);
+      d.on(d.$(".vjs-done-button"), "click", function() {
+        d.saveSettings();
+        d.hide();
+      });
+      d.on(d.$(".vjs-default-button"), "click", function() {
+        d.setDefaults();
+        d.updateDisplay();
+      });
+      vb(ya, function(c) {
+        d.on(d.$(c.selector), "change", d.updateDisplay);
+      });
+      d.options_.persistTextTrackSettings && d.restoreSettings();
+      return d;
+    }
+    __extends(b, a);
+    b.prototype.createElSelect_ = function(c) {
+      var a = this;
+      c = ya[c];
+      var b = c.id.replace("%s", this.id_);
+      return [r("label", {className:"vjs-label", textContent:c.label}, {"for":b}), r("select", {id:b}, void 0, c.options.map(function(c) {
+        return r("option", {textContent:a.localize(c[1]), value:c[0]});
+      }))];
+    };
+    b.prototype.createElFgColor_ = function() {
+      var c = r("legend", {textContent:this.localize("Text")}), a = this.createElSelect_("color"), b = r("span", {className:"vjs-text-opacity vjs-opacity"}, void 0, this.createElSelect_("textOpacity"));
+      return r("fieldset", {className:"vjs-fg-color vjs-tracksetting"}, void 0, [c].concat(a, b));
+    };
+    b.prototype.createElBgColor_ = function() {
+      var c = r("legend", {textContent:this.localize("Background")}), a = this.createElSelect_("backgroundColor"), b = r("span", {className:"vjs-bg-opacity vjs-opacity"}, void 0, this.createElSelect_("backgroundOpacity"));
+      return r("fieldset", {className:"vjs-bg-color vjs-tracksetting"}, void 0, [c].concat(a, b));
+    };
+    b.prototype.createElWinColor_ = function() {
+      var c = r("legend", {textContent:this.localize("Window")}), a = this.createElSelect_("windowColor"), b = r("span", {className:"vjs-window-opacity vjs-opacity"}, void 0, this.createElSelect_("windowOpacity"));
+      return r("fieldset", {className:"vjs-window-color vjs-tracksetting"}, void 0, [c].concat(a, b));
+    };
+    b.prototype.createElColors_ = function() {
+      return r("div", {className:"vjs-tracksettings-colors"}, void 0, [this.createElFgColor_(), this.createElBgColor_(), this.createElWinColor_()]);
+    };
+    b.prototype.createElFont_ = function() {
+      var c = r("div", {className:"vjs-font-percent vjs-tracksetting"}, void 0, this.createElSelect_("fontPercent")), a = r("div", {className:"vjs-edge-style vjs-tracksetting"}, void 0, this.createElSelect_("edgeStyle")), b = r("div", {className:"vjs-font-family vjs-tracksetting"}, void 0, this.createElSelect_("fontFamily"));
+      return r("div", {className:"vjs-tracksettings-font"}, void 0, [c, a, b]);
+    };
+    b.prototype.createElControls_ = function() {
+      var c = r("button", {className:"vjs-default-button", textContent:this.localize("Defaults")}), a = r("button", {className:"vjs-done-button", textContent:"Done"});
+      return r("div", {className:"vjs-tracksettings-controls"}, void 0, [c, a]);
+    };
+    b.prototype.createEl = function() {
+      var c = r("div", {className:"vjs-tracksettings"}, void 0, [this.createElColors_(), this.createElFont_(), this.createElControls_()]), a = r("div", {className:"vjs-control-text", id:"TTsettingsDialogLabel-" + this.id_, textContent:"Caption Settings Dialog"}, {"aria-level":"1", role:"heading"}), b = r("div", {className:"vjs-control-text", id:"TTsettingsDialogDescription-" + this.id_, textContent:"Beginning of dialog window. Escape will cancel and close the window."}), c = r("div", void 0, {role:"document"}, 
+      [a, b, c]);
+      return r("div", {className:"vjs-caption-settings vjs-modal-overlay", tabIndex:-1}, {role:"dialog", "aria-labelledby":a.id, "aria-describedby":b.id}, c);
+    };
+    b.prototype.getValues = function() {
+      var c = this;
+      return Ee(ya, function(a, b, g) {
+        var d = c.$(b.selector);
+        b = Ic(d.options[d.options.selectedIndex].value, b.parser);
+        void 0 !== b && (a[g] = b);
+        return a;
+      }, {});
+    };
+    b.prototype.setValues = function(c) {
+      var a = this;
+      vb(ya, function(b, d) {
+        var f = a.$(b.selector);
+        d = c[d];
+        b = b.parser;
+        if (d) {
+          for (var g = 0;g < f.options.length;g++) {
+            if (Ic(f.options[g].value, b) === d) {
+              f.selectedIndex = g;
+              break;
+            }
+          }
+        }
+      });
+    };
+    b.prototype.setDefaults = function() {
+      var c = this;
+      vb(ya, function(a) {
+        var b = a.hasOwnProperty("default") ? a["default"] : 0;
+        c.$(a.selector).selectedIndex = b;
+      });
+    };
+    b.prototype.restoreSettings = function() {
+      var c;
+      try {
+        c = JSON.parse(q.localStorage.getItem("vjs-text-track-settings"));
+      } catch (d) {
+        E.warn(d);
+      }
+      c && this.setValues(c);
+    };
+    b.prototype.saveSettings = function() {
+      if (this.options_.persistTextTrackSettings) {
+        var c = this.getValues();
+        try {
+          Object.keys(c).length ? q.localStorage.setItem("vjs-text-track-settings", JSON.stringify(c)) : q.localStorage.removeItem("vjs-text-track-settings");
+        } catch (d) {
+          E.warn(d);
+        }
+      }
+    };
+    b.prototype.updateDisplay = function() {
+      var c = this.player_.getChild("textTrackDisplay");
+      c && c.updateDisplay();
+    };
+    return b;
+  }(l);
+  l.registerComponent("TextTrackSettings", cg);
+  var x = function(a) {
+    function b(c, b) {
+      var d = a.call(this, c, b) || this, g = c.source;
+      b = !1;
+      g && (d.el_.currentSrc !== g.src || c.tag && 3 === c.tag.initNetworkState_) ? d.setSource(g) : d.handleLateInit_(d.el_);
+      if (d.el_.hasChildNodes()) {
+        for (var e = d.el_.childNodes, h = e.length, g = [];h--;) {
+          var p = e[h];
+          "track" === p.nodeName.toLowerCase() && (d.featuresNativeTextTracks ? (d.remoteTextTrackEls().addTrackElement_(p), d.remoteTextTracks().addTrack_(p.track), b || d.el_.hasAttribute("crossorigin") || !Vb(p.src) || (b = !0)) : g.push(p));
+        }
+        for (e = 0;e < g.length;e++) {
+          d.el_.removeChild(g[e]);
+        }
+      }
+      ["audio", "video"].forEach(function(c) {
+        var a = d.el()[c + "Tracks"], b = d[c + "Tracks"]();
+        c = S(c);
+        d["featuresNative" + c + "Tracks"] && a && a.addEventListener && (d["handle" + c + "TrackChange_"] = function(c) {
+          b.trigger({type:"change", target:b, currentTarget:b, srcElement:b});
+        }, d["handle" + c + "TrackAdd_"] = function(c) {
+          return b.addTrack(c.track);
+        }, d["handle" + c + "TrackRemove_"] = function(c) {
+          return b.removeTrack(c.track);
+        }, a.addEventListener("change", d["handle" + c + "TrackChange_"]), a.addEventListener("addtrack", d["handle" + c + "TrackAdd_"]), a.addEventListener("removetrack", d["handle" + c + "TrackRemove_"]), d["removeOld" + c + "Tracks_"] = function(c) {
+          return d.removeOldTracks_(b, a);
+        }, d.on("loadstart", d["removeOld" + c + "Tracks_"]));
+      });
+      d.featuresNativeTextTracks && (b && E.warn((l = ["Text Tracks are being loaded from another origin but the crossorigin attribute isn't used.\n            This may prevent text tracks from loading."], l.raw = ["Text Tracks are being loaded from another origin but the crossorigin attribute isn't used.\n            This may prevent text tracks from loading."], pc(l))), d.handleTextTrackChange_ = A(d, d.handleTextTrackChange), d.handleTextTrackAdd_ = A(d, d.handleTextTrackAdd), d.handleTextTrackRemove_ = 
+      A(d, d.handleTextTrackRemove), d.proxyNativeTextTracks_());
+      (Za || xb || Qc) && !0 === c.nativeControlsForTouch && d.setControls(!0);
+      d.proxyWebkitFullscreen_();
+      d.triggerReady();
+      return d;
+      var l;
+    }
+    __extends(b, a);
+    b.prototype.dispose = function() {
+      var c = this;
+      ["audio", "video", "text"].forEach(function(a) {
+        var b = S(a);
+        (a = c.el_[a + "Tracks"]) && a.removeEventListener && (a.removeEventListener("change", c["handle" + b + "TrackChange_"]), a.removeEventListener("addtrack", c["handle" + b + "TrackAdd_"]), a.removeEventListener("removetrack", c["handle" + b + "TrackRemove_"]));
+        a && c.off("loadstart", c["removeOld" + b + "Tracks_"]);
+      });
+      b.disposeMediaElement(this.el_);
+      a.prototype.dispose.call(this);
+    };
+    b.prototype.createEl = function() {
+      var c = this.options_.tag;
+      if (!c || !1 === this.movingMediaElementInDOM) {
+        if (c) {
+          var a = c.cloneNode(!0);
+          c.parentNode.insertBefore(a, c);
+          b.disposeMediaElement(c);
+          c = a;
+        } else {
+          c = z.createElement("video"), a = this.options_.tag && pa(this.options_.tag), a = U({}, a), Za && !0 === this.options_.nativeControlsForTouch || delete a.controls, p(c, O(a, {id:this.options_.techId, "class":"vjs-tech"}));
+        }
+        c.playerId = this.options_.playerId;
+      }
+      for (var a = ["autoplay", "preload", "loop", "muted"], f = a.length - 1;0 <= f;f--) {
+        var g = a[f], e = {};
+        "undefined" !== typeof this.options_[g] && (e[g] = this.options_[g]);
+        p(c, e);
+      }
+      return c;
+    };
+    b.prototype.handleLateInit_ = function(a) {
+      if (0 !== a.networkState && 3 !== a.networkState) {
+        if (0 === a.readyState) {
+          var c = !1, b = function() {
+            c = !0;
+          };
+          this.on("loadstart", b);
+          var g = function() {
+            c || this.trigger("loadstart");
+          };
+          this.on("loadedmetadata", g);
+          this.ready(function() {
+            this.off("loadstart", b);
+            this.off("loadedmetadata", g);
+            c || this.trigger("loadstart");
+          });
+        } else {
+          var e = ["loadstart"];
+          e.push("loadedmetadata");
+          2 <= a.readyState && e.push("loadeddata");
+          3 <= a.readyState && e.push("canplay");
+          4 <= a.readyState && e.push("canplaythrough");
+          this.ready(function() {
+            e.forEach(function(a) {
+              this.trigger(a);
+            }, this);
+          });
+        }
+      }
+    };
+    b.prototype.proxyNativeTextTracks_ = function() {
+      var a = this.el().textTracks;
+      if (a) {
+        for (var b = 0;b < a.length;b++) {
+          this.textTracks().addTrack_(a[b]);
+        }
+        a.addEventListener && (a.addEventListener("change", this.handleTextTrackChange_), a.addEventListener("addtrack", this.handleTextTrackAdd_), a.addEventListener("removetrack", this.handleTextTrackRemove_));
+        this.on("loadstart", this.removeOldTextTracks_);
+      }
+    };
+    b.prototype.handleTextTrackChange = function(a) {
+      a = this.textTracks();
+      this.textTracks().trigger({type:"change", target:a, currentTarget:a, srcElement:a});
+    };
+    b.prototype.handleTextTrackAdd = function(a) {
+      this.textTracks().addTrack_(a.track);
+    };
+    b.prototype.handleTextTrackRemove = function(a) {
+      this.textTracks().removeTrack_(a.track);
+    };
+    b.prototype.removeOldTracks_ = function(a, b) {
+      var c = [];
+      if (b) {
+        for (var d = 0;d < a.length;d++) {
+          for (var e = a[d], h = !1, p = 0;p < b.length;p++) {
+            if (b[p] === e) {
+              h = !0;
+              break;
+            }
+          }
+          h || c.push(e);
+        }
+        for (d = 0;d < c.length;d++) {
+          a.removeTrack_(c[d]);
+        }
+      }
+    };
+    b.prototype.removeOldTextTracks_ = function() {
+      var a = this.textTracks(), b = this.el().textTracks;
+      this.removeOldTracks_(a, b);
+    };
+    b.prototype.play = function() {
+      var a = this.el_.play();
+      void 0 !== a && "function" === typeof a.then && a.then(null, function(a) {
+      });
+    };
+    b.prototype.setCurrentTime = function(a) {
+      try {
+        this.el_.currentTime = a;
+      } catch (d) {
+        E(d, "Video is not ready. (Video.js)");
+      }
+    };
+    b.prototype.duration = function() {
+      var a = this;
+      if (Infinity === this.el_.duration && Ja && Ab && 0 === this.el_.currentTime) {
+        var b = function() {
+          0 < a.el_.currentTime && (Infinity === a.el_.duration && a.trigger("durationchange"), a.off(a.player_, "timeupdate", b));
+        };
+        this.on(this.player_, "timeupdate", b);
+        return NaN;
+      }
+      return this.el_.duration || NaN;
+    };
+    b.prototype.width = function() {
+      return this.el_.offsetWidth;
+    };
+    b.prototype.height = function() {
+      return this.el_.offsetHeight;
+    };
+    b.prototype.proxyWebkitFullscreen_ = function() {
+      var a = this;
+      if ("webkitDisplayingFullscreen" in this.el_) {
+        var b = function() {
+          this.trigger("fullscreenchange", {isFullscreen:!1});
+        }, f = function() {
+          this.one("webkitendfullscreen", b);
+          this.trigger("fullscreenchange", {isFullscreen:!0});
+        };
+        this.on("webkitbeginfullscreen", f);
+        this.on("dispose", function() {
+          a.off("webkitbeginfullscreen", f);
+          a.off("webkitendfullscreen", b);
+        });
+      }
+    };
+    b.prototype.supportsFullScreen = function() {
+      if ("function" === typeof this.el_.webkitEnterFullScreen) {
+        var a = q.navigator && q.navigator.userAgent || "";
+        if (/Android/.test(a) || !/Chrome|Mac OS X 10.5/.test(a)) {
+          return !0;
+        }
+      }
+      return !1;
+    };
+    b.prototype.enterFullScreen = function() {
+      var a = this.el_;
+      a.paused && a.networkState <= a.HAVE_METADATA ? (this.el_.play(), this.setTimeout(function() {
+        a.pause();
+        a.webkitEnterFullScreen();
+      }, 0)) : a.webkitEnterFullScreen();
+    };
+    b.prototype.exitFullScreen = function() {
+      this.el_.webkitExitFullScreen();
+    };
+    b.prototype.src = function(a) {
+      if (void 0 === a) {
+        return this.el_.src;
+      }
+      this.setSrc(a);
+    };
+    b.prototype.reset = function() {
+      b.resetMediaElement(this.el_);
+    };
+    b.prototype.currentSrc = function() {
+      return this.currentSource_ ? this.currentSource_.src : this.el_.currentSrc;
+    };
+    b.prototype.setControls = function(a) {
+      this.el_.controls = !!a;
+    };
+    b.prototype.addTextTrack = function(b, d, f) {
+      return this.featuresNativeTextTracks ? this.el_.addTextTrack(b, d, f) : a.prototype.addTextTrack.call(this, b, d, f);
+    };
+    b.prototype.createRemoteTextTrack = function(b) {
+      if (!this.featuresNativeTextTracks) {
+        return a.prototype.createRemoteTextTrack.call(this, b);
+      }
+      var c = z.createElement("track");
+      b.kind && (c.kind = b.kind);
+      b.label && (c.label = b.label);
+      if (b.language || b.srclang) {
+        c.srclang = b.language || b.srclang;
+      }
+      b["default"] && (c["default"] = b["default"]);
+      b.id && (c.id = b.id);
+      b.src && (c.src = b.src);
+      return c;
+    };
+    b.prototype.addRemoteTextTrack = function(b, d) {
+      b = a.prototype.addRemoteTextTrack.call(this, b, d);
+      this.el().appendChild(b);
+      return b;
+    };
+    b.prototype.removeRemoteTextTrack = function(b) {
+      a.prototype.removeRemoteTextTrack.call(this, b);
+      for (var c = this.$$("track"), f = c.length;f--;) {
+        b !== c[f] && b !== c[f].track || this.el().removeChild(c[f]);
+      }
+    };
+    return b;
+  }(I);
+  x.TEST_VID = z.createElement("video");
+  var nb = z.createElement("track");
+  nb.kind = "captions";
+  nb.srclang = "en";
+  nb.label = "English";
+  x.TEST_VID.appendChild(nb);
+  x.isSupported = function() {
+    try {
+      x.TEST_VID.volume = .5;
+    } catch (a) {
+      return !1;
+    }
+    return !!x.TEST_VID.canPlayType;
+  };
+  x.canControlVolume = function() {
+    try {
+      var a = x.TEST_VID.volume;
+      x.TEST_VID.volume = a / 2 + .1;
+      return a !== x.TEST_VID.volume;
+    } catch (b) {
+      return !1;
+    }
+  };
+  x.canControlPlaybackRate = function() {
+    if (Ja && Ab) {
+      return !1;
+    }
+    try {
+      var a = x.TEST_VID.playbackRate;
+      x.TEST_VID.playbackRate = a / 2 + .1;
+      return a !== x.TEST_VID.playbackRate;
+    } catch (b) {
+      return !1;
+    }
+  };
+  x.supportsNativeTextTracks = function() {
+    var a;
+    (a = !!x.TEST_VID.textTracks) && 0 < x.TEST_VID.textTracks.length && (a = "number" !== typeof x.TEST_VID.textTracks[0].mode);
+    a && zb && (a = !1);
+    !a || "onremovetrack" in x.TEST_VID.textTracks || (a = !1);
+    return a;
+  };
+  x.supportsNativeVideoTracks = function() {
+    return !!x.TEST_VID.videoTracks;
+  };
+  x.supportsNativeAudioTracks = function() {
+    return !!x.TEST_VID.audioTracks;
+  };
+  x.Events = "loadstart suspend abort error emptied stalled loadedmetadata loadeddata canplay canplaythrough playing waiting seeking seeked ended durationchange timeupdate progress play pause ratechange volumechange".split(" ");
+  x.prototype.featuresVolumeControl = x.canControlVolume();
+  x.prototype.featuresPlaybackRate = x.canControlPlaybackRate();
+  x.prototype.movingMediaElementInDOM = !yb;
+  x.prototype.featuresFullscreenResize = !0;
+  x.prototype.featuresProgressEvents = !0;
+  x.prototype.featuresTimeupdateEvents = !0;
+  x.prototype.featuresNativeTextTracks = x.supportsNativeTextTracks();
+  x.prototype.featuresNativeVideoTracks = x.supportsNativeVideoTracks();
+  x.prototype.featuresNativeAudioTracks = x.supportsNativeAudioTracks();
+  var ta, dg = /^application\/(?:x-|vnd\.apple\.)mpegurl/i, eg = /^video\/mp4/i;
+  x.patchCanPlayType = function() {
+    4 <= Ya && !zb && (ta || (ta = x.TEST_VID.constructor.prototype.canPlayType), x.TEST_VID.constructor.prototype.canPlayType = function(a) {
+      return a && dg.test(a) ? "maybe" : ta.call(this, a);
+    });
+    Pc && (ta || (ta = x.TEST_VID.constructor.prototype.canPlayType), x.TEST_VID.constructor.prototype.canPlayType = function(a) {
+      return a && eg.test(a) ? "maybe" : ta.call(this, a);
+    });
+  };
+  x.unpatchCanPlayType = function() {
+    var a = x.TEST_VID.constructor.prototype.canPlayType;
+    x.TEST_VID.constructor.prototype.canPlayType = ta;
+    ta = null;
+    return a;
+  };
+  x.patchCanPlayType();
+  x.disposeMediaElement = function(a) {
+    if (a) {
+      for (a.parentNode && a.parentNode.removeChild(a);a.hasChildNodes();) {
+        a.removeChild(a.firstChild);
+      }
+      a.removeAttribute("src");
+      if ("function" === typeof a.load) {
+        try {
+          a.load();
+        } catch (b) {
+        }
+      }
+    }
+  };
+  x.resetMediaElement = function(a) {
+    if (a) {
+      for (var b = a.querySelectorAll("source"), c = b.length;c--;) {
+        a.removeChild(b[c]);
+      }
+      a.removeAttribute("src");
+      if ("function" === typeof a.load) {
+        try {
+          a.load();
+        } catch (d) {
+        }
+      }
+    }
+  };
+  "paused currentTime buffered volume muted poster preload autoplay controls loop error seeking seekable ended defaultMuted playbackRate played networkState readyState videoWidth videoHeight".split(" ").forEach(function(a) {
+    x.prototype[a] = function() {
+      return this.el_[a];
+    };
+  });
+  "volume muted src poster preload autoplay loop playbackRate".split(" ").forEach(function(a) {
+    x.prototype["set" + S(a)] = function(b) {
+      this.el_[a] = b;
+    };
+  });
+  ["pause", "load"].forEach(function(a) {
+    x.prototype[a] = function() {
+      return this.el_[a]();
+    };
+  });
+  I.withSourceHandlers(x);
+  x.nativeSourceHandler = {};
+  x.nativeSourceHandler.canPlayType = function(a) {
+    try {
+      return x.TEST_VID.canPlayType(a);
+    } catch (b) {
+      return "";
+    }
+  };
+  x.nativeSourceHandler.canHandleSource = function(a, b) {
+    return a.type ? x.nativeSourceHandler.canPlayType(a.type) : a.src ? (a = Fd(a.src), x.nativeSourceHandler.canPlayType("video/" + a)) : "";
+  };
+  x.nativeSourceHandler.handleSource = function(a, b, c) {
+    b.setSrc(a.src);
+  };
+  x.nativeSourceHandler.dispose = function() {
+  };
+  x.registerSourceHandler(x.nativeSourceHandler);
+  l.registerComponent("Html5", x);
+  I.registerTech("Html5", x);
+  var le = "progress abort suspend emptied stalled loadedmetadata loadeddata timeupdate ratechange volumechange texttrackchange".split(" "), ea = function(a) {
+    function b(c, d, f) {
+      c.id = c.id || "vjs_video_" + wa++;
+      d = O(b.getTagSettings(c), d);
+      d.initChildren = !1;
+      d.createEl = !1;
+      d.reportTouchActivity = !1;
+      if (!d.language) {
+        if ("function" === typeof c.closest) {
+          var g = c.closest("[lang]");
+          g && (d.language = g.getAttribute("lang"));
+        } else {
+          for (g = c;g && 1 === g.nodeType;) {
+            if (pa(g).hasOwnProperty("lang")) {
+              d.language = g.getAttribute("lang");
+              break;
+            }
+            g = g.parentNode;
+          }
+        }
+      }
+      f = a.call(this, null, d, f) || this;
+      if (!f.options_ || !f.options_.techOrder || !f.options_.techOrder.length) {
+        throw Error("No techOrder specified. Did you overwrite videojs.options instead of just changing the properties you want to override?");
+      }
+      f.tag = c;
+      f.tagAttributes = c && pa(c);
+      f.language(f.options_.language);
+      if (d.languages) {
+        var e = {};
+        Object.getOwnPropertyNames(d.languages).forEach(function(a) {
+          e[a.toLowerCase()] = d.languages[a];
+        });
+        f.languages_ = e;
+      } else {
+        f.languages_ = b.prototype.options_.languages;
+      }
+      f.cache_ = {};
+      f.poster_ = d.poster || "";
+      f.controls_ = !!d.controls;
+      c.controls = !1;
+      f.scrubbing_ = !1;
+      f.el_ = f.createEl();
+      g = U(f.options_);
+      if (d.plugins) {
+        var h = d.plugins;
+        Object.getOwnPropertyNames(h).forEach(function(a) {
+          if ("function" === typeof this[a]) {
+            this[a](h[a]);
+          } else {
+            E.error("Unable to find plugin:", a);
+          }
+        }, f);
+      }
+      f.options_.playerOptions = g;
+      f.initChildren();
+      f.isAudio("audio" === c.nodeName.toLowerCase());
+      f.controls() ? f.addClass("vjs-controls-enabled") : f.addClass("vjs-controls-disabled");
+      f.el_.setAttribute("role", "region");
+      f.isAudio() ? f.el_.setAttribute("aria-label", "audio player") : f.el_.setAttribute("aria-label", "video player");
+      f.isAudio() && f.addClass("vjs-audio");
+      f.flexNotSupported_() && f.addClass("vjs-no-flex");
+      yb || f.addClass("vjs-workinghover");
+      b.players[f.id_] = f;
+      f.userActive(!0);
+      f.reportUserActivity();
+      f.listenForUserActivity_();
+      f.on("fullscreenchange", f.handleFullscreenChange_);
+      f.on("stageclick", f.handleStageClick_);
+      return f;
+    }
+    __extends(b, a);
+    b.prototype.dispose = function() {
+      this.trigger("dispose");
+      this.off("dispose");
+      this.styleEl_ && this.styleEl_.parentNode && this.styleEl_.parentNode.removeChild(this.styleEl_);
+      b.players[this.id_] = null;
+      this.tag && this.tag.player && (this.tag.player = null);
+      this.el_ && this.el_.player && (this.el_.player = null);
+      this.tech_ && this.tech_.dispose();
+      a.prototype.dispose.call(this);
+    };
+    b.prototype.createEl = function() {
+      var b = this.el_ = a.prototype.createEl.call(this, "div"), d = this.tag;
+      d.removeAttribute("width");
+      d.removeAttribute("height");
+      var f = pa(d);
+      Object.getOwnPropertyNames(f).forEach(function(a) {
+        "class" === a ? b.className = f[a] : b.setAttribute(a, f[a]);
+      });
+      d.playerId = d.id;
+      d.id += "_html5_api";
+      d.className = "vjs-tech";
+      d.player = b.player = this;
+      this.addClass("vjs-paused");
+      if (!0 !== q.VIDEOJS_NO_DYNAMIC_STYLE) {
+        this.styleEl_ = Uc("vjs-styles-dimensions");
+        var g = Ka(".vjs-styles-defaults"), e = Ka("head");
+        e.insertBefore(this.styleEl_, g ? g.nextSibling : e.firstChild);
+      }
+      this.width(this.options_.width);
+      this.height(this.options_.height);
+      this.fluid(this.options_.fluid);
+      this.aspectRatio(this.options_.aspectRatio);
+      g = d.getElementsByTagName("a");
+      for (e = 0;e < g.length;e++) {
+        var p = g.item(e);
+        ma(p, "vjs-hidden");
+        p.setAttribute("hidden", "hidden");
+      }
+      d.initNetworkState_ = d.networkState;
+      d.parentNode && d.parentNode.insertBefore(b, d);
+      h(d, b);
+      this.children_.unshift(d);
+      return this.el_ = b;
+    };
+    b.prototype.width = function(a) {
+      return this.dimension("width", a);
+    };
+    b.prototype.height = function(a) {
+      return this.dimension("height", a);
+    };
+    b.prototype.dimension = function(a, b) {
+      var c = a + "_";
+      if (void 0 === b) {
+        return this[c] || 0;
+      }
+      if ("" === b) {
+        this[c] = void 0;
+      } else {
+        var d = parseFloat(b);
+        if (isNaN(d)) {
+          return E.error('Improper value "' + b + '" supplied for for ' + a), this;
+        }
+        this[c] = d;
+      }
+      this.updateStyleEl_();
+      return this;
+    };
+    b.prototype.fluid = function(a) {
+      if (void 0 === a) {
+        return !!this.fluid_;
+      }
+      this.fluid_ = !!a;
+      a ? this.addClass("vjs-fluid") : this.removeClass("vjs-fluid");
+      this.updateStyleEl_();
+    };
+    b.prototype.aspectRatio = function(a) {
+      if (void 0 === a) {
+        return this.aspectRatio_;
+      }
+      if (!/^\d+\:\d+$/.test(a)) {
+        throw Error("Improper value supplied for aspect ratio. The format should be width:height, for example 16:9.");
+      }
+      this.aspectRatio_ = a;
+      this.fluid(!0);
+      this.updateStyleEl_();
+    };
+    b.prototype.updateStyleEl_ = function() {
+      if (!0 === q.VIDEOJS_NO_DYNAMIC_STYLE) {
+        var a = "number" === typeof this.width_ ? this.width_ : this.options_.width, b = "number" === typeof this.height_ ? this.height_ : this.options_.height, f = this.tech_ && this.tech_.el();
+        f && (0 <= a && (f.width = a), 0 <= b && (f.height = b));
+      } else {
+        var a = (void 0 !== this.aspectRatio_ && "auto" !== this.aspectRatio_ ? this.aspectRatio_ : 0 < this.videoWidth() ? this.videoWidth() + ":" + this.videoHeight() : "16:9").split(":"), g = a[1] / a[0], a = void 0 !== this.width_ ? this.width_ : void 0 !== this.height_ ? this.height_ / g : this.videoWidth() || 300, b = void 0 !== this.height_ ? this.height_ : a * g, f = /^[^a-zA-Z]/.test(this.id()) ? "dimensions-" + this.id() : this.id() + "-dimensions";
+        this.addClass(f);
+        Vc(this.styleEl_, "\n      ." + f + " {\n        width: " + a + "px;\n        height: " + b + "px;\n      }\n\n      ." + f + ".vjs-fluid {\n        padding-top: " + 100 * g + "%;\n      }\n    ");
+      }
+    };
+    b.prototype.loadTech_ = function(a, b) {
+      var c = this;
+      this.tech_ && this.unloadTech_();
+      "Html5" !== a && this.tag && (I.getTech("Html5").disposeMediaElement(this.tag), this.tag = this.tag.player = null);
+      this.techName_ = a;
+      this.isReady_ = !1;
+      var d = O({source:b, nativeControlsForTouch:this.options_.nativeControlsForTouch, playerId:this.id(), techId:this.id() + "_" + a + "_api", videoTracks:this.videoTracks_, textTracks:this.textTracks_, audioTracks:this.audioTracks_, autoplay:this.options_.autoplay, preload:this.options_.preload, loop:this.options_.loop, muted:this.options_.muted, poster:this.poster(), language:this.language(), "vtt.js":this.options_["vtt.js"]}, this.options_[a.toLowerCase()]);
+      this.tag && (d.tag = this.tag);
+      b && (this.currentType_ = b.type, b.src === this.cache_.src && 0 < this.cache_.currentTime && (d.startTime = this.cache_.currentTime), this.cache_.sources = null, this.cache_.source = b, this.cache_.src = b.src);
+      (b = I.getTech(a)) || (b = l.getComponent(a));
+      this.tech_ = new b(d);
+      this.tech_.ready(A(this, this.handleTechReady_), !0);
+      Bd.jsonToTextTracks(this.textTracksJson_ || [], this.tech_);
+      le.forEach(function(a) {
+        c.on(c.tech_, a, c["handleTech" + S(a) + "_"]);
+      });
+      this.on(this.tech_, "loadstart", this.handleTechLoadStart_);
+      this.on(this.tech_, "waiting", this.handleTechWaiting_);
+      this.on(this.tech_, "canplay", this.handleTechCanPlay_);
+      this.on(this.tech_, "canplaythrough", this.handleTechCanPlayThrough_);
+      this.on(this.tech_, "playing", this.handleTechPlaying_);
+      this.on(this.tech_, "ended", this.handleTechEnded_);
+      this.on(this.tech_, "seeking", this.handleTechSeeking_);
+      this.on(this.tech_, "seeked", this.handleTechSeeked_);
+      this.on(this.tech_, "play", this.handleTechPlay_);
+      this.on(this.tech_, "firstplay", this.handleTechFirstPlay_);
+      this.on(this.tech_, "pause", this.handleTechPause_);
+      this.on(this.tech_, "durationchange", this.handleTechDurationChange_);
+      this.on(this.tech_, "fullscreenchange", this.handleTechFullscreenChange_);
+      this.on(this.tech_, "error", this.handleTechError_);
+      this.on(this.tech_, "loadedmetadata", this.updateStyleEl_);
+      this.on(this.tech_, "posterchange", this.handleTechPosterChange_);
+      this.on(this.tech_, "textdata", this.handleTechTextData_);
+      this.usingNativeControls(this.techGet_("controls"));
+      this.controls() && !this.usingNativeControls() && this.addTechControlsListeners_();
+      this.tech_.el().parentNode === this.el() || "Html5" === a && this.tag || h(this.tech_.el(), this.el());
+      this.tag && (this.tag = this.tag.player = null);
+    };
+    b.prototype.unloadTech_ = function() {
+      this.videoTracks_ = this.videoTracks();
+      this.textTracks_ = this.textTracks();
+      this.audioTracks_ = this.audioTracks();
+      this.textTracksJson_ = Bd.textTracksToJson(this.tech_);
+      this.isReady_ = !1;
+      this.tech_.dispose();
+      this.tech_ = !1;
+    };
+    b.prototype.tech = function(a) {
+      if (a && a.IWillNotUseThisInPlugins) {
+        return this.tech_;
+      }
+      q.alert("\n      Please make sure that you are not using this inside of a plugin.\n      To disable this alert and error, please pass in an object with\n      `IWillNotUseThisInPlugins` to the `tech` method. See\n      https://github.com/videojs/video.js/issues/2617 for more info.\n    ");
+      throw Error("\n      Please make sure that you are not using this inside of a plugin.\n      To disable this alert and error, please pass in an object with\n      `IWillNotUseThisInPlugins` to the `tech` method. See\n      https://github.com/videojs/video.js/issues/2617 for more info.\n    ");
+    };
+    b.prototype.addTechControlsListeners_ = function() {
+      this.removeTechControlsListeners_();
+      this.on(this.tech_, "mousedown", this.handleTechClick_);
+      this.on(this.tech_, "touchstart", this.handleTechTouchStart_);
+      this.on(this.tech_, "touchmove", this.handleTechTouchMove_);
+      this.on(this.tech_, "touchend", this.handleTechTouchEnd_);
+      this.on(this.tech_, "tap", this.handleTechTap_);
+    };
+    b.prototype.removeTechControlsListeners_ = function() {
+      this.off(this.tech_, "tap", this.handleTechTap_);
+      this.off(this.tech_, "touchstart", this.handleTechTouchStart_);
+      this.off(this.tech_, "touchmove", this.handleTechTouchMove_);
+      this.off(this.tech_, "touchend", this.handleTechTouchEnd_);
+      this.off(this.tech_, "mousedown", this.handleTechClick_);
+    };
+    b.prototype.handleTechReady_ = function() {
+      this.triggerReady();
+      this.cache_.volume && this.techCall_("setVolume", this.cache_.volume);
+      this.handleTechPosterChange_();
+      this.handleTechDurationChange_();
+      if ((this.src() || this.currentSrc()) && this.tag && this.options_.autoplay && this.paused()) {
+        try {
+          delete this.tag.poster;
+        } catch (c) {
+          E("deleting tag.poster throws in some browsers", c);
+        }
+        this.play();
+      }
+    };
+    b.prototype.handleTechLoadStart_ = function() {
+      this.removeClass("vjs-ended");
+      this.error(null);
+      this.paused() ? (this.hasStarted(!1), this.trigger("loadstart")) : (this.trigger("loadstart"), this.trigger("firstplay"));
+    };
+    b.prototype.hasStarted = function(a) {
+      return void 0 !== a ? (this.hasStarted_ !== a && ((this.hasStarted_ = a) ? (this.addClass("vjs-has-started"), this.trigger("firstplay")) : this.removeClass("vjs-has-started")), this) : !!this.hasStarted_;
+    };
+    b.prototype.handleTechPlay_ = function() {
+      this.removeClass("vjs-ended");
+      this.removeClass("vjs-paused");
+      this.addClass("vjs-playing");
+      this.hasStarted(!0);
+      this.trigger("play");
+    };
+    b.prototype.handleTechWaiting_ = function() {
+      var a = this;
+      this.addClass("vjs-waiting");
+      this.trigger("waiting");
+      this.one("timeupdate", function() {
+        return a.removeClass("vjs-waiting");
+      });
+    };
+    b.prototype.handleTechCanPlay_ = function() {
+      this.removeClass("vjs-waiting");
+      this.trigger("canplay");
+    };
+    b.prototype.handleTechCanPlayThrough_ = function() {
+      this.removeClass("vjs-waiting");
+      this.trigger("canplaythrough");
+    };
+    b.prototype.handleTechPlaying_ = function() {
+      this.removeClass("vjs-waiting");
+      this.trigger("playing");
+    };
+    b.prototype.handleTechSeeking_ = function() {
+      this.addClass("vjs-seeking");
+      this.trigger("seeking");
+    };
+    b.prototype.handleTechSeeked_ = function() {
+      this.removeClass("vjs-seeking");
+      this.trigger("seeked");
+    };
+    b.prototype.handleTechFirstPlay_ = function() {
+      this.options_.starttime && this.currentTime(this.options_.starttime);
+      this.addClass("vjs-has-started");
+      this.trigger("firstplay");
+    };
+    b.prototype.handleTechPause_ = function() {
+      this.removeClass("vjs-playing");
+      this.addClass("vjs-paused");
+      this.trigger("pause");
+    };
+    b.prototype.handleTechEnded_ = function() {
+      this.addClass("vjs-ended");
+      this.options_.loop ? (this.currentTime(0), this.play()) : this.paused() || this.pause();
+      this.trigger("ended");
+    };
+    b.prototype.handleTechDurationChange_ = function() {
+      this.duration(this.techGet_("duration"));
+    };
+    b.prototype.handleTechClick_ = function(a) {
+      0 === a.button && this.controls() && (this.paused() ? this.play() : this.pause());
+    };
+    b.prototype.handleTechTap_ = function() {
+      this.userActive(!this.userActive());
+    };
+    b.prototype.handleTechTouchStart_ = function() {
+      this.userWasActive = this.userActive();
+    };
+    b.prototype.handleTechTouchMove_ = function() {
+      this.userWasActive && this.reportUserActivity();
+    };
+    b.prototype.handleTechTouchEnd_ = function(a) {
+      a.preventDefault();
+    };
+    b.prototype.handleFullscreenChange_ = function() {
+      this.isFullscreen() ? this.addClass("vjs-fullscreen") : this.removeClass("vjs-fullscreen");
+    };
+    b.prototype.handleStageClick_ = function() {
+      this.reportUserActivity();
+    };
+    b.prototype.handleTechFullscreenChange_ = function(a, b) {
+      b && this.isFullscreen(b.isFullscreen);
+      this.trigger("fullscreenchange");
+    };
+    b.prototype.handleTechError_ = function() {
+      var a = this.tech_.error();
+      this.error(a);
+    };
+    b.prototype.handleTechTextData_ = function() {
+      var a = null;
+      1 < arguments.length && (a = arguments[1]);
+      this.trigger("textdata", a);
+    };
+    b.prototype.getCache = function() {
+      return this.cache_;
+    };
+    b.prototype.techCall_ = function(a, b) {
+      if (this.tech_ && !this.tech_.isReady_) {
+        this.tech_.ready(function() {
+          this[a](b);
+        }, !0);
+      } else {
+        try {
+          if (this.tech_) {
+            this.tech_[a](b);
+          }
+        } catch (f) {
+          throw E(f), f;
+        }
+      }
+    };
+    b.prototype.techGet_ = function(a) {
+      if (this.tech_ && this.tech_.isReady_) {
+        try {
+          return this.tech_[a]();
+        } catch (d) {
+          throw void 0 === this.tech_[a] ? E("Video.js: " + a + " method not defined for " + this.techName_ + " playback technology.", d) : "TypeError" === d.name ? (E("Video.js: " + a + " unavailable on " + this.techName_ + " playback technology element.", d), this.tech_.isReady_ = !1) : E(d), d;
+        }
+      }
+    };
+    b.prototype.play = function() {
+      if (this.src() || this.currentSrc()) {
+        this.techCall_("play");
+      } else {
+        this.tech_.one("loadstart", function() {
+          this.play();
+        });
+      }
+      return this;
+    };
+    b.prototype.pause = function() {
+      this.techCall_("pause");
+      return this;
+    };
+    b.prototype.paused = function() {
+      return !1 === this.techGet_("paused") ? !1 : !0;
+    };
+    b.prototype.scrubbing = function(a) {
+      return void 0 !== a ? (this.scrubbing_ = !!a, a ? this.addClass("vjs-scrubbing") : this.removeClass("vjs-scrubbing"), this) : this.scrubbing_;
+    };
+    b.prototype.currentTime = function(a) {
+      if (void 0 !== a) {
+        return this.techCall_("setCurrentTime", a), this;
+      }
+      this.cache_.currentTime = this.techGet_("currentTime") || 0;
+      return this.cache_.currentTime;
+    };
+    b.prototype.duration = function(a) {
+      if (void 0 === a) {
+        return this.cache_.duration || 0;
+      }
+      a = parseFloat(a) || 0;
+      0 > a && (a = Infinity);
+      a !== this.cache_.duration && (this.cache_.duration = a, Infinity === a ? this.addClass("vjs-live") : this.removeClass("vjs-live"), this.trigger("durationchange"));
+      return this;
+    };
+    b.prototype.remainingTime = function() {
+      return this.duration() - this.currentTime();
+    };
+    b.prototype.buffered = function() {
+      var a = this.techGet_("buffered");
+      a && a.length || (a = la(0, 0));
+      return a;
+    };
+    b.prototype.bufferedPercent = function() {
+      return Cc(this.buffered(), this.duration());
+    };
+    b.prototype.bufferedEnd = function() {
+      var a = this.buffered(), b = this.duration(), a = a.end(a.length - 1);
+      a > b && (a = b);
+      return a;
+    };
+    b.prototype.volume = function(a) {
+      if (void 0 !== a) {
+        return a = Math.max(0, Math.min(1, parseFloat(a))), this.cache_.volume = a, this.techCall_("setVolume", a), this;
+      }
+      a = parseFloat(this.techGet_("volume"));
+      return isNaN(a) ? 1 : a;
+    };
+    b.prototype.muted = function(a) {
+      return void 0 !== a ? (this.techCall_("setMuted", a), this) : this.techGet_("muted") || !1;
+    };
+    b.prototype.supportsFullScreen = function() {
+      return this.techGet_("supportsFullScreen") || !1;
+    };
+    b.prototype.isFullscreen = function(a) {
+      return void 0 !== a ? (this.isFullscreen_ = !!a, this) : !!this.isFullscreen_;
+    };
+    b.prototype.requestFullscreen = function() {
+      this.isFullscreen(!0);
+      sa.requestFullscreen ? (da(z, sa.fullscreenchange, A(this, function d(a) {
+        this.isFullscreen(z[sa.fullscreenElement]);
+        !1 === this.isFullscreen() && ka(z, sa.fullscreenchange, d);
+        this.trigger("fullscreenchange");
+      })), this.el_[sa.requestFullscreen]()) : this.tech_.supportsFullScreen() ? this.techCall_("enterFullScreen") : (this.enterFullWindow(), this.trigger("fullscreenchange"));
+      return this;
+    };
+    b.prototype.exitFullscreen = function() {
+      this.isFullscreen(!1);
+      if (sa.requestFullscreen) {
+        z[sa.exitFullscreen]();
+      } else {
+        this.tech_.supportsFullScreen() ? this.techCall_("exitFullScreen") : (this.exitFullWindow(), this.trigger("fullscreenchange"));
+      }
+      return this;
+    };
+    b.prototype.enterFullWindow = function() {
+      this.isFullWindow = !0;
+      this.docOrigOverflow = z.documentElement.style.overflow;
+      da(z, "keydown", A(this, this.fullWindowOnEscKey));
+      z.documentElement.style.overflow = "hidden";
+      ma(z.body, "vjs-full-window");
+      this.trigger("enterFullWindow");
+    };
+    b.prototype.fullWindowOnEscKey = function(a) {
+      27 === a.keyCode && (!0 === this.isFullscreen() ? this.exitFullscreen() : this.exitFullWindow());
+    };
+    b.prototype.exitFullWindow = function() {
+      this.isFullWindow = !1;
+      ka(z, "keydown", this.fullWindowOnEscKey);
+      z.documentElement.style.overflow = this.docOrigOverflow;
+      oa(z.body, "vjs-full-window");
+      this.trigger("exitFullWindow");
+    };
+    b.prototype.canPlayType = function(a) {
+      for (var b, c = 0, g = this.options_.techOrder;c < g.length;c++) {
+        b = S(g[c]);
+        var e = I.getTech(b);
+        e || (e = l.getComponent(b));
+        if (!e) {
+          E.error('The "' + b + '" tech is undefined. Skipped browser support check for that tech.');
+        } else {
+          if (e.isSupported() && (b = e.canPlayType(a))) {
+            return b;
+          }
+        }
+      }
+      return "";
+    };
+    b.prototype.selectSource = function(a) {
+      var b = this, c = this.options_.techOrder.map(S).map(function(a) {
+        return [a, I.getTech(a) || l.getComponent(a)];
+      }).filter(function(a) {
+        var b = a[0];
+        if (a = a[1]) {
+          return a.isSupported();
+        }
+        E.error('The "' + b + '" tech is undefined. Skipped browser support check for that tech.');
+        return !1;
+      }), g = function(a, b, c) {
+        var d;
+        a.some(function(a) {
+          return b.some(function(b) {
+            if (d = c(a, b)) {
+              return !0;
+            }
+          });
+        });
+        return d;
+      }, e = function(a) {
+        return function(b, c) {
+          return a(c, b);
+        };
+      }, h = function(a, c) {
+        var d = a[0];
+        if (a[1].canPlaySource(c, b.options_[d.toLowerCase()])) {
+          return {source:c, tech:d};
+        }
+      };
+      return (this.options_.sourceOrder ? g(a, c, e(h)) : g(c, a, h)) || !1;
+    };
+    b.prototype.src = function(a) {
+      if (void 0 === a) {
+        return this.techGet_("src");
+      }
+      var b = I.getTech(this.techName_);
+      b || (b = l.getComponent(this.techName_));
+      Array.isArray(a) ? this.sourceList_(a) : "string" === typeof a ? this.src({src:a}) : a instanceof Object && (a.type && !b.canPlaySource(a, this.options_[this.techName_.toLowerCase()]) ? this.sourceList_([a]) : (this.cache_.sources = null, this.cache_.source = a, this.cache_.src = a.src, this.currentType_ = a.type || "", this.ready(function() {
+        b.prototype.hasOwnProperty("setSource") ? this.techCall_("setSource", a) : this.techCall_("src", a.src);
+        "auto" === this.options_.preload && this.load();
+        this.options_.autoplay && this.play();
+      }, !0)));
+      return this;
+    };
+    b.prototype.sourceList_ = function(a) {
+      var b = this.selectSource(a);
+      b ? (b.tech === this.techName_ ? this.src(b.source) : this.loadTech_(b.tech, b.source), this.cache_.sources = a) : (this.setTimeout(function() {
+        this.error({code:4, message:this.localize(this.options_.notSupportedMessage)});
+      }, 0), this.triggerReady());
+    };
+    b.prototype.load = function() {
+      this.techCall_("load");
+      return this;
+    };
+    b.prototype.reset = function() {
+      this.loadTech_(S(this.options_.techOrder[0]), null);
+      this.techCall_("reset");
+      return this;
+    };
+    b.prototype.currentSources = function() {
+      var a = this.currentSource(), b = [];
+      0 !== Object.keys(a).length && b.push(a);
+      return this.cache_.sources || b;
+    };
+    b.prototype.currentSource = function() {
+      var a = {}, b = this.currentSrc();
+      b && (a.src = b);
+      return this.cache_.source || a;
+    };
+    b.prototype.currentSrc = function() {
+      return this.techGet_("currentSrc") || this.cache_.src || "";
+    };
+    b.prototype.currentType = function() {
+      return this.currentType_ || "";
+    };
+    b.prototype.preload = function(a) {
+      return void 0 !== a ? (this.techCall_("setPreload", a), this.options_.preload = a, this) : this.techGet_("preload");
+    };
+    b.prototype.autoplay = function(a) {
+      return void 0 !== a ? (this.techCall_("setAutoplay", a), this.options_.autoplay = a, this) : this.techGet_("autoplay", a);
+    };
+    b.prototype.loop = function(a) {
+      return void 0 !== a ? (this.techCall_("setLoop", a), this.options_.loop = a, this) : this.techGet_("loop");
+    };
+    b.prototype.poster = function(a) {
+      if (void 0 === a) {
+        return this.poster_;
+      }
+      a || (a = "");
+      this.poster_ = a;
+      this.techCall_("setPoster", a);
+      this.trigger("posterchange");
+      return this;
+    };
+    b.prototype.handleTechPosterChange_ = function() {
+      !this.poster_ && this.tech_ && this.tech_.poster && (this.poster_ = this.tech_.poster() || "", this.trigger("posterchange"));
+    };
+    b.prototype.controls = function(a) {
+      return void 0 !== a ? (a = !!a, this.controls_ !== a && (this.controls_ = a, this.usingNativeControls() && this.techCall_("setControls", a), a ? (this.removeClass("vjs-controls-disabled"), this.addClass("vjs-controls-enabled"), this.trigger("controlsenabled"), this.usingNativeControls() || this.addTechControlsListeners_()) : (this.removeClass("vjs-controls-enabled"), this.addClass("vjs-controls-disabled"), this.trigger("controlsdisabled"), this.usingNativeControls() || this.removeTechControlsListeners_())), 
+      this) : !!this.controls_;
+    };
+    b.prototype.usingNativeControls = function(a) {
+      return void 0 !== a ? (a = !!a, this.usingNativeControls_ !== a && ((this.usingNativeControls_ = a) ? (this.addClass("vjs-using-native-controls"), this.trigger("usingnativecontrols")) : (this.removeClass("vjs-using-native-controls"), this.trigger("usingcustomcontrols"))), this) : !!this.usingNativeControls_;
+    };
+    b.prototype.error = function(a) {
+      if (void 0 === a) {
+        return this.error_ || null;
+      }
+      if (null === a) {
+        return this.error_ = a, this.removeClass("vjs-error"), this.errorDisplay && this.errorDisplay.close(), this;
+      }
+      this.error_ = new X(a);
+      this.addClass("vjs-error");
+      E.error("(CODE:" + this.error_.code + " " + X.errorTypes[this.error_.code] + ")", this.error_.message, this.error_);
+      this.trigger("error");
+      return this;
+    };
+    b.prototype.reportUserActivity = function(a) {
+      this.userActivity_ = !0;
+    };
+    b.prototype.userActive = function(a) {
+      if (void 0 !== a) {
+        a = !!a;
+        if (a !== this.userActive_) {
+          if (this.userActive_ = a) {
+            this.userActivity_ = !0, this.removeClass("vjs-user-inactive"), this.addClass("vjs-user-active"), this.trigger("useractive");
+          } else {
+            this.userActivity_ = !1;
+            if (this.tech_) {
+              this.tech_.one("mousemove", function(a) {
+                a.stopPropagation();
+                a.preventDefault();
+              });
+            }
+            this.removeClass("vjs-user-active");
+            this.addClass("vjs-user-inactive");
+            this.trigger("userinactive");
+          }
+        }
+        return this;
+      }
+      return this.userActive_;
+    };
+    b.prototype.listenForUserActivity_ = function() {
+      var a, b, f, g = A(this, this.reportUserActivity);
+      this.on("mousedown", function() {
+        g();
+        this.clearInterval(a);
+        a = this.setInterval(g, 250);
+      });
+      this.on("mousemove", function(a) {
+        if (a.screenX !== b || a.screenY !== f) {
+          b = a.screenX, f = a.screenY, g();
+        }
+      });
+      this.on("mouseup", function(b) {
+        g();
+        this.clearInterval(a);
+      });
+      this.on("keydown", g);
+      this.on("keyup", g);
+      var e;
+      this.setInterval(function() {
+        if (this.userActivity_) {
+          this.userActivity_ = !1;
+          this.userActive(!0);
+          this.clearTimeout(e);
+          var a = this.options_.inactivityTimeout;
+          0 < a && (e = this.setTimeout(function() {
+            this.userActivity_ || this.userActive(!1);
+          }, a));
+        }
+      }, 250);
+    };
+    b.prototype.playbackRate = function(a) {
+      return void 0 !== a ? (this.techCall_("setPlaybackRate", a), this) : this.tech_ && this.tech_.featuresPlaybackRate ? this.techGet_("playbackRate") : 1;
+    };
+    b.prototype.isAudio = function(a) {
+      return void 0 !== a ? (this.isAudio_ = !!a, this) : !!this.isAudio_;
+    };
+    b.prototype.videoTracks = function() {
+      return this.tech_ ? this.tech_.videoTracks() : this.videoTracks_ = this.videoTracks_ || new Kd;
+    };
+    b.prototype.audioTracks = function() {
+      return this.tech_ ? this.tech_.audioTracks() : this.audioTracks_ = this.audioTracks_ || new Ld;
+    };
+    b.prototype.textTracks = function() {
+      if (this.tech_) {
+        return this.tech_.textTracks();
+      }
+    };
+    b.prototype.remoteTextTracks = function() {
+      if (this.tech_) {
+        return this.tech_.remoteTextTracks();
+      }
+    };
+    b.prototype.remoteTextTrackEls = function() {
+      if (this.tech_) {
+        return this.tech_.remoteTextTrackEls();
+      }
+    };
+    b.prototype.addTextTrack = function(a, b, f) {
+      if (this.tech_) {
+        return this.tech_.addTextTrack(a, b, f);
+      }
+    };
+    b.prototype.addRemoteTextTrack = function(a, b) {
+      if (this.tech_) {
+        return this.tech_.addRemoteTextTrack(a, b);
+      }
+    };
+    b.prototype.removeRemoteTextTrack = function(a) {
+      var b = (void 0 === a ? {} : a).track;
+      if (this.tech_) {
+        return this.tech_.removeRemoteTextTrack(void 0 === b ? a : b);
+      }
+    };
+    b.prototype.videoWidth = function() {
+      return this.tech_ && this.tech_.videoWidth && this.tech_.videoWidth() || 0;
+    };
+    b.prototype.videoHeight = function() {
+      return this.tech_ && this.tech_.videoHeight && this.tech_.videoHeight() || 0;
+    };
+    b.prototype.language = function(a) {
+      if (void 0 === a) {
+        return this.language_;
+      }
+      this.language_ = String(a).toLowerCase();
+      return this;
+    };
+    b.prototype.languages = function() {
+      return U(b.prototype.options_.languages, this.languages_);
+    };
+    b.prototype.toJSON = function() {
+      var a = U(this.options_), b = a.tracks;
+      a.tracks = [];
+      for (var f = 0;f < b.length;f++) {
+        var g = b[f], g = U(g);
+        g.player = void 0;
+        a.tracks[f] = g;
+      }
+      return a;
+    };
+    b.prototype.createModal = function(a, b) {
+      var c = this;
+      b = b || {};
+      b.content = a || "";
+      var d = new Pa(this, b);
+      this.addChild(d);
+      d.on("dispose", function() {
+        c.removeChild(d);
+      });
+      return d.open();
+    };
+    b.getTagSettings = function(a) {
+      var b = {sources:[], tracks:[]}, c = pa(a), g = c["data-setup"];
+      Q(a, "vjs-fluid") && (c.fluid = !0);
+      if (null !== g) {
+        var e, h = null;
+        try {
+          e = JSON.parse(g || "{}", void 0);
+        } catch (L) {
+          h = L;
+        }
+        e = [h, e];
+        g = e[0];
+        e = e[1];
+        g && E.error(g);
+        O(c, e);
+      }
+      O(b, c);
+      if (a.hasChildNodes()) {
+        for (a = a.childNodes, c = 0, g = a.length;c < g;c++) {
+          e = a[c], h = e.nodeName.toLowerCase(), "source" === h ? b.sources.push(pa(e)) : "track" === h && b.tracks.push(pa(e));
+        }
+      }
+      return b;
+    };
+    b.prototype.flexNotSupported_ = function() {
+      var a = z.createElement("i");
+      return !("flexBasis" in a.style || "webkitFlexBasis" in a.style || "mozFlexBasis" in a.style || "msFlexBasis" in a.style || "msFlexOrder" in a.style);
+    };
+    return b;
+  }(l);
+  ea.players = {};
+  var Ta = q.navigator;
+  ea.prototype.options_ = {techOrder:["html5", "flash"], html5:{}, flash:{}, defaultVolume:0, inactivityTimeout:2E3, playbackRates:[], children:"mediaLoader posterImage textTrackDisplay loadingSpinner bigPlayButton controlBar errorDisplay textTrackSettings".split(" "), language:Ta && (Ta.languages && Ta.languages[0] || Ta.userLanguage || Ta.language) || "en", languages:{}, notSupportedMessage:"No compatible source was found for this media."};
+  ["ended", "seeking", "seekable", "networkState", "readyState"].forEach(function(a) {
+    ea.prototype[a] = function() {
+      return this.techGet_(a);
+    };
+  });
+  le.forEach(function(a) {
+    ea.prototype["handleTech" + S(a) + "_"] = function() {
+      return this.trigger(a);
+    };
+  });
+  l.registerComponent("Player", ea);
+  var fg = function(a) {
+    function b(c) {
+      void 0 === c && (c = {});
+      c = U(c, {kind:zf[c.kind] || ""});
+      var d = a.call(this, c) || this, f = !1;
+      if (Y) {
+        for (var e in b.prototype) {
+          "constructor" !== e && (d[e] = b.prototype[e]);
+        }
+      }
+      Object.defineProperty(d, "enabled", {get:function() {
+        return f;
+      }, set:function(a) {
+        "boolean" === typeof a && a !== f && (f = a, this.trigger("enabledchange"));
+      }});
+      c.enabled && (d.enabled = c.enabled);
+      d.loaded_ = !0;
+      return d;
+    }
+    __extends(b, a);
+    return b;
+  }(Ub), gg = function(a) {
+    function b(c) {
+      void 0 === c && (c = {});
+      c = U(c, {kind:yf[c.kind] || ""});
+      var d = a.call(this, c) || this, f = !1;
+      if (Y) {
+        for (var e in b.prototype) {
+          "constructor" !== e && (d[e] = b.prototype[e]);
+        }
+      }
+      Object.defineProperty(d, "selected", {get:function() {
+        return f;
+      }, set:function(a) {
+        "boolean" === typeof a && a !== f && (f = a, this.trigger("selectedchange"));
+      }});
+      c.selected && (d.selected = c.selected);
+      return d;
+    }
+    __extends(b, a);
+    return b;
+  }(Ub), hg = function(a, b) {
+    if ("function" !== typeof b && null !== b) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof b);
+    }
+    a.prototype = Object.create(b && b.prototype, {constructor:{value:a, enumerable:!1, writable:!0, configurable:!0}});
+    b && (a.super_ = b);
+  };
+  "undefined" === typeof HTMLVideoElement && q.document && q.document.createElement && (z.createElement("video"), z.createElement("audio"), z.createElement("track"));
+  t.hooks_ = {};
+  t.hooks = function(a, b) {
+    t.hooks_[a] = t.hooks_[a] || [];
+    b && (t.hooks_[a] = t.hooks_[a].concat(b));
+    return t.hooks_[a];
+  };
+  t.hook = function(a, b) {
+    t.hooks(a, b);
+  };
+  t.removeHook = function(a, b) {
+    b = t.hooks(a).indexOf(b);
+    if (-1 >= b) {
+      return !1;
+    }
+    t.hooks_[a] = t.hooks_[a].slice();
+    t.hooks_[a].splice(b, 1);
+    return !0;
+  };
+  if (!0 !== q.VIDEOJS_NO_DYNAMIC_STYLE) {
+    var ob = Ka(".vjs-styles-defaults");
+    if (!ob) {
+      var ob = Uc("vjs-styles-defaults"), oc = Ka("head");
+      oc && oc.insertBefore(ob, oc.firstChild);
+      Vc(ob, "\n      .video-js {\n        width: 300px;\n        height: 150px;\n      }\n\n      .vjs-fluid {\n        padding-top: 56.25%\n      }\n    ");
+    }
+  }
+  t && (Tc = t);
+  setTimeout(Eb, 1);
+  t.VERSION = "5.13.1";
+  t.options = ea.prototype.options_;
+  t.getPlayers = function() {
+    return ea.players;
+  };
+  t.players = ea.players;
+  t.getComponent = l.getComponent;
+  t.registerComponent = function(a, b) {
+    I.isTech(b) && E.warn("The " + a + " tech was registered as a component. It should instead be registered using videojs.registerTech(name, tech)");
+    l.registerComponent.call(l, a, b);
+  };
+  t.getTech = I.getTech;
+  t.registerTech = I.registerTech;
+  t.browser = Ie;
+  t.TOUCH_ENABLED = Za;
+  t.extend = function(a, b) {
+    void 0 === b && (b = {});
+    var c = function() {
+      a.apply(this, arguments);
+    }, d = {};
+    "object" === typeof b ? ("function" === typeof b.init && (E.warn("Constructor logic via init() is deprecated; please use constructor() instead."), b.constructor = b.init), b.constructor !== Object.prototype.constructor && (c = b.constructor), d = b) : "function" === typeof b && (c = b);
+    hg(c, a);
+    for (var f in d) {
+      d.hasOwnProperty(f) && (c.prototype[f] = d[f]);
+    }
+    return c;
+  };
+  t.mergeOptions = U;
+  t.bind = A;
+  t.plugin = function(a, b) {
+    ea.prototype[a] = b;
+  };
+  t.addLanguage = function(a, b) {
+    a = ("" + a).toLowerCase();
+    return Ac(t.options.languages, (c = {}, c[a] = b, c))[a];
+    var c;
+  };
+  t.log = E;
+  t.createTimeRange = t.createTimeRanges = la;
+  t.formatTime = qa;
+  t.parseUrl = Ed;
+  t.isCrossOrigin = Vb;
+  t.EventTarget = Z;
+  t.on = da;
+  t.one = Ia;
+  t.off = ka;
+  t.trigger = Va;
+  t.xhr = na;
+  t.TextTrack = jb;
+  t.AudioTrack = fg;
+  t.VideoTrack = gg;
+  t.isEl = Fa;
+  t.isTextNode = W;
+  t.createEl = r;
+  t.hasClass = Q;
+  t.addClass = ma;
+  t.removeClass = oa;
+  t.toggleClass = C;
+  t.setAttributes = p;
+  t.getAttributes = pa;
+  t.emptyEl = F;
+  t.appendContent = M;
+  t.insertContent = sc;
+  t.computedStyle = za;
+  "function" === typeof define && define.amd ? define("videojs", [], function() {
+    return t;
+  }) : "object" === typeof exports && "object" === typeof module && (module.exports = t);
+  return t;
+}();
+(function(k) {
+  var n = k.vttjs = {}, y = n.VTTCue, u = n.VTTRegion, D = k.VTTCue, ga = k.VTTRegion;
+  n.shim = function() {
+    n.VTTCue = y;
+    n.VTTRegion = u;
+  };
+  n.restore = function() {
+    n.VTTCue = D;
+    n.VTTRegion = ga;
+  };
+})(this);
+(function(k, n) {
+  function y(k) {
+    return "string" !== typeof k ? !1 : ia[k.toLowerCase()] ? k.toLowerCase() : !1;
+  }
+  function u(k) {
+    for (var n = 1;n < arguments.length;n++) {
+      var u = arguments[n], y;
+      for (y in u) {
+        k[y] = u[y];
+      }
+    }
+    return k;
+  }
+  function D(k, n, B) {
+    var v = this, D = /MSIE\s8\.0/.test(navigator.userAgent), H = {};
+    D ? v = document.createElement("custom") : H.enumerable = !0;
+    v.hasBeenReset = !1;
+    var J = "", ia = !1, ua = k, ja = n, r = B, e = null, h = "", P = !0, Ha = "auto", m = "start", Q = 50, ma = "middle", oa = 50, C = "middle";
+    Object.defineProperty(v, "id", u({}, H, {get:function() {
+      return J;
+    }, set:function(e) {
+      J = "" + e;
+    }}));
+    Object.defineProperty(v, "pauseOnExit", u({}, H, {get:function() {
+      return ia;
+    }, set:function(e) {
+      ia = !!e;
+    }}));
+    Object.defineProperty(v, "startTime", u({}, H, {get:function() {
+      return ua;
+    }, set:function(e) {
+      if ("number" !== typeof e) {
+        throw new TypeError("Start time must be set to a number.");
+      }
+      ua = e;
+      this.hasBeenReset = !0;
+    }}));
+    Object.defineProperty(v, "endTime", u({}, H, {get:function() {
+      return ja;
+    }, set:function(e) {
+      if ("number" !== typeof e) {
+        throw new TypeError("End time must be set to a number.");
+      }
+      ja = e;
+      this.hasBeenReset = !0;
+    }}));
+    Object.defineProperty(v, "text", u({}, H, {get:function() {
+      return r;
+    }, set:function(e) {
+      r = "" + e;
+      this.hasBeenReset = !0;
+    }}));
+    Object.defineProperty(v, "region", u({}, H, {get:function() {
+      return e;
+    }, set:function(h) {
+      e = h;
+      this.hasBeenReset = !0;
+    }}));
+    Object.defineProperty(v, "vertical", u({}, H, {get:function() {
+      return h;
+    }, set:function(e) {
+      e = "string" !== typeof e ? !1 : ga[e.toLowerCase()] ? e.toLowerCase() : !1;
+      if (!1 === e) {
+        throw new SyntaxError("An invalid or illegal string was specified.");
+      }
+      h = e;
+      this.hasBeenReset = !0;
+    }}));
+    Object.defineProperty(v, "snapToLines", u({}, H, {get:function() {
+      return P;
+    }, set:function(e) {
+      P = !!e;
+      this.hasBeenReset = !0;
+    }}));
+    Object.defineProperty(v, "line", u({}, H, {get:function() {
+      return Ha;
+    }, set:function(e) {
+      if ("number" !== typeof e && "auto" !== e) {
+        throw new SyntaxError("An invalid number or illegal string was specified.");
+      }
+      Ha = e;
+      this.hasBeenReset = !0;
+    }}));
+    Object.defineProperty(v, "lineAlign", u({}, H, {get:function() {
+      return m;
+    }, set:function(e) {
+      e = y(e);
+      if (!e) {
+        throw new SyntaxError("An invalid or illegal string was specified.");
+      }
+      m = e;
+      this.hasBeenReset = !0;
+    }}));
+    Object.defineProperty(v, "position", u({}, H, {get:function() {
+      return Q;
+    }, set:function(e) {
+      if (0 > e || 100 < e) {
+        throw Error("Position must be between 0 and 100.");
+      }
+      Q = e;
+      this.hasBeenReset = !0;
+    }}));
+    Object.defineProperty(v, "positionAlign", u({}, H, {get:function() {
+      return ma;
+    }, set:function(e) {
+      e = y(e);
+      if (!e) {
+        throw new SyntaxError("An invalid or illegal string was specified.");
+      }
+      ma = e;
+      this.hasBeenReset = !0;
+    }}));
+    Object.defineProperty(v, "size", u({}, H, {get:function() {
+      return oa;
+    }, set:function(e) {
+      if (0 > e || 100 < e) {
+        throw Error("Size must be between 0 and 100.");
+      }
+      oa = e;
+      this.hasBeenReset = !0;
+    }}));
+    Object.defineProperty(v, "align", u({}, H, {get:function() {
+      return C;
+    }, set:function(e) {
+      e = y(e);
+      if (!e) {
+        throw new SyntaxError("An invalid or illegal string was specified.");
+      }
+      C = e;
+      this.hasBeenReset = !0;
+    }}));
+    v.displayState = void 0;
+    if (D) {
+      return v;
+    }
+  }
+  var ga = {"":!0, lr:!0, rl:!0}, ia = {start:!0, middle:!0, end:!0, left:!0, right:!0};
+  D.prototype.getCueAsHTML = function() {
+    return WebVTT.convertCueToDOMTree(window, this.text);
+  };
+  k.VTTCue = k.VTTCue || D;
+  n.VTTCue = D;
+})(this, this.vttjs || {});
+(function(k, n) {
+  function y(k) {
+    return "number" === typeof k && 0 <= k && 100 >= k;
+  }
+  function u() {
+    var k = 100, n = 3, u = 0, J = 100, B = 0, v = 100, V = "";
+    Object.defineProperties(this, {width:{enumerable:!0, get:function() {
+      return k;
+    }, set:function(n) {
+      if (!y(n)) {
+        throw Error("Width must be between 0 and 100.");
+      }
+      k = n;
+    }}, lines:{enumerable:!0, get:function() {
+      return n;
+    }, set:function(k) {
+      if ("number" !== typeof k) {
+        throw new TypeError("Lines must be set to a number.");
+      }
+      n = k;
+    }}, regionAnchorY:{enumerable:!0, get:function() {
+      return J;
+    }, set:function(k) {
+      if (!y(k)) {
+        throw Error("RegionAnchorX must be between 0 and 100.");
+      }
+      J = k;
+    }}, regionAnchorX:{enumerable:!0, get:function() {
+      return u;
+    }, set:function(k) {
+      if (!y(k)) {
+        throw Error("RegionAnchorY must be between 0 and 100.");
+      }
+      u = k;
+    }}, viewportAnchorY:{enumerable:!0, get:function() {
+      return v;
+    }, set:function(k) {
+      if (!y(k)) {
+        throw Error("ViewportAnchorY must be between 0 and 100.");
+      }
+      v = k;
+    }}, viewportAnchorX:{enumerable:!0, get:function() {
+      return B;
+    }, set:function(k) {
+      if (!y(k)) {
+        throw Error("ViewportAnchorX must be between 0 and 100.");
+      }
+      B = k;
+    }}, scroll:{enumerable:!0, get:function() {
+      return V;
+    }, set:function(k) {
+      k = "string" !== typeof k ? !1 : D[k.toLowerCase()] ? k.toLowerCase() : !1;
+      if (!1 === k) {
+        throw new SyntaxError("An invalid or illegal string was specified.");
+      }
+      V = k;
+    }}});
+  }
+  var D = {"":!0, up:!0};
+  k.VTTRegion = k.VTTRegion || u;
+  n.VTTRegion = u;
+})(this, this.vttjs || {});
+(function(k) {
+  function n(e, h) {
+    this.name = "ParsingError";
+    this.code = e.code;
+    this.message = h || e.message;
+  }
+  function y(e) {
+    e = e.match(/^(\d+):(\d{2})(:\d{2})?\.(\d{3})/);
+    if (!e) {
+      return null;
+    }
+    if (e[3]) {
+      var h = e[3].replace(":", "");
+      return 3600 * (e[1] | 0) + 60 * (e[2] | 0) + (h | 0) + (e[4] | 0) / 1E3;
+    }
+    return 59 < e[1] ? 3600 * (e[1] | 0) + 60 * (e[2] | 0) + 0 + (e[4] | 0) / 1E3 : 0 + 60 * (e[1] | 0) + (e[2] | 0) + (e[4] | 0) / 1E3;
+  }
+  function u() {
+    this.values = H(null);
+  }
+  function D(e, h, k, n) {
+    e = n ? e.split(n) : [e];
+    for (var m in e) {
+      "string" === typeof e[m] && (n = e[m].split(k), 2 === n.length && h(n[0], n[1]));
+    }
+  }
+  function ga(e, h, k) {
+    function r() {
+      var h = y(e);
+      if (null === h) {
+        throw new n(n.Errors.BadTimeStamp, "Malformed timestamp: " + v);
+      }
+      e = e.replace(/^[^\sa-zA-Z-]+/, "");
+      return h;
+    }
+    function m() {
+      e = e.replace(/^\s+/, "");
+    }
+    var v = e;
+    m();
+    h.startTime = r();
+    m();
+    if ("--\x3e" !== e.substr(0, 3)) {
+      throw new n(n.Errors.BadTimeStamp, "Malformed time stamp (time stamps must be separated by '--\x3e'): " + v);
+    }
+    e = e.substr(3);
+    m();
+    h.endTime = r();
+    m();
+    (function(e, h) {
+      var m = new u;
+      D(e, function(e, h) {
+        switch(e) {
           case "region":
-            for (var l = L.length - 1;0 <= l;l--) {
-              if (L[l].id === f) {
-                t.set(d, L[l].region);
+            for (var p = k.length - 1;0 <= p;p--) {
+              if (k[p].id === h) {
+                m.set(e, k[p].region);
                 break;
               }
             }
             break;
           case "vertical":
-            t.alt(d, f, ["rl", "lr"]);
+            m.alt(e, h, ["rl", "lr"]);
             break;
           case "line":
-            f = f.split(",");
-            l = f[0];
-            t.integer(d, l);
-            t.percent(d, l) ? t.set("snapToLines", !1) : null;
-            t.alt(d, l, ["auto"]);
-            2 === f.length && t.alt("lineAlign", f[1], ["start", "middle", "end"]);
+            h = h.split(",");
+            p = h[0];
+            m.integer(e, p);
+            m.percent(e, p) ? m.set("snapToLines", !1) : null;
+            m.alt(e, p, ["auto"]);
+            2 === h.length && m.alt("lineAlign", h[1], ["start", "middle", "end"]);
             break;
           case "position":
-            f = f.split(",");
-            t.percent(d, f[0]);
-            2 === f.length && t.alt("positionAlign", f[1], ["start", "middle", "end"]);
+            h = h.split(",");
+            m.percent(e, h[0]);
+            2 === h.length && m.alt("positionAlign", h[1], ["start", "middle", "end"]);
             break;
           case "size":
-            t.percent(d, f);
+            m.percent(e, h);
             break;
           case "align":
-            t.alt(d, f, ["start", "middle", "end", "left", "right"]);
+            m.alt(e, h, ["start", "middle", "end", "left", "right"]);
         }
       }, /:/, /\s/);
-      f.region = t.get("region", null);
-      f.vertical = t.get("vertical", "");
-      f.line = t.get("line", "auto");
-      f.lineAlign = t.get("lineAlign", "start");
-      f.snapToLines = t.get("snapToLines", !0);
-      f.size = t.get("size", 100);
-      f.align = t.get("align", "middle");
-      f.position = t.get("position", {start:0, left:0, middle:50, end:100, right:100}, f.align);
-      f.positionAlign = t.get("positionAlign", {start:"start", left:"start", middle:"middle", end:"end", right:"end"}, f.align);
-    })(d, f);
+      h.region = m.get("region", null);
+      h.vertical = m.get("vertical", "");
+      h.line = m.get("line", "auto");
+      h.lineAlign = m.get("lineAlign", "start");
+      h.snapToLines = m.get("snapToLines", !0);
+      h.size = m.get("size", 100);
+      h.align = m.get("align", "middle");
+      h.position = m.get("position", {start:0, left:0, middle:50, end:100, right:100}, h.align);
+      h.positionAlign = m.get("positionAlign", {start:"start", left:"start", middle:"middle", end:"end", right:"end"}, h.align);
+    })(e, h);
   }
-  function ja(d, f) {
-    function t() {
-      if (!f) {
+  function ia(e, h) {
+    function k() {
+      if (!h) {
         return null;
       }
-      var d = f.match(/^([^<]*)(<[^>]+>?)?/), d = d[1] ? d[1] : d[2];
-      f = f.substr(d.length);
-      return d;
+      var e = h.match(/^([^<]*)(<[^>]+>?)?/), e = e[1] ? e[1] : e[2];
+      h = h.substr(e.length);
+      return e;
     }
-    function h(d) {
-      return Ta[d];
+    function n(e) {
+      return Ua[e];
     }
-    function l(d) {
-      for (;K = d.match(/&(amp|lt|gt|lrm|rlm|nbsp);/);) {
-        d = d.replace(K[0], h);
+    function m(e) {
+      for (;N = e.match(/&(amp|lt|gt|lrm|rlm|nbsp);/);) {
+        e = e.replace(N[0], n);
       }
-      return d;
+      return e;
     }
-    function m(f, t) {
-      var l = Ea[f];
-      if (!l) {
+    function u(h, k) {
+      var p = Fa[h];
+      if (!p) {
         return null;
       }
-      var h = d.document.createElement(l);
-      h.localName = l;
-      (f = va[f]) && t && (h[f] = t.trim());
-      return h;
+      var m = e.document.createElement(p);
+      m.localName = p;
+      (h = ua[h]) && k && (m[h] = k.trim());
+      return m;
     }
-    for (var r = d.document.createElement("div"), u = r, C, Q = [];null !== (C = t());) {
+    for (var r = e.document.createElement("div"), v = r, C, p = [];null !== (C = k());) {
       if ("<" === C[0]) {
         if ("/" === C[1]) {
-          Q.length && Q[Q.length - 1] === C.substr(2).replace(">", "") && (Q.pop(), u = u.parentNode);
+          p.length && p[p.length - 1] === C.substr(2).replace(">", "") && (p.pop(), v = v.parentNode);
         } else {
-          var A = q(C.substr(1, C.length - 2));
-          if (A) {
-            C = d.document.createProcessingInstruction("timestamp", A), u.appendChild(C);
+          var B = y(C.substr(1, C.length - 2));
+          if (B) {
+            C = e.document.createProcessingInstruction("timestamp", B), v.appendChild(C);
           } else {
-            var K = C.match(/^<([^.\s/0-9>]+)(\.[^\s\\>]+)?([^>\\]+)?(\\?)>?$/);
-            K && (!(C = m(K[1], K[3])) || ka[C.localName] && ka[C.localName] !== u.localName || (K[2] && (C.className = K[2].substr(1).replace(".", " ")), Q.push(K[1]), u.appendChild(C), u = C));
+            var N = C.match(/^<([^.\s/0-9>]+)(\.[^\s\\>]+)?([^>\\]+)?(\\?)>?$/);
+            N && (!(C = u(N[1], N[3])) || ja[C.localName] && ja[C.localName] !== v.localName || (N[2] && (C.className = N[2].substr(1).replace(".", " ")), p.push(N[1]), v.appendChild(C), v = C));
           }
         }
       } else {
-        u.appendChild(d.document.createTextNode(l(C)));
+        v.appendChild(e.document.createTextNode(m(C)));
       }
     }
     return r;
   }
-  function pb(d) {
-    function f(d, f) {
-      for (var t = f.childNodes.length - 1;0 <= t;t--) {
-        d.push(f.childNodes[t]);
+  function pb(e) {
+    function h(e, h) {
+      for (var k = h.childNodes.length - 1;0 <= k;k--) {
+        e.push(h.childNodes[k]);
       }
     }
-    function h(d) {
-      if (!d || !d.length) {
+    function k(e) {
+      if (!e || !e.length) {
         return null;
       }
-      var t = d.pop(), l = t.textContent || t.innerText;
-      if (l) {
-        return (t = l.match(/^.*(\n|\r)/)) ? (d.length = 0, t[0]) : l;
+      var m = e.pop(), p = m.textContent || m.innerText;
+      if (p) {
+        return (m = p.match(/^.*(\n|\r)/)) ? (e.length = 0, m[0]) : p;
       }
-      if ("ruby" === t.tagName) {
-        return h(d);
+      if ("ruby" === m.tagName) {
+        return k(e);
       }
-      if (t.childNodes) {
-        return f(d, t), h(d);
+      if (m.childNodes) {
+        return h(e, m), k(e);
       }
     }
-    var m = [], l = "";
-    if (!d || !d.childNodes) {
+    var n = [], m = "";
+    if (!e || !e.childNodes) {
       return "ltr";
     }
-    for (f(m, d);l = h(m);) {
-      for (var q = 0;q < l.length;q++) {
-        d = l.charCodeAt(q);
-        for (var r = 0;r < A.length;r++) {
-          if (A[r] === d) {
+    for (h(n, e);m = k(n);) {
+      for (var u = 0;u < m.length;u++) {
+        e = m.charCodeAt(u);
+        for (var v = 0;v < r.length;v++) {
+          if (r[v] === e) {
             return "rtl";
           }
         }
@@ -534,91 +6845,91 @@ $jscomp.polyfill("Array.prototype.fill", function(f) {
     }
     return "ltr";
   }
-  function T() {
+  function J() {
   }
-  function u(d, f, h) {
-    var t = /MSIE\s8\.0/.test(navigator.userAgent), l = "rgba(255, 255, 255, 1)", m = "rgba(0, 0, 0, 0.8)";
-    t && (l = "rgb(255, 255, 255)", m = "rgb(0, 0, 0)");
-    this.cue = f;
-    this.cueDiv = ja(d, f.text);
-    l = {color:l, backgroundColor:m, position:"relative", left:0, right:0, top:0, bottom:0, display:"inline"};
-    t || (l.writingMode = "" === f.vertical ? "horizontal-tb" : "lr" === f.vertical ? "vertical-lr" : "vertical-rl", l.unicodeBidi = "plaintext");
-    this.applyStyles(l, this.cueDiv);
-    this.div = d.document.createElement("div");
-    l = {textAlign:"middle" === f.align ? "center" : f.align, font:h.font, whiteSpace:"pre-line", position:"absolute"};
-    t || (l.direction = pb(this.cueDiv), l.writingMode = "" === f.vertical ? "horizontal-tb" : "lr" === f.vertical ? "vertical-lr" : "vertical-rl".stylesunicodeBidi = "plaintext");
-    this.applyStyles(l);
+  function B(e, h, k) {
+    var n = /MSIE\s8\.0/.test(navigator.userAgent), m = "rgba(255, 255, 255, 1)", u = "rgba(0, 0, 0, 0.8)";
+    n && (m = "rgb(255, 255, 255)", u = "rgb(0, 0, 0)");
+    this.cue = h;
+    this.cueDiv = ia(e, h.text);
+    m = {color:m, backgroundColor:u, position:"relative", left:0, right:0, top:0, bottom:0, display:"inline"};
+    n || (m.writingMode = "" === h.vertical ? "horizontal-tb" : "lr" === h.vertical ? "vertical-lr" : "vertical-rl", m.unicodeBidi = "plaintext");
+    this.applyStyles(m, this.cueDiv);
+    this.div = e.document.createElement("div");
+    m = {textAlign:"middle" === h.align ? "center" : h.align, font:k.font, whiteSpace:"pre-line", position:"absolute"};
+    n || (m.direction = pb(this.cueDiv), m.writingMode = "" === h.vertical ? "horizontal-tb" : "lr" === h.vertical ? "vertical-lr" : "vertical-rl".stylesunicodeBidi = "plaintext");
+    this.applyStyles(m);
     this.div.appendChild(this.cueDiv);
-    d = 0;
-    switch(f.positionAlign) {
+    e = 0;
+    switch(h.positionAlign) {
       case "start":
-        d = f.position;
+        e = h.position;
         break;
       case "middle":
-        d = f.position - f.size / 2;
+        e = h.position - h.size / 2;
         break;
       case "end":
-        d = f.position - f.size;
+        e = h.position - h.size;
     }
-    "" === f.vertical ? this.applyStyles({left:this.formatStyle(d, "%"), width:this.formatStyle(f.size, "%")}) : this.applyStyles({top:this.formatStyle(d, "%"), height:this.formatStyle(f.size, "%")});
-    this.move = function(d) {
-      this.applyStyles({top:this.formatStyle(d.top, "px"), bottom:this.formatStyle(d.bottom, "px"), left:this.formatStyle(d.left, "px"), right:this.formatStyle(d.right, "px"), height:this.formatStyle(d.height, "px"), width:this.formatStyle(d.width, "px")});
+    "" === h.vertical ? this.applyStyles({left:this.formatStyle(e, "%"), width:this.formatStyle(h.size, "%")}) : this.applyStyles({top:this.formatStyle(e, "%"), height:this.formatStyle(h.size, "%")});
+    this.move = function(e) {
+      this.applyStyles({top:this.formatStyle(e.top, "px"), bottom:this.formatStyle(e.bottom, "px"), left:this.formatStyle(e.left, "px"), right:this.formatStyle(e.right, "px"), height:this.formatStyle(e.height, "px"), width:this.formatStyle(e.width, "px")});
     };
   }
-  function r(d) {
-    var f = /MSIE\s8\.0/.test(navigator.userAgent), h, m, l, q;
-    if (d.div) {
-      m = d.div.offsetHeight;
-      l = d.div.offsetWidth;
-      q = d.div.offsetTop;
-      var r = (r = d.div.childNodes) && (r = r[0]) && r.getClientRects && r.getClientRects();
-      d = d.div.getBoundingClientRect();
-      h = r ? Math.max(r[0] && r[0].height || 0, d.height / r.length) : 0;
+  function v(e) {
+    var h = /MSIE\s8\.0/.test(navigator.userAgent), k, n, m, u;
+    if (e.div) {
+      n = e.div.offsetHeight;
+      m = e.div.offsetWidth;
+      u = e.div.offsetTop;
+      var v = (v = e.div.childNodes) && (v = v[0]) && v.getClientRects && v.getClientRects();
+      e = e.div.getBoundingClientRect();
+      k = v ? Math.max(v[0] && v[0].height || 0, e.height / v.length) : 0;
     }
-    this.left = d.left;
-    this.right = d.right;
-    this.top = d.top || q;
-    this.height = d.height || m;
-    this.bottom = d.bottom || q + (d.height || m);
-    this.width = d.width || l;
-    this.lineHeight = void 0 !== h ? h : d.lineHeight;
-    f && !this.lineHeight && (this.lineHeight = 13);
+    this.left = e.left;
+    this.right = e.right;
+    this.top = e.top || u;
+    this.height = e.height || n;
+    this.bottom = e.bottom || u + (e.height || n);
+    this.width = e.width || m;
+    this.lineHeight = void 0 !== k ? k : e.lineHeight;
+    h && !this.lineHeight && (this.lineHeight = 13);
   }
-  function ba() {
+  function V() {
   }
-  var z = Object.create || function() {
-    function d() {
+  var H = Object.create || function() {
+    function e() {
     }
-    return function(f) {
+    return function(h) {
       if (1 !== arguments.length) {
         throw Error("Object.create shim only accepts one parameter.");
       }
-      d.prototype = f;
-      return new d;
+      e.prototype = h;
+      return new e;
     };
   }();
-  h.prototype = z(Error.prototype);
-  h.prototype.constructor = h;
-  h.Errors = {BadSignature:{code:0, message:"Malformed WebVTT signature."}, BadTimeStamp:{code:1, message:"Malformed time stamp."}};
-  m.prototype = {set:function(d, f) {
-    this.get(d) || "" === f || (this.values[d] = f);
-  }, get:function(d, f, h) {
-    return h ? this.has(d) ? this.values[d] : f[h] : this.has(d) ? this.values[d] : f;
-  }, has:function(d) {
-    return d in this.values;
-  }, alt:function(d, f, h) {
-    for (var t = 0;t < h.length;++t) {
-      if (f === h[t]) {
-        this.set(d, f);
+  n.prototype = H(Error.prototype);
+  n.prototype.constructor = n;
+  n.Errors = {BadSignature:{code:0, message:"Malformed WebVTT signature."}, BadTimeStamp:{code:1, message:"Malformed time stamp."}};
+  u.prototype = {set:function(e, h) {
+    this.get(e) || "" === h || (this.values[e] = h);
+  }, get:function(e, h, k) {
+    return k ? this.has(e) ? this.values[e] : h[k] : this.has(e) ? this.values[e] : h;
+  }, has:function(e) {
+    return e in this.values;
+  }, alt:function(e, h, k) {
+    for (var n = 0;n < k.length;++n) {
+      if (h === k[n]) {
+        this.set(e, h);
         break;
       }
     }
-  }, integer:function(d, f) {
-    /^-?\d+$/.test(f) && this.set(d, parseInt(f, 10));
-  }, percent:function(d, f) {
-    return f.match(/^([\d]{1,3})(\.[\d]*)?%$/) && (f = parseFloat(f), 0 <= f && 100 >= f) ? (this.set(d, f), !0) : !1;
+  }, integer:function(e, h) {
+    /^-?\d+$/.test(h) && this.set(e, parseInt(h, 10));
+  }, percent:function(e, h) {
+    return h.match(/^([\d]{1,3})(\.[\d]*)?%$/) && (h = parseFloat(h), 0 <= h && 100 >= h) ? (this.set(e, h), !0) : !1;
   }};
-  var Ta = {"&amp;":"&", "&lt;":"<", "&gt;":">", "&lrm;":"\u200e", "&rlm;":"\u200f", "&nbsp;":"\u00a0"}, Ea = {c:"span", i:"i", b:"b", u:"u", ruby:"ruby", rt:"rt", v:"span", lang:"span"}, va = {v:"title", lang:"lang"}, ka = {rt:"ruby"}, A = [1470, 1472, 1475, 1478, 1488, 1489, 1490, 1491, 1492, 1493, 1494, 1495, 1496, 1497, 1498, 1499, 1500, 1501, 1502, 1503, 1504, 1505, 1506, 1507, 1508, 1509, 1510, 1511, 1512, 1513, 1514, 1520, 1521, 1522, 1523, 1524, 1544, 1547, 1549, 1563, 1566, 1567, 1568, 1569, 
+  var Ua = {"&amp;":"&", "&lt;":"<", "&gt;":">", "&lrm;":"\u200e", "&rlm;":"\u200f", "&nbsp;":"\u00a0"}, Fa = {c:"span", i:"i", b:"b", u:"u", ruby:"ruby", rt:"rt", v:"span", lang:"span"}, ua = {v:"title", lang:"lang"}, ja = {rt:"ruby"}, r = [1470, 1472, 1475, 1478, 1488, 1489, 1490, 1491, 1492, 1493, 1494, 1495, 1496, 1497, 1498, 1499, 1500, 1501, 1502, 1503, 1504, 1505, 1506, 1507, 1508, 1509, 1510, 1511, 1512, 1513, 1514, 1520, 1521, 1522, 1523, 1524, 1544, 1547, 1549, 1563, 1566, 1567, 1568, 1569, 
   1570, 1571, 1572, 1573, 1574, 1575, 1576, 1577, 1578, 1579, 1580, 1581, 1582, 1583, 1584, 1585, 1586, 1587, 1588, 1589, 1590, 1591, 1592, 1593, 1594, 1595, 1596, 1597, 1598, 1599, 1600, 1601, 1602, 1603, 1604, 1605, 1606, 1607, 1608, 1609, 1610, 1645, 1646, 1647, 1649, 1650, 1651, 1652, 1653, 1654, 1655, 1656, 1657, 1658, 1659, 1660, 1661, 1662, 1663, 1664, 1665, 1666, 1667, 1668, 1669, 1670, 1671, 1672, 1673, 1674, 1675, 1676, 1677, 1678, 1679, 1680, 1681, 1682, 1683, 1684, 1685, 1686, 1687, 1688, 
   1689, 1690, 1691, 1692, 1693, 1694, 1695, 1696, 1697, 1698, 1699, 1700, 1701, 1702, 1703, 1704, 1705, 1706, 1707, 1708, 1709, 1710, 1711, 1712, 1713, 1714, 1715, 1716, 1717, 1718, 1719, 1720, 1721, 1722, 1723, 1724, 1725, 1726, 1727, 1728, 1729, 1730, 1731, 1732, 1733, 1734, 1735, 1736, 1737, 1738, 1739, 1740, 1741, 1742, 1743, 1744, 1745, 1746, 1747, 1748, 1749, 1765, 1766, 1774, 1775, 1786, 1787, 1788, 1789, 1790, 1791, 1792, 1793, 1794, 1795, 1796, 1797, 1798, 1799, 1800, 1801, 1802, 1803, 1804, 
   1805, 1807, 1808, 1810, 1811, 1812, 1813, 1814, 1815, 1816, 1817, 1818, 1819, 1820, 1821, 1822, 1823, 1824, 1825, 1826, 1827, 1828, 1829, 1830, 1831, 1832, 1833, 1834, 1835, 1836, 1837, 1838, 1839, 1869, 1870, 1871, 1872, 1873, 1874, 1875, 1876, 1877, 1878, 1879, 1880, 1881, 1882, 1883, 1884, 1885, 1886, 1887, 1888, 1889, 1890, 1891, 1892, 1893, 1894, 1895, 1896, 1897, 1898, 1899, 1900, 1901, 1902, 1903, 1904, 1905, 1906, 1907, 1908, 1909, 1910, 1911, 1912, 1913, 1914, 1915, 1916, 1917, 1918, 1919, 
@@ -644,343 +6955,343 @@ $jscomp.polyfill("Array.prototype.fill", function(f) {
   68649, 68650, 68651, 68652, 68653, 68654, 68655, 68656, 68657, 68658, 68659, 68660, 68661, 68662, 68663, 68664, 68665, 68666, 68667, 68668, 68669, 68670, 68671, 68672, 68673, 68674, 68675, 68676, 68677, 68678, 68679, 68680, 126464, 126465, 126466, 126467, 126469, 126470, 126471, 126472, 126473, 126474, 126475, 126476, 126477, 126478, 126479, 126480, 126481, 126482, 126483, 126484, 126485, 126486, 126487, 126488, 126489, 126490, 126491, 126492, 126493, 126494, 126495, 126497, 126498, 126500, 126503, 
   126505, 126506, 126507, 126508, 126509, 126510, 126511, 126512, 126513, 126514, 126516, 126517, 126518, 126519, 126521, 126523, 126530, 126535, 126537, 126539, 126541, 126542, 126543, 126545, 126546, 126548, 126551, 126553, 126555, 126557, 126559, 126561, 126562, 126564, 126567, 126568, 126569, 126570, 126572, 126573, 126574, 126575, 126576, 126577, 126578, 126580, 126581, 126582, 126583, 126585, 126586, 126587, 126588, 126590, 126592, 126593, 126594, 126595, 126596, 126597, 126598, 126599, 126600, 
   126601, 126603, 126604, 126605, 126606, 126607, 126608, 126609, 126610, 126611, 126612, 126613, 126614, 126615, 126616, 126617, 126618, 126619, 126625, 126626, 126627, 126629, 126630, 126631, 126632, 126633, 126635, 126636, 126637, 126638, 126639, 126640, 126641, 126642, 126643, 126644, 126645, 126646, 126647, 126648, 126649, 126650, 126651, 1114109];
-  T.prototype.applyStyles = function(d, f) {
-    f = f || this.div;
-    for (var t in d) {
-      d.hasOwnProperty(t) && (f.style[t] = d[t]);
+  J.prototype.applyStyles = function(e, h) {
+    h = h || this.div;
+    for (var k in e) {
+      e.hasOwnProperty(k) && (h.style[k] = e[k]);
     }
   };
-  T.prototype.formatStyle = function(d, f) {
-    return 0 === d ? 0 : d + f;
+  J.prototype.formatStyle = function(e, h) {
+    return 0 === e ? 0 : e + h;
   };
-  u.prototype = z(T.prototype);
-  u.prototype.constructor = u;
-  r.prototype.move = function(d, f) {
-    f = void 0 !== f ? f : this.lineHeight;
-    switch(d) {
+  B.prototype = H(J.prototype);
+  B.prototype.constructor = B;
+  v.prototype.move = function(e, h) {
+    h = void 0 !== h ? h : this.lineHeight;
+    switch(e) {
       case "+x":
-        this.left += f;
-        this.right += f;
+        this.left += h;
+        this.right += h;
         break;
       case "-x":
-        this.left -= f;
-        this.right -= f;
+        this.left -= h;
+        this.right -= h;
         break;
       case "+y":
-        this.top += f;
-        this.bottom += f;
+        this.top += h;
+        this.bottom += h;
         break;
       case "-y":
-        this.top -= f, this.bottom -= f;
+        this.top -= h, this.bottom -= h;
     }
   };
-  r.prototype.overlaps = function(d) {
-    return this.left < d.right && this.right > d.left && this.top < d.bottom && this.bottom > d.top;
+  v.prototype.overlaps = function(e) {
+    return this.left < e.right && this.right > e.left && this.top < e.bottom && this.bottom > e.top;
   };
-  r.prototype.overlapsAny = function(d) {
-    for (var f = 0;f < d.length;f++) {
-      if (this.overlaps(d[f])) {
+  v.prototype.overlapsAny = function(e) {
+    for (var h = 0;h < e.length;h++) {
+      if (this.overlaps(e[h])) {
         return !0;
       }
     }
     return !1;
   };
-  r.prototype.within = function(d) {
-    return this.top >= d.top && this.bottom <= d.bottom && this.left >= d.left && this.right <= d.right;
+  v.prototype.within = function(e) {
+    return this.top >= e.top && this.bottom <= e.bottom && this.left >= e.left && this.right <= e.right;
   };
-  r.prototype.overlapsOppositeAxis = function(d, f) {
-    switch(f) {
+  v.prototype.overlapsOppositeAxis = function(e, h) {
+    switch(h) {
       case "+x":
-        return this.left < d.left;
+        return this.left < e.left;
       case "-x":
-        return this.right > d.right;
+        return this.right > e.right;
       case "+y":
-        return this.top < d.top;
+        return this.top < e.top;
       case "-y":
-        return this.bottom > d.bottom;
+        return this.bottom > e.bottom;
     }
   };
-  r.prototype.intersectPercentage = function(d) {
-    return Math.max(0, Math.min(this.right, d.right) - Math.max(this.left, d.left)) * Math.max(0, Math.min(this.bottom, d.bottom) - Math.max(this.top, d.top)) / (this.height * this.width);
+  v.prototype.intersectPercentage = function(e) {
+    return Math.max(0, Math.min(this.right, e.right) - Math.max(this.left, e.left)) * Math.max(0, Math.min(this.bottom, e.bottom) - Math.max(this.top, e.top)) / (this.height * this.width);
   };
-  r.prototype.toCSSCompatValues = function(d) {
-    return {top:this.top - d.top, bottom:d.bottom - this.bottom, left:this.left - d.left, right:d.right - this.right, height:this.height, width:this.width};
+  v.prototype.toCSSCompatValues = function(e) {
+    return {top:this.top - e.top, bottom:e.bottom - this.bottom, left:this.left - e.left, right:e.right - this.right, height:this.height, width:this.width};
   };
-  r.getSimpleBoxPosition = function(d) {
-    var f = d.div ? d.div.offsetHeight : d.tagName ? d.offsetHeight : 0, h = d.div ? d.div.offsetWidth : d.tagName ? d.offsetWidth : 0, m = d.div ? d.div.offsetTop : d.tagName ? d.offsetTop : 0;
-    d = d.div ? d.div.getBoundingClientRect() : d.tagName ? d.getBoundingClientRect() : d;
-    return {left:d.left, right:d.right, top:d.top || m, height:d.height || f, bottom:d.bottom || m + (d.height || f), width:d.width || h};
+  v.getSimpleBoxPosition = function(e) {
+    var h = e.div ? e.div.offsetHeight : e.tagName ? e.offsetHeight : 0, k = e.div ? e.div.offsetWidth : e.tagName ? e.offsetWidth : 0, n = e.div ? e.div.offsetTop : e.tagName ? e.offsetTop : 0;
+    e = e.div ? e.div.getBoundingClientRect() : e.tagName ? e.getBoundingClientRect() : e;
+    return {left:e.left, right:e.right, top:e.top || n, height:e.height || h, bottom:e.bottom || n + (e.height || h), width:e.width || k};
   };
-  ba.StringDecoder = function() {
-    return {decode:function(d) {
-      if (!d) {
+  V.StringDecoder = function() {
+    return {decode:function(e) {
+      if (!e) {
         return "";
       }
-      if ("string" !== typeof d) {
+      if ("string" !== typeof e) {
         throw Error("Error - expected string data.");
       }
-      return decodeURIComponent(encodeURIComponent(d));
+      return decodeURIComponent(encodeURIComponent(e));
     }};
   };
-  ba.convertCueToDOMTree = function(d, f) {
-    return d && f ? ja(d, f) : null;
+  V.convertCueToDOMTree = function(e, h) {
+    return e && h ? ia(e, h) : null;
   };
-  ba.processCues = function(d, f, h) {
-    if (!d || !f || !h) {
+  V.processCues = function(e, h, k) {
+    if (!e || !h || !k) {
       return null;
     }
-    for (;h.firstChild;) {
-      h.removeChild(h.firstChild);
+    for (;k.firstChild;) {
+      k.removeChild(k.firstChild);
     }
-    var m = d.document.createElement("div");
-    m.style.position = "absolute";
-    m.style.left = "0";
-    m.style.right = "0";
-    m.style.top = "0";
-    m.style.bottom = "0";
-    m.style.margin = "1.5%";
-    h.appendChild(m);
-    if (function(d) {
-      for (var f = 0;f < d.length;f++) {
-        if (d[f].hasBeenReset || !d[f].displayState) {
+    var n = e.document.createElement("div");
+    n.style.position = "absolute";
+    n.style.left = "0";
+    n.style.right = "0";
+    n.style.top = "0";
+    n.style.bottom = "0";
+    n.style.margin = "1.5%";
+    k.appendChild(n);
+    if (function(e) {
+      for (var h = 0;h < e.length;h++) {
+        if (e[h].hasBeenReset || !e[h].displayState) {
           return !0;
         }
       }
       return !1;
-    }(f)) {
-      var l = [], t = r.getSimpleBoxPosition(m), q = {font:Math.round(5 * t.height) / 100 + "px sans-serif"};
+    }(h)) {
+      var m = [], u = v.getSimpleBoxPosition(n), y = {font:Math.round(5 * u.height) / 100 + "px sans-serif"};
       (function() {
-        for (var h, C, Q = 0;Q < f.length;Q++) {
-          C = f[Q];
-          h = new u(d, C, q);
-          m.appendChild(h.div);
-          var A = void 0, K = void 0, M = h, z = t, G = l, S = new r(M), D = M.cue, P;
-          if ("number" === typeof D.line && (D.snapToLines || 0 <= D.line && 100 >= D.line)) {
-            P = D.line;
+        for (var k, C, p = 0;p < h.length;p++) {
+          C = h[p];
+          k = new B(e, C, y);
+          n.appendChild(k.div);
+          var r = void 0, N = void 0, D = k, Q = u, H = m, W = new v(D), F = D.cue, R;
+          if ("number" === typeof F.line && (F.snapToLines || 0 <= F.line && 100 >= F.line)) {
+            R = F.line;
           } else {
-            if (D.track && D.track.textTrackList && D.track.textTrackList.mediaElement) {
-              P = D.track;
-              for (var N = P.textTrackList, L = 0, Z = 0;Z < N.length && N[Z] !== P;Z++) {
-                "showing" === N[Z].mode && L++;
+            if (F.track && F.track.textTrackList && F.track.textTrackList.mediaElement) {
+              R = F.track;
+              for (var M = R.textTrackList, P = 0, J = 0;J < M.length && M[J] !== R;J++) {
+                "showing" === M[J].mode && P++;
               }
-              P = -1 * ++L;
+              R = -1 * ++P;
             } else {
-              P = -1;
+              R = -1;
             }
           }
-          N = [];
-          if (D.snapToLines) {
-            switch(D.vertical) {
+          M = [];
+          if (F.snapToLines) {
+            switch(F.vertical) {
               case "":
-                N = ["+y", "-y"];
-                K = "height";
+                M = ["+y", "-y"];
+                N = "height";
                 break;
               case "rl":
-                N = ["+x", "-x"];
-                K = "width";
+                M = ["+x", "-x"];
+                N = "width";
                 break;
               case "lr":
-                N = ["-x", "+x"], K = "width";
+                M = ["-x", "+x"], N = "width";
             }
-            var L = S.lineHeight, Z = L * Math.round(P), K = z[K] + L, T = N[0];
-            Math.abs(Z) > K && (Z = (0 > Z ? -1 : 1) * Math.ceil(K / L) * L);
-            0 > P && (Z += "" === D.vertical ? z.height : z.width, N = N.reverse());
-            S.move(T, Z);
+            var P = W.lineHeight, J = P * Math.round(R), N = Q[N] + P, V = M[0];
+            Math.abs(J) > N && (J = (0 > J ? -1 : 1) * Math.ceil(N / P) * P);
+            0 > R && (J += "" === F.vertical ? Q.height : Q.width, M = M.reverse());
+            W.move(V, J);
           } else {
-            S = S.lineHeight / z.height * 100;
-            switch(D.lineAlign) {
+            W = W.lineHeight / Q.height * 100;
+            switch(F.lineAlign) {
               case "middle":
-                P -= S / 2;
+                R -= W / 2;
                 break;
               case "end":
-                P -= S;
+                R -= W;
             }
-            switch(D.vertical) {
+            switch(F.vertical) {
               case "":
-                M.applyStyles({top:M.formatStyle(P, "%")});
+                D.applyStyles({top:D.formatStyle(R, "%")});
                 break;
               case "rl":
-                M.applyStyles({left:M.formatStyle(P, "%")});
+                D.applyStyles({left:D.formatStyle(R, "%")});
                 break;
               case "lr":
-                M.applyStyles({right:M.formatStyle(P, "%")});
+                D.applyStyles({right:D.formatStyle(R, "%")});
             }
-            N = ["+y", "-x", "+x", "-y"];
-            S = new r(M);
+            M = ["+y", "-x", "+x", "-y"];
+            W = new v(D);
           }
           a: {
-            D = S;
-            S = N;
-            K = new r(D);
-            P = 1;
-            for (N = 0;N < S.length;N++) {
-              for (;D.overlapsOppositeAxis(z, S[N]) || D.within(z) && D.overlapsAny(G);) {
-                D.move(S[N]);
+            F = W;
+            W = M;
+            N = new v(F);
+            R = 1;
+            for (M = 0;M < W.length;M++) {
+              for (;F.overlapsOppositeAxis(Q, W[M]) || F.within(Q) && F.overlapsAny(H);) {
+                F.move(W[M]);
               }
-              if (D.within(z)) {
-                A = D;
+              if (F.within(Q)) {
+                r = F;
                 break a;
               }
-              L = D.intersectPercentage(z);
-              P > L && (A = new r(D), P = L);
-              D = new r(K);
+              P = F.intersectPercentage(Q);
+              R > P && (r = new v(F), R = P);
+              F = new v(N);
             }
-            A = A || K;
+            r = r || N;
           }
-          M.move(A.toCSSCompatValues(z));
-          C.displayState = h.div;
-          l.push(r.getSimpleBoxPosition(h));
+          D.move(r.toCSSCompatValues(Q));
+          C.displayState = k.div;
+          m.push(v.getSimpleBoxPosition(k));
         }
       })();
     } else {
-      for (h = 0;h < f.length;h++) {
-        m.appendChild(f[h].displayState);
+      for (k = 0;k < h.length;k++) {
+        n.appendChild(h[k].displayState);
       }
     }
   };
-  ba.Parser = function(d, f, h) {
-    h || (h = f, f = {});
-    f || (f = {});
-    this.window = d;
-    this.vttjs = f;
+  V.Parser = function(e, h, k) {
+    k || (k = h, h = {});
+    h || (h = {});
+    this.window = e;
+    this.vttjs = h;
     this.state = "INITIAL";
     this.buffer = "";
-    this.decoder = h || new TextDecoder("utf8");
+    this.decoder = k || new TextDecoder("utf8");
     this.regionList = [];
   };
-  ba.Parser.prototype = {reportOrThrowError:function(d) {
-    if (d instanceof h) {
-      this.onparsingerror && this.onparsingerror(d);
+  V.Parser.prototype = {reportOrThrowError:function(e) {
+    if (e instanceof n) {
+      this.onparsingerror && this.onparsingerror(e);
     } else {
-      throw d;
+      throw e;
     }
-  }, parse:function(d) {
-    function f() {
-      for (var d = l.buffer, f = 0;f < d.length && "\r" !== d[f] && "\n" !== d[f];) {
-        ++f;
+  }, parse:function(e) {
+    function h() {
+      for (var e = m.buffer, h = 0;h < e.length && "\r" !== e[h] && "\n" !== e[h];) {
+        ++h;
       }
-      var h = d.substr(0, f);
-      "\r" === d[f] && ++f;
-      "\n" === d[f] && ++f;
-      l.buffer = d.substr(f);
-      return h;
+      var k = e.substr(0, h);
+      "\r" === e[h] && ++h;
+      "\n" === e[h] && ++h;
+      m.buffer = e.substr(h);
+      return k;
     }
-    function r(d) {
-      var f = new m;
-      G(d, function(d, h) {
-        switch(d) {
+    function k(e) {
+      var h = new u;
+      D(e, function(e, k) {
+        switch(e) {
           case "id":
-            f.set(d, h);
+            h.set(e, k);
             break;
           case "width":
-            f.percent(d, h);
+            h.percent(e, k);
             break;
           case "lines":
-            f.integer(d, h);
+            h.integer(e, k);
             break;
           case "regionanchor":
           case "viewportanchor":
-            h = h.split(",");
-            if (2 !== h.length) {
+            k = k.split(",");
+            if (2 !== k.length) {
               break;
             }
-            var l = new m;
-            l.percent("x", h[0]);
-            l.percent("y", h[1]);
-            if (!l.has("x") || !l.has("y")) {
+            var m = new u;
+            m.percent("x", k[0]);
+            m.percent("y", k[1]);
+            if (!m.has("x") || !m.has("y")) {
               break;
             }
-            f.set(d + "X", l.get("x"));
-            f.set(d + "Y", l.get("y"));
+            h.set(e + "X", m.get("x"));
+            h.set(e + "Y", m.get("y"));
             break;
           case "scroll":
-            f.alt(d, h, ["up"]);
+            h.alt(e, k, ["up"]);
         }
       }, /=/, /\s/);
-      f.has("id") && (d = new (l.vttjs.VTTRegion || l.window.VTTRegion), d.width = f.get("width", 100), d.lines = f.get("lines", 3), d.regionAnchorX = f.get("regionanchorX", 0), d.regionAnchorY = f.get("regionanchorY", 100), d.viewportAnchorX = f.get("viewportanchorX", 0), d.viewportAnchorY = f.get("viewportanchorY", 100), d.scroll = f.get("scroll", ""), l.onregion && l.onregion(d), l.regionList.push({id:f.get("id"), region:d}));
+      h.has("id") && (e = new (m.vttjs.VTTRegion || m.window.VTTRegion), e.width = h.get("width", 100), e.lines = h.get("lines", 3), e.regionAnchorX = h.get("regionanchorX", 0), e.regionAnchorY = h.get("regionanchorY", 100), e.viewportAnchorX = h.get("viewportanchorX", 0), e.viewportAnchorY = h.get("viewportanchorY", 100), e.scroll = h.get("scroll", ""), m.onregion && m.onregion(e), m.regionList.push({id:h.get("id"), region:e}));
     }
-    function q(d) {
-      G(d, function(d, f) {
-        switch(d) {
+    function v(e) {
+      D(e, function(e, h) {
+        switch(e) {
           case "Region":
-            r(f);
+            k(h);
         }
       }, /:/);
     }
-    var l = this;
-    d && (l.buffer += l.decoder.decode(d, {stream:!0}));
+    var m = this;
+    e && (m.buffer += m.decoder.decode(e, {stream:!0}));
     try {
-      var u;
-      if ("INITIAL" === l.state) {
-        if (!/\r\n|\n/.test(l.buffer)) {
+      var r;
+      if ("INITIAL" === m.state) {
+        if (!/\r\n|\n/.test(m.buffer)) {
           return this;
         }
-        u = f();
-        var z = u.match(/^WEBVTT([ \t].*)?$/);
-        if (!z || !z[0]) {
-          throw new h(h.Errors.BadSignature);
+        r = h();
+        var y = r.match(/^WEBVTT([ \t].*)?$/);
+        if (!y || !y[0]) {
+          throw new n(n.Errors.BadSignature);
         }
-        l.state = "HEADER";
+        m.state = "HEADER";
       }
-      for (d = !1;l.buffer;) {
-        if (!/\r\n|\n/.test(l.buffer)) {
+      for (e = !1;m.buffer;) {
+        if (!/\r\n|\n/.test(m.buffer)) {
           return this;
         }
-        d ? d = !1 : u = f();
-        switch(l.state) {
+        e ? e = !1 : r = h();
+        switch(m.state) {
           case "HEADER":
-            /:/.test(u) ? q(u) : u || (l.state = "ID");
+            /:/.test(r) ? v(r) : r || (m.state = "ID");
             continue;
           case "NOTE":
-            u || (l.state = "ID");
+            r || (m.state = "ID");
             continue;
           case "ID":
-            if (/^NOTE($|[ \t])/.test(u)) {
-              l.state = "NOTE";
+            if (/^NOTE($|[ \t])/.test(r)) {
+              m.state = "NOTE";
               break;
             }
-            if (!u) {
+            if (!r) {
               continue;
             }
-            l.cue = new (l.vttjs.VTTCue || l.window.VTTCue)(0, 0, "");
-            l.state = "CUE";
-            if (-1 === u.indexOf("--\x3e")) {
-              l.cue.id = u;
+            m.cue = new (m.vttjs.VTTCue || m.window.VTTCue)(0, 0, "");
+            m.state = "CUE";
+            if (-1 === r.indexOf("--\x3e")) {
+              m.cue.id = r;
               continue;
             }
           case "CUE":
             try {
-              ga(u, l.cue, l.regionList);
+              ga(r, m.cue, m.regionList);
             } catch (C) {
-              l.reportOrThrowError(C);
-              l.cue = null;
-              l.state = "BADCUE";
+              m.reportOrThrowError(C);
+              m.cue = null;
+              m.state = "BADCUE";
               continue;
             }
-            l.state = "CUETEXT";
+            m.state = "CUETEXT";
             continue;
           case "CUETEXT":
-            var A = -1 !== u.indexOf("--\x3e");
-            if (!u || A && (d = !0)) {
-              l.oncue && l.oncue(l.cue);
-              l.cue = null;
-              l.state = "ID";
+            var B = -1 !== r.indexOf("--\x3e");
+            if (!r || B && (e = !0)) {
+              m.oncue && m.oncue(m.cue);
+              m.cue = null;
+              m.state = "ID";
               continue;
             }
-            l.cue.text && (l.cue.text += "\n");
-            l.cue.text += u;
+            m.cue.text && (m.cue.text += "\n");
+            m.cue.text += r;
             continue;
           case "BADCUE":
-            u || (l.state = "ID");
+            r || (m.state = "ID");
         }
       }
     } catch (C) {
-      l.reportOrThrowError(C);
-      if ("CUETEXT" === l.state && l.cue && l.oncue) {
-        l.oncue(l.cue);
+      m.reportOrThrowError(C);
+      if ("CUETEXT" === m.state && m.cue && m.oncue) {
+        m.oncue(m.cue);
       }
-      l.cue = null;
-      l.state = "INITIAL" === l.state ? "BADWEBVTT" : "BADCUE";
+      m.cue = null;
+      m.state = "INITIAL" === m.state ? "BADWEBVTT" : "BADCUE";
     }
     return this;
   }, flush:function() {
@@ -990,6170 +7301,14 @@ $jscomp.polyfill("Array.prototype.fill", function(f) {
         this.buffer += "\n\n", this.parse();
       }
       if ("INITIAL" === this.state) {
-        throw new h(h.Errors.BadSignature);
+        throw new n(n.Errors.BadSignature);
       }
-    } catch (d) {
-      this.reportOrThrowError(d);
+    } catch (e) {
+      this.reportOrThrowError(e);
     }
     this.onflush && this.onflush();
     return this;
   }};
-  f.WebVTT = ba;
+  k.WebVTT = V;
 })(this, this.vttjs || {});
-var __extends = this && this.__extends || function(f, h) {
-  function q() {
-    this.constructor = f;
-  }
-  for (var m in h) {
-    h.hasOwnProperty(m) && (f[m] = h[m]);
-  }
-  f.prototype = null === h ? Object.create(h) : (q.prototype = h.prototype, new q);
-}, videojs = function() {
-  function f(a, c) {
-    return c = {exports:{}}, a(c, c.exports), c.exports;
-  }
-  function h(a, c) {
-    if (!(this instanceof h)) {
-      return new h(a, c);
-    }
-    this.nodeValue = this.data = a;
-    this.length = a.length;
-    this.ownerDocument = c || null;
-  }
-  function q(a, c) {
-    if (!(this instanceof q)) {
-      return new q(a);
-    }
-    this.data = a || "";
-    this.length = this.data.length;
-    this.ownerDocument = c || null;
-  }
-  function m(a) {
-    switch(a.nodeType) {
-      case 3:
-        return T(a.data);
-      case 8:
-        return "\x3c!--" + a.data + "--\x3e";
-      default:
-        var c = [], b = a.tagName;
-        "http://www.w3.org/1999/xhtml" === a.namespaceURI && (b = b.toLowerCase());
-        c.push("<" + b + pb(a) + ga(a));
-        -1 < $d.indexOf(b) ? c.push(" />") : (c.push(">"), a.childNodes.length ? c.push.apply(c, a.childNodes.map(m)) : a.textContent || a.innerText ? c.push(T(a.textContent || a.innerText)) : a.innerHTML && c.push(a.innerHTML), c.push("</" + b + ">"));
-        return c.join("");
-    }
-  }
-  function G(a) {
-    if ("string" === typeof a) {
-      return a;
-    }
-    var c = "";
-    Object.keys(a).forEach(function(b) {
-      var e = a[b];
-      b = b.replace(/[A-Z]/g, function(b) {
-        return "-" + b.toLowerCase();
-      });
-      c += b + ":" + e + ";";
-    });
-    return c;
-  }
-  function ga(a) {
-    a = a.dataset;
-    var c = [], b;
-    for (b in a) {
-      c.push({name:"data-" + b, value:a[b]});
-    }
-    return c.length ? ja(c) : "";
-  }
-  function ja(a) {
-    var c = [];
-    a.forEach(function(b) {
-      var a = b.name;
-      b = b.value;
-      "style" === a && (b = G(b));
-      c.push(a + '="' + T(b).replace(/"/g, "&quot;") + '"');
-    });
-    return c.length ? " " + c.join(" ") : "";
-  }
-  function pb(a) {
-    var c = [], b;
-    for (b in a) {
-      var e;
-      e = a;
-      var g = b, k = typeof e[g];
-      e = "style" === g && 0 < Object.keys(e.style).length ? !0 : e.hasOwnProperty(g) && ("string" === k || "boolean" === k || "number" === k) && "nodeName" !== g && "className" !== g && "tagName" !== g && "textContent" !== g && "innerText" !== g && "namespaceURI" !== g && "innerHTML" !== g;
-      e && c.push({name:b, value:a[b]});
-    }
-    for (var d in a._attributes) {
-      for (var f in a._attributes[d]) {
-        b = a._attributes[d][f], c.push({name:(b.prefix ? b.prefix + ":" : "") + f, value:b.value});
-      }
-    }
-    a.className && c.push({name:"class", value:a.className});
-    return c.length ? ja(c) : "";
-  }
-  function T(a) {
-    var c = "";
-    "string" === typeof a ? c = a : a && (c = a.toString());
-    return c.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  }
-  function u(a, c, b) {
-    if (!(this instanceof u)) {
-      return new u(a);
-    }
-    b = void 0 === b ? "http://www.w3.org/1999/xhtml" : b || null;
-    this.nodeName = this.tagName = "http://www.w3.org/1999/xhtml" === b ? String(a).toUpperCase() : a;
-    this.className = "";
-    this.dataset = {};
-    this.childNodes = [];
-    this.parentNode = null;
-    this.style = {};
-    this.ownerDocument = c || null;
-    this.namespaceURI = b;
-    this._attributes = {};
-    "INPUT" === this.tagName && (this.type = "text");
-  }
-  function r(a) {
-    if (!(this instanceof r)) {
-      return new r;
-    }
-    this.childNodes = [];
-    this.parentNode = null;
-    this.ownerDocument = a || null;
-  }
-  function ba(a) {
-  }
-  function z() {
-    if (!(this instanceof z)) {
-      return new z;
-    }
-    this.head = this.createElement("head");
-    this.body = this.createElement("body");
-    this.documentElement = this.createElement("html");
-    this.documentElement.appendChild(this.head);
-    this.documentElement.appendChild(this.body);
-    this.childNodes = [this.documentElement];
-    this.nodeType = 9;
-  }
-  function Ta(a) {
-    if (/\s/.test(a)) {
-      throw Error("class has illegal whitespace characters");
-    }
-  }
-  function Ea(a) {
-    return !!a && "object" === typeof a && 1 === a.nodeType;
-  }
-  function va(a) {
-    return function(c, b) {
-      if ("string" !== typeof c || !/\S/.test(c)) {
-        return x[a](null);
-      }
-      "string" === typeof b && /\S/.test(b) && (b = x.querySelector(b));
-      b = Ea(b) ? b : x;
-      return b[a] && b[a](c);
-    };
-  }
-  function ka(a) {
-    0 === a.indexOf("#") && (a = a.slice(1));
-    return x.getElementById(a);
-  }
-  function A(a, c, b) {
-    void 0 === a && (a = "div");
-    void 0 === c && (c = {});
-    void 0 === b && (b = {});
-    var e = x.createElement(a);
-    Object.getOwnPropertyNames(c).forEach(function(b) {
-      var a = c[b];
-      -1 !== b.indexOf("aria-") || "role" === b || "type" === b ? (B.warn((g = ["Setting attributes in the second argument of createEl()\n                has been deprecated. Use the third argument instead.\n                createEl(type, properties, attributes). Attempting to set ", " to ", "."], g.raw = ["Setting attributes in the second argument of createEl()\n                has been deprecated. Use the third argument instead.\n                createEl(type, properties, attributes). Attempting to set ", 
-      " to ", "."], nc(g, b, a))), e.setAttribute(b, a)) : e[b] = a;
-      var g;
-    });
-    Object.getOwnPropertyNames(b).forEach(function(a) {
-      e.setAttribute(a, b[a]);
-    });
-    return e;
-  }
-  function d(a, c) {
-    c.firstChild ? c.insertBefore(a, c.firstChild) : c.appendChild(a);
-  }
-  function t(a) {
-    var c = a[wa];
-    c || (c = a[wa] = xa++);
-    Ha[c] || (Ha[c] = {});
-    return Ha[c];
-  }
-  function L(a) {
-    return (a = a[wa]) ? !!Object.getOwnPropertyNames(Ha[a]).length : !1;
-  }
-  function Fa(a) {
-    var c = a[wa];
-    if (c) {
-      delete Ha[c];
-      try {
-        delete a[wa];
-      } catch (b) {
-        a.removeAttribute ? a.removeAttribute(wa) : a[wa] = null;
-      }
-    }
-  }
-  function l(a, c) {
-    Ta(c);
-    return a.classList ? a.classList.contains(c) : (new RegExp("(^|\\s)" + c + "($|\\s)")).test(a.className);
-  }
-  function M(a, c) {
-    a.classList ? a.classList.add(c) : l(a, c) || (a.className = (a.className + " " + c).trim());
-    return a;
-  }
-  function qa(a, c) {
-    a.classList ? a.classList.remove(c) : (Ta(c), a.className = a.className.split(/\s+/).filter(function(b) {
-      return b !== c;
-    }).join(" "));
-    return a;
-  }
-  function Ga(a, c, b) {
-    var e = l(a, c);
-    "function" === typeof b && (b = b(a, c));
-    "boolean" !== typeof b && (b = !e);
-    if (b !== e) {
-      return b ? M(a, c) : qa(a, c), a;
-    }
-  }
-  function C(a, c) {
-    Object.getOwnPropertyNames(c).forEach(function(b) {
-      var e = c[b];
-      null === e || "undefined" === typeof e || !1 === e ? a.removeAttribute(b) : a.setAttribute(b, !0 === e ? "" : e);
-    });
-  }
-  function Q(a) {
-    var c = {};
-    if (a && a.attributes && 0 < a.attributes.length) {
-      for (var b = a.attributes, e = b.length - 1;0 <= e;e--) {
-        var g = b[e].name, k = b[e].value;
-        if ("boolean" === typeof a[g] || -1 !== ",autoplay,controls,loop,muted,default,".indexOf("," + g + ",")) {
-          k = null !== k ? !0 : !1;
-        }
-        c[g] = k;
-      }
-    }
-    return c;
-  }
-  function Zd() {
-    x.body.focus();
-    x.onselectstart = function() {
-      return !1;
-    };
-  }
-  function K() {
-    x.onselectstart = function() {
-      return !0;
-    };
-  }
-  function jc(a) {
-    var c;
-    a.getBoundingClientRect && a.parentNode && (c = a.getBoundingClientRect());
-    if (!c) {
-      return {left:0, top:0};
-    }
-    a = x.documentElement;
-    var b = x.body;
-    return {left:Math.round(c.left + (p.pageXOffset || b.scrollLeft) - (a.clientLeft || b.clientLeft || 0)), top:Math.round(c.top + (p.pageYOffset || b.scrollTop) - (a.clientTop || b.clientTop || 0))};
-  }
-  function kc(a, c) {
-    var b = {}, e = jc(a), g = a.offsetWidth;
-    a = a.offsetHeight;
-    var k = e.top, e = e.left, d = c.pageY, f = c.pageX;
-    c.changedTouches && (f = c.changedTouches[0].pageX, d = c.changedTouches[0].pageY);
-    b.y = Math.max(0, Math.min(1, (k - d + a) / a));
-    b.x = Math.max(0, Math.min(1, (f - e) / g));
-    return b;
-  }
-  function lc(a) {
-    return !!a && "object" === typeof a && 3 === a.nodeType;
-  }
-  function S(a) {
-    for (;a.firstChild;) {
-      a.removeChild(a.firstChild);
-    }
-    return a;
-  }
-  function D(a) {
-    "function" === typeof a && (a = a());
-    return (Array.isArray(a) ? a : [a]).map(function(a) {
-      "function" === typeof a && (a = a());
-      if (Ea(a) || lc(a)) {
-        return a;
-      }
-      if ("string" === typeof a && /\S/.test(a)) {
-        return x.createTextNode(a);
-      }
-    }).filter(function(a) {
-      return a;
-    });
-  }
-  function P(a, c) {
-    D(c).forEach(function(b) {
-      return a.appendChild(b);
-    });
-    return a;
-  }
-  function N(a, c) {
-    return P(S(a), c);
-  }
-  function mc(a, c) {
-    var b = t(a);
-    0 === b.handlers[c].length && (delete b.handlers[c], a.removeEventListener ? a.removeEventListener(c, b.dispatcher, !1) : a.detachEvent && a.detachEvent("on" + c, b.dispatcher));
-    0 >= Object.getOwnPropertyNames(b.handlers).length && (delete b.handlers, delete b.dispatcher, delete b.disabled);
-    0 === Object.getOwnPropertyNames(b).length && Fa(a);
-  }
-  function Z(a, c, b, e) {
-    b.forEach(function(b) {
-      a(c, b, e);
-    });
-  }
-  function qb(a) {
-    function c() {
-      return !0;
-    }
-    function b() {
-      return !1;
-    }
-    if (!a || !a.isPropagationStopped) {
-      var e = a || p.event;
-      a = {};
-      for (var g in e) {
-        "layerX" !== g && "layerY" !== g && "keyLocation" !== g && "webkitMovementX" !== g && "webkitMovementY" !== g && ("returnValue" === g && e.preventDefault || (a[g] = e[g]));
-      }
-      a.target || (a.target = a.srcElement || x);
-      a.relatedTarget || (a.relatedTarget = a.fromElement === a.target ? a.toElement : a.fromElement);
-      a.preventDefault = function() {
-        e.preventDefault && e.preventDefault();
-        a.returnValue = !1;
-        e.returnValue = !1;
-        a.defaultPrevented = !0;
-      };
-      a.defaultPrevented = !1;
-      a.stopPropagation = function() {
-        e.stopPropagation && e.stopPropagation();
-        a.cancelBubble = !0;
-        e.cancelBubble = !0;
-        a.isPropagationStopped = c;
-      };
-      a.isPropagationStopped = b;
-      a.stopImmediatePropagation = function() {
-        e.stopImmediatePropagation && e.stopImmediatePropagation();
-        a.isImmediatePropagationStopped = c;
-        a.stopPropagation();
-      };
-      a.isImmediatePropagationStopped = b;
-      if (null !== a.clientX && void 0 !== a.clientX) {
-        g = x.documentElement;
-        var k = x.body;
-        a.pageX = a.clientX + (g && g.scrollLeft || k && k.scrollLeft || 0) - (g && g.clientLeft || k && k.clientLeft || 0);
-        a.pageY = a.clientY + (g && g.scrollTop || k && k.scrollTop || 0) - (g && g.clientTop || k && k.clientTop || 0);
-      }
-      a.which = a.charCode || a.keyCode;
-      null !== a.button && void 0 !== a.button && (a.button = a.button & 1 ? 0 : a.button & 4 ? 1 : a.button & 2 ? 2 : 0);
-    }
-    return a;
-  }
-  function I(a, c, b) {
-    if (Array.isArray(c)) {
-      return Z(I, a, c, b);
-    }
-    var e = t(a);
-    e.handlers || (e.handlers = {});
-    e.handlers[c] || (e.handlers[c] = []);
-    b.guid || (b.guid = xa++);
-    e.handlers[c].push(b);
-    e.dispatcher || (e.disabled = !1, e.dispatcher = function(b, c) {
-      if (!e.disabled) {
-        b = qb(b);
-        var g = e.handlers[b.type];
-        if (g) {
-          for (var g = g.slice(0), k = 0, d = g.length;k < d && !b.isImmediatePropagationStopped();k++) {
-            try {
-              g[k].call(a, b, c);
-            } catch (ae) {
-              B.error(ae);
-            }
-          }
-        }
-      }
-    });
-    1 === e.handlers[c].length && (a.addEventListener ? a.addEventListener(c, e.dispatcher, !1) : a.attachEvent && a.attachEvent("on" + c, e.dispatcher));
-  }
-  function la(a, c, b) {
-    if (L(a)) {
-      var e = t(a);
-      if (e.handlers) {
-        if (Array.isArray(c)) {
-          return Z(la, a, c, b);
-        }
-        if (c) {
-          var g = e.handlers[c];
-          if (g) {
-            if (!b) {
-              e.handlers[c] = [];
-            } else {
-              if (b.guid) {
-                for (e = 0;e < g.length;e++) {
-                  g[e].guid === b.guid && g.splice(e--, 1);
-                }
-              }
-            }
-            mc(a, c);
-          }
-        } else {
-          for (g in e.handlers) {
-            c = g, e.handlers[c] = [], mc(a, c);
-          }
-        }
-      }
-    }
-  }
-  function Ua(a, c, b) {
-    var e = L(a) ? t(a) : {}, g = a.parentNode || a.ownerDocument;
-    "string" === typeof c && (c = {type:c, target:a});
-    c = qb(c);
-    e.dispatcher && e.dispatcher.call(a, c, b);
-    if (g && !c.isPropagationStopped() && !0 === c.bubbles) {
-      Ua.call(null, g, c, b);
-    } else {
-      if (!g && !c.defaultPrevented && (a = t(c.target), c.target[c.type])) {
-        a.disabled = !0;
-        if ("function" === typeof c.target[c.type]) {
-          c.target[c.type]();
-        }
-        a.disabled = !1;
-      }
-    }
-    return !c.defaultPrevented;
-  }
-  function Ia(a, c, b) {
-    if (Array.isArray(c)) {
-      return Z(Ia, a, c, b);
-    }
-    var e = function() {
-      la(a, c, e);
-      b.apply(this, arguments);
-    };
-    e.guid = b.guid = b.guid || xa++;
-    I(a, c, e);
-  }
-  function U(a) {
-    return a.charAt(0).toUpperCase() + a.slice(1);
-  }
-  function oc(a, c, b, e, g) {
-    if (!be(a)) {
-      return a;
-    }
-    var k = ce(c) && (de(c) || ee(c)), d = k ? void 0 : fe(c);
-    ge(d || c, function(f, ea) {
-      d && (ea = f, f = c[ea]);
-      if (he(f)) {
-        a: {
-          e || (e = []), g || (g = []), f = ea;
-          ea = e;
-          for (var ha = g, h = ea.length, l = c[f];h--;) {
-            if (ea[h] == l) {
-              a[f] = ha[h];
-              break a;
-            }
-          }
-          var h = a[f], J = b ? b(h, l, f, a, c) : void 0, m = void 0 === J;
-          if (m) {
-            if (J = l, pc(l) && (qc(l) || ie(l))) {
-              if (qc(h)) {
-                J = h;
-              } else {
-                if (pc(h)) {
-                  var J = void 0, n = -1, p = h.length;
-                  for (J || (J = Array(p));++n < p;) {
-                    J[n] = h[n];
-                  }
-                } else {
-                  J = [];
-                }
-              }
-            } else {
-              if (rc(l) || sc(l)) {
-                if (sc(h)) {
-                  for (var J = rb(h), n = {}, p = -1, r = J.length;++p < r;) {
-                    var q = J[p];
-                    n[q] = h[q];
-                  }
-                  J = n;
-                } else {
-                  J = rc(h) ? h : {};
-                }
-              } else {
-                m = !1;
-              }
-            }
-          }
-          ea.push(l);
-          ha.push(J);
-          if (m) {
-            a[f] = oc(J, l, b, ea, ha);
-          } else {
-            if (J === J ? J !== h : h === h) {
-              a[f] = J;
-            }
-          }
-        }
-      } else {
-        ha = a[ea], l = b ? b(ha, f, ea, a, c) : void 0, (h = void 0 === l) && (l = f), void 0 === l && (!k || ea in a) || !h && (l === l ? l === ha : ha !== ha) || (a[ea] = l);
-      }
-    });
-    return a;
-  }
-  function tc(a) {
-    return !!a && "object" === typeof a && "[object Object]" === a.toString() && a.constructor === Object;
-  }
-  function je(a, c) {
-    if (!tc(c)) {
-      return c;
-    }
-    if (!tc(a)) {
-      return V(c);
-    }
-  }
-  function V() {
-    var a = Array.prototype.slice.call(arguments);
-    a.unshift({});
-    a.push(je);
-    uc.apply(null, a);
-    return a[0];
-  }
-  function vc(a, c, b, e) {
-    void 0 === e && (B.warn("DEPRECATED: Function '" + a + "' on 'TimeRanges' called without an index argument."), e = 0);
-    var g = b.length - 1;
-    if (0 > e || e > g) {
-      throw Error("Failed to execute '" + a + "' on 'TimeRanges': The index provided (" + e + ") is greater than or equal to the maximum bound (" + g + ").");
-    }
-    return b[e][c];
-  }
-  function sb(a) {
-    return void 0 === a || 0 === a.length ? {length:0, start:function() {
-      throw Error("This TimeRanges object is empty");
-    }, end:function() {
-      throw Error("This TimeRanges object is empty");
-    }} : {length:a.length, start:vc.bind(null, "start", 0, a), end:vc.bind(null, "end", 1, a)};
-  }
-  function ma(a, c) {
-    return Array.isArray(a) ? sb(a) : void 0 === a || void 0 === c ? sb() : sb([[a, c]]);
-  }
-  function wc(a, c) {
-    var b = 0, e, g;
-    if (!c) {
-      return 0;
-    }
-    a && a.length || (a = ma(0, 0));
-    for (var k = 0;k < a.length;k++) {
-      e = a.start(k), g = a.end(k), g > c && (g = c), b += g - e;
-    }
-    return b / c;
-  }
-  function W(a) {
-    if (a instanceof W) {
-      return a;
-    }
-    "number" === typeof a ? this.code = a : "string" === typeof a ? this.message = a : "object" === typeof a && ("number" === typeof a.code && (this.code = a.code), O(this, a));
-    this.message || (this.message = W.defaultMessages[this.code] || "");
-  }
-  function ke(a) {
-    for (var c in a) {
-      if (a.hasOwnProperty(c)) {
-        return !1;
-      }
-    }
-    return !0;
-  }
-  function xc(a, c, b) {
-    var e = a;
-    le(c) ? (b = c, "string" === typeof a && (e = {uri:a})) : e = me(c, {uri:a});
-    e.callback = b;
-    return e;
-  }
-  function na(a, c, b) {
-    c = xc(a, c, b);
-    return yc(c);
-  }
-  function yc(a) {
-    function c(b) {
-      clearTimeout(q);
-      b instanceof Error || (b = Error("" + (b || "Unknown XMLHttpRequest Error")));
-      b.statusCode = 0;
-      var c = r;
-      e || (e = !0, a.callback(b, c, void 0));
-    }
-    function b() {
-      if (!d) {
-        var b;
-        clearTimeout(q);
-        b = a.useXDR && void 0 === g.status ? 200 : 1223 === g.status ? 204 : g.status;
-        var c = r, k = null;
-        if (0 !== b) {
-          g.response ? c = g.response : (c = g.responseText) || ("document" === g.responseType ? c = g.responseXML : (c = 204 === g.status && g.responseXML && "parsererror" === g.responseXML.documentElement.nodeName, c = "" !== g.responseType || c ? null : g.responseXML));
-          if (p) {
-            try {
-              c = JSON.parse(c);
-            } catch (Uf) {
-            }
-          }
-          c = {body:c, statusCode:b, method:h, headers:{}, url:f, rawRequest:g};
-          g.getAllResponseHeaders && (c.headers = ne(g.getAllResponseHeaders()));
-        } else {
-          k = Error("Internal XMLHttpRequest Error");
-        }
-        b = c.body;
-        e || (e = !0, a.callback(k, c, b));
-      }
-    }
-    if ("undefined" === typeof a.callback) {
-      throw Error("callback argument missing");
-    }
-    var e = !1, g = a.xhr || null;
-    g || (g = a.cors || a.useXDR ? new na.XDomainRequest : new na.XMLHttpRequest);
-    var k, d, f = g.url = a.uri || a.url, h = g.method = a.method || "GET", l = a.body || a.data || null, m = g.headers = a.headers || {}, n = !!a.sync, p = !1, q, r = {body:void 0, headers:{}, statusCode:0, method:h, url:f, rawRequest:g};
-    "json" in a && !1 !== a.json && (p = !0, m.accept || m.Accept || (m.Accept = "application/json"), "GET" !== h && "HEAD" !== h && (m["content-type"] || m["Content-Type"] || (m["Content-Type"] = "application/json"), l = JSON.stringify(!0 === a.json ? l : a.json)));
-    g.onreadystatechange = function() {
-      4 === g.readyState && b();
-    };
-    g.onload = b;
-    g.onerror = c;
-    g.onprogress = function() {
-    };
-    g.onabort = function() {
-      d = !0;
-    };
-    g.ontimeout = c;
-    g.open(h, f, !n, a.username, a.password);
-    n || (g.withCredentials = !!a.withCredentials);
-    !n && 0 < a.timeout && (q = setTimeout(function() {
-      if (!d) {
-        d = !0;
-        g.abort("timeout");
-        var b = Error("XMLHttpRequest timeout");
-        b.code = "ETIMEDOUT";
-        c(b);
-      }
-    }, a.timeout));
-    if (g.setRequestHeader) {
-      for (k in m) {
-        m.hasOwnProperty(k) && g.setRequestHeader(k, m[k]);
-      }
-    } else {
-      if (a.headers && !ke(a.headers)) {
-        throw Error("Headers cannot be set on an XDomainRequest object");
-      }
-    }
-    "responseType" in a && (g.responseType = a.responseType);
-    "beforeSend" in a && "function" === typeof a.beforeSend && a.beforeSend(g);
-    g.send(l);
-    return g;
-  }
-  function oe() {
-  }
-  function pe(a) {
-    var c = a.charAt(0).toUpperCase() + a.slice(1);
-    zc["set" + c] = function(b) {
-      return this.el_.vjs_setProperty(a, b);
-    };
-  }
-  function Ac(a) {
-    zc[a] = function() {
-      return this.el_.vjs_getProperty(a);
-    };
-  }
-  function tb(a, c) {
-    return "rgba(" + parseInt(a[1] + a[1], 16) + "," + parseInt(a[2] + a[2], 16) + "," + parseInt(a[3] + a[3], 16) + "," + c + ")";
-  }
-  function ra(a, c) {
-    void 0 === c && (c = a);
-    a = 0 > a ? 0 : a;
-    var b = Math.floor(a % 60), e = Math.floor(a / 60 % 60), g = Math.floor(a / 3600), k = Math.floor(c / 60 % 60);
-    c = Math.floor(c / 3600);
-    if (isNaN(a) || Infinity === a) {
-      g = e = b = "-";
-    }
-    g = 0 < g || 0 < c ? g + ":" : "";
-    return g + (((g || 10 <= k) && 10 > e ? "0" + e : e) + ":") + (10 > b ? "0" + b : b);
-  }
-  function oa(a) {
-    var c;
-    a.selectedOptions ? c = a.selectedOptions[0] : a.options && (c = a.options[a.options.selectedIndex]);
-    return c.value;
-  }
-  function pa(a, c) {
-    if (c) {
-      var b;
-      for (b = 0;b < a.options.length && a.options[b].value !== c;b++) {
-      }
-      a.selectedIndex = b;
-    }
-  }
-  function y(a, c, b) {
-    if ("string" === typeof a) {
-      0 === a.indexOf("#") && (a = a.slice(1));
-      if (y.getPlayers()[a]) {
-        return c && B.warn('Player "' + a + '" is already initialised. Options will not be applied.'), b && y.getPlayers()[a].ready(b), y.getPlayers()[a];
-      }
-      a = ka(a);
-    }
-    if (!a || !a.nodeName) {
-      throw new TypeError("The element or ID supplied is not valid. (videojs)");
-    }
-    return a.player || ia.players[a.playerId] || new ia(a, c, b);
-  }
-  var Va = "undefined" !== typeof window ? window : "undefined" !== typeof global ? global : "undefined" !== typeof self ? self : {}, p = f(function(a) {
-    a.exports = "undefined" !== typeof window ? window : "undefined" !== typeof Va ? Va : "undefined" !== typeof self ? self : {};
-  }), Bc = Array.prototype.slice, Wa = function(a, c) {
-    "length" in a || (a = [a]);
-    for (a = Bc.call(a);a.length;) {
-      var b = a.shift(), e = c(b);
-      if (e) {
-        return e;
-      }
-      b.childNodes && b.childNodes.length && (a = Bc.call(b.childNodes).concat(a));
-    }
-  };
-  h.prototype.nodeType = 8;
-  h.prototype.nodeName = "#comment";
-  h.prototype.toString = function() {
-    return "[object Comment]";
-  };
-  q.prototype.type = "DOMTextNode";
-  q.prototype.nodeType = 3;
-  q.prototype.nodeName = "#text";
-  q.prototype.toString = function() {
-    return this.data;
-  };
-  q.prototype.replaceData = function(a, c, b) {
-    var e = this.data, g = e.substring(0, a);
-    a = e.substring(a + c, e.length);
-    this.data = g + b + a;
-    this.length = this.data.length;
-  };
-  var Cc = function(a) {
-    var c = this, b = a.type;
-    a.target || (a.target = c);
-    c.listeners || (c.listeners = {});
-    if (b = c.listeners[b]) {
-      return b.forEach(function(b) {
-        a.currentTarget = c;
-        "function" === typeof b ? b(a) : b.handleEvent(a);
-      });
-    }
-    c.parentNode && c.parentNode.dispatchEvent(a);
-  }, Dc = function(a, c) {
-    this.listeners || (this.listeners = {});
-    this.listeners[a] || (this.listeners[a] = []);
-    -1 === this.listeners[a].indexOf(c) && this.listeners[a].push(c);
-  }, Ec = function(a, c) {
-    this.listeners && this.listeners[a] && (a = this.listeners[a], c = a.indexOf(c), -1 !== c && a.splice(c, 1));
-  }, $d = "area base br col embed hr img input keygen link menuitem meta param source track wbr".split(" ");
-  u.prototype.type = "DOMElement";
-  u.prototype.nodeType = 1;
-  u.prototype.appendChild = function(a) {
-    a.parentNode && a.parentNode.removeChild(a);
-    this.childNodes.push(a);
-    a.parentNode = this;
-    return a;
-  };
-  u.prototype.replaceChild = function(a, c) {
-    a.parentNode && a.parentNode.removeChild(a);
-    var b = this.childNodes.indexOf(c);
-    c.parentNode = null;
-    this.childNodes[b] = a;
-    a.parentNode = this;
-    return c;
-  };
-  u.prototype.removeChild = function(a) {
-    var c = this.childNodes.indexOf(a);
-    this.childNodes.splice(c, 1);
-    a.parentNode = null;
-    return a;
-  };
-  u.prototype.insertBefore = function(a, c) {
-    a.parentNode && a.parentNode.removeChild(a);
-    c = null === c || void 0 === c ? -1 : this.childNodes.indexOf(c);
-    -1 < c ? this.childNodes.splice(c, 0, a) : this.childNodes.push(a);
-    a.parentNode = this;
-    return a;
-  };
-  u.prototype.setAttributeNS = function(a, c, b) {
-    var e = null, g = c, k = c.indexOf(":");
-    -1 < k && (e = c.substr(0, k), g = c.substr(k + 1));
-    "INPUT" === this.tagName && "type" === c ? this.type = b : (this._attributes[a] || (this._attributes[a] = {}))[g] = {value:b, prefix:e};
-  };
-  u.prototype.getAttributeNS = function(a, c) {
-    a = (a = this._attributes[a]) && a[c] && a[c].value;
-    return "INPUT" === this.tagName && "type" === c ? this.type : "string" !== typeof a ? null : a;
-  };
-  u.prototype.removeAttributeNS = function(a, c) {
-    (a = this._attributes[a]) && delete a[c];
-  };
-  u.prototype.hasAttributeNS = function(a, c) {
-    a = this._attributes[a];
-    return !!a && c in a;
-  };
-  u.prototype.setAttribute = function(a, c) {
-    return this.setAttributeNS(null, a, c);
-  };
-  u.prototype.getAttribute = function(a) {
-    return this.getAttributeNS(null, a);
-  };
-  u.prototype.removeAttribute = function(a) {
-    return this.removeAttributeNS(null, a);
-  };
-  u.prototype.hasAttribute = function(a) {
-    return this.hasAttributeNS(null, a);
-  };
-  u.prototype.removeEventListener = Ec;
-  u.prototype.addEventListener = Dc;
-  u.prototype.dispatchEvent = Cc;
-  u.prototype.focus = function() {
-  };
-  u.prototype.toString = function() {
-    return m(this);
-  };
-  u.prototype.getElementsByClassName = function(a) {
-    var c = a.split(" "), b = [];
-    Wa(this, function(a) {
-      if (1 === a.nodeType) {
-        var e = (a.className || "").split(" ");
-        c.every(function(b) {
-          return -1 !== e.indexOf(b);
-        }) && b.push(a);
-      }
-    });
-    return b;
-  };
-  u.prototype.getElementsByTagName = function(a) {
-    a = a.toLowerCase();
-    var c = [];
-    Wa(this.childNodes, function(b) {
-      1 !== b.nodeType || "*" !== a && b.tagName.toLowerCase() !== a || c.push(b);
-    });
-    return c;
-  };
-  u.prototype.contains = function(a) {
-    return Wa(this, function(c) {
-      return a === c;
-    }) || !1;
-  };
-  r.prototype.type = "DocumentFragment";
-  r.prototype.nodeType = 11;
-  r.prototype.nodeName = "#document-fragment";
-  r.prototype.appendChild = u.prototype.appendChild;
-  r.prototype.replaceChild = u.prototype.replaceChild;
-  r.prototype.removeChild = u.prototype.removeChild;
-  r.prototype.toString = function() {
-    return this.childNodes.map(function(a) {
-      return String(a);
-    }).join("");
-  };
-  ba.prototype.initEvent = function(a, c, b) {
-    this.type = a;
-    this.bubbles = c;
-    this.cancelable = b;
-  };
-  ba.prototype.preventDefault = function() {
-  };
-  var ca = z.prototype;
-  ca.createTextNode = function(a) {
-    return new q(a, this);
-  };
-  ca.createElementNS = function(a, c) {
-    return new u(c, this, null === a ? null : String(a));
-  };
-  ca.createElement = function(a) {
-    return new u(a, this);
-  };
-  ca.createDocumentFragment = function() {
-    return new r(this);
-  };
-  ca.createEvent = function(a) {
-    return new ba(a);
-  };
-  ca.createComment = function(a) {
-    return new h(a, this);
-  };
-  ca.getElementById = function(a) {
-    a = String(a);
-    return Wa(this.childNodes, function(c) {
-      if (String(c.id) === a) {
-        return c;
-      }
-    }) || null;
-  };
-  ca.getElementsByClassName = u.prototype.getElementsByClassName;
-  ca.getElementsByTagName = u.prototype.getElementsByTagName;
-  ca.contains = u.prototype.contains;
-  ca.removeEventListener = Ec;
-  ca.addEventListener = Dc;
-  ca.dispatchEvent = Cc;
-  var qe = new z, x = f(function(a) {
-    var c = "undefined" !== typeof Va ? Va : "undefined" !== typeof window ? window : {};
-    if ("undefined" !== typeof document) {
-      a.exports = document;
-    } else {
-      var b = c["__GLOBAL_DOCUMENT_CACHE@4"];
-      b || (b = c["__GLOBAL_DOCUMENT_CACHE@4"] = qe);
-      a.exports = b;
-    }
-  }), xa = 1, da = p.navigator && p.navigator.userAgent || "", Fc = /AppleWebKit\/([\d.]+)/i.exec(da), re = Fc ? parseFloat(Fc.pop()) : null, ub = /iPad/i.test(da), vb = /iPhone/i.test(da) && !ub, Gc = /iPod/i.test(da), wb = vb || ub || Gc, se = function() {
-    var a = da.match(/OS (\d+)_/i);
-    return a && a[1] ? a[1] : null;
-  }(), Xa = /Android/i.test(da), Ya = function() {
-    var a = da.match(/Android (\d+)(?:\.(\d+))?(?:\.(\d+))*/i);
-    if (!a) {
-      return null;
-    }
-    var c = a[1] && parseFloat(a[1]), b = a[2] && parseFloat(a[2]);
-    return c && b ? parseFloat(a[1] + "." + a[2]) : c ? c : null;
-  }(), Hc = Xa && /webkit/i.test(da) && 2.3 > Ya, Ic = Xa && 5 > Ya && 537 > re, xb = /Firefox/i.test(da), Jc = /Edge/i.test(da), Kc = !Jc && /Chrome/i.test(da), X = /MSIE\s8\.0/.test(da), yb = function(a) {
-    return a && parseFloat(a[1]);
-  }(/MSIE\s(\d+)\.\d/.exec(da)), Za = !!("ontouchstart" in p || p.DocumentTouch && x instanceof p.DocumentTouch), Lc = "backgroundSize" in x.createElement("video").style, te = Object.freeze({IS_IPAD:ub, IS_IPHONE:vb, IS_IPOD:Gc, IS_IOS:wb, IOS_VERSION:se, IS_ANDROID:Xa, ANDROID_VERSION:Ya, IS_OLD_ANDROID:Hc, IS_NATIVE_ANDROID:Ic, IS_FIREFOX:xb, IS_EDGE:Jc, IS_CHROME:Kc, IS_IE8:X, IE_VERSION:yb, TOUCH_ENABLED:Za, BACKGROUND_SIZE_SUPPORTED:Lc}), za, zb = function(a, c, b) {
-    void 0 === b && (b = !!yb && 11 > yb);
-    "log" !== a && c.unshift(a.toUpperCase() + ":");
-    za.history.push(c);
-    c.unshift("VIDEOJS:");
-    if (a = p.console && p.console[a]) {
-      if (b && (c = c.map(function(b) {
-        if (b && "object" === typeof b || Array.isArray(b)) {
-          try {
-            return JSON.stringify(b);
-          } catch (g) {
-          }
-        }
-        return String(b);
-      }).join(" ")), a.apply) {
-        a[Array.isArray(c) ? "apply" : "call"](p.console, c);
-      } else {
-        a(c);
-      }
-    }
-  };
-  za = function() {
-    for (var a = [], c = 0;c < arguments.length;c++) {
-      a[c] = arguments[c];
-    }
-    zb("log", a);
-  };
-  za.history = [];
-  za.error = function() {
-    for (var a = [], c = 0;c < arguments.length;c++) {
-      a[c] = arguments[c];
-    }
-    return zb("error", a);
-  };
-  za.warn = function() {
-    for (var a = [], c = 0;c < arguments.length;c++) {
-      a[c] = arguments[c];
-    }
-    return zb("warn", a);
-  };
-  var B = za, nc = function(a) {
-    for (var c = "", b = 0;b < arguments.length;b++) {
-      c += a[b].replace(/\n\r?\s*/g, "") + (arguments[b + 1] || "");
-    }
-    return c;
-  }, Ha = {}, wa = "vdata" + (new Date).getTime(), Ja = va("querySelector"), ue = va("querySelectorAll"), Ab = !1, Mc, Bb = function() {
-    var a = x.getElementsByTagName("video"), c = x.getElementsByTagName("audio"), b = [];
-    if (a && 0 < a.length) {
-      for (var e = 0, g = a.length;e < g;e++) {
-        b.push(a[e]);
-      }
-    }
-    if (c && 0 < c.length) {
-      for (e = 0, g = c.length;e < g;e++) {
-        b.push(c[e]);
-      }
-    }
-    if (b && 0 < b.length) {
-      for (e = 0, g = b.length;e < g;e++) {
-        if ((a = b[e]) && a.getAttribute) {
-          void 0 === a.player && null !== a.getAttribute("data-setup") && Mc(a);
-        } else {
-          setTimeout(Bb, 1);
-          break;
-        }
-      }
-    } else {
-      Ab || setTimeout(Bb, 1);
-    }
-  };
-  "complete" === x.readyState ? Ab = !0 : Ia(p, "load", function() {
-    Ab = !0;
-  });
-  var Nc = function(a) {
-    var c = x.createElement("style");
-    c.className = a;
-    return c;
-  }, Oc = function(a, c) {
-    a.styleSheet ? a.styleSheet.cssText = c : a.textContent = c;
-  }, w = function(a, c, b) {
-    c.guid || (c.guid = xa++);
-    var e = function() {
-      return c.apply(a, arguments);
-    };
-    e.guid = b ? b + "_" + c.guid : c.guid;
-    return e;
-  }, Pc = function(a, c) {
-    for (var b = -1, e = a.length;++b < e && !1 !== c(a[b], b, a);) {
-    }
-    return a;
-  }, sa = function(a) {
-    var c = typeof a;
-    return !!a && ("object" == c || "function" == c);
-  }, ya = function(a) {
-    return !!a && "object" == typeof a;
-  }, ve = Object.prototype.toString, Cb = function(a) {
-    return "string" == typeof a || ya(a) && "[object String]" == ve.call(a);
-  }, Qc = Error.prototype, Db = Object.prototype.propertyIsEnumerable, we = Array.prototype.splice, Rc, Eb, Sc, Tc, Uc;
-  (function(a) {
-    var c = function() {
-      this.x = a;
-    }, b = {0:a, length:a}, e = [];
-    c.prototype = {valueOf:a, y:a};
-    for (var g in new c) {
-      e.push(g);
-    }
-    Rc = Db.call(Qc, "message") || Db.call(Qc, "name");
-    Eb = Db.call(c, "prototype");
-    Sc = !/valueOf/.test(e);
-    Tc = "x" != e[0];
-    we.call(b, 0, 1);
-    Uc = "xx" != "x" + Object("x")[0];
-  })(1, 0);
-  var Vc = function(a) {
-    if (Uc && Cb(a)) {
-      for (var c = -1, b = a.length, e = Object(a);++c < b;) {
-        e[c] = a.charAt(c);
-      }
-      return e;
-    }
-    return sa(a) ? a : Object(a);
-  }, Ka = function(a) {
-    return "number" == typeof a && -1 < a && 0 == a % 1 && 9007199254740991 >= a;
-  }, xe = function(a) {
-    return function(c) {
-      return null == c ? void 0 : Vc(c)[a];
-    };
-  }("length"), La = function(a) {
-    return null != a && Ka(xe(a));
-  }, Wc = Object.prototype, ye = Wc.hasOwnProperty, ze = Wc.propertyIsEnumerable, $a = function(a) {
-    return ya(a) && La(a) && ye.call(a, "callee") && !ze.call(a, "callee");
-  }, Ae = Object.prototype.toString, Fb = function(a) {
-    return sa(a) && "[object Function]" == Ae.call(a);
-  }, Xc = function() {
-    try {
-      Object("[object Object]");
-    } catch (a) {
-      return function() {
-        return !1;
-      };
-    }
-    return function(a) {
-      return "function" != typeof a.toString && "string" == typeof(a + "");
-    };
-  }(), Be = /^\[object .+?Constructor\]$/, Yc = Function.prototype.toString, Zc = RegExp("^" + Yc.call(Object.prototype.hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$"), Gb = function(a, c) {
-    a = null == a ? void 0 : a[c];
-    return (null == a ? 0 : Fb(a) ? Zc.test(Yc.call(a)) : ya(a) && (Xc(a) ? Zc : Be).test(a)) ? a : void 0;
-  }, Ce = Object.prototype.toString, ab = Gb(Array, "isArray") || function(a) {
-    return ya(a) && Ka(a.length) && "[object Array]" == Ce.call(a);
-  }, De = function(a) {
-    return function(c, b, e) {
-      var g = Vc(c);
-      e = e(c);
-      for (var k = e.length, d = a ? k : -1;a ? d-- : ++d < k;) {
-        var f = e[d];
-        if (!1 === b(g[f], f, g)) {
-          break;
-        }
-      }
-      return c;
-    };
-  }(), Ee = /^\d+$/, Hb = function(a, c) {
-    a = "number" == typeof a || Ee.test(a) ? +a : -1;
-    return -1 < a && 0 == a % 1 && a < (null == c ? 9007199254740991 : c);
-  }, Ib = "constructor hasOwnProperty isPrototypeOf propertyIsEnumerable toLocaleString toString valueOf".split(" "), $c = Error.prototype, Ma = Object.prototype, Fe = String.prototype, bb = Ma.hasOwnProperty, Ge = Ma.toString, aa = {};
-  aa["[object Array]"] = aa["[object Date]"] = aa["[object Number]"] = {constructor:!0, toLocaleString:!0, toString:!0, valueOf:!0};
-  aa["[object Boolean]"] = aa["[object String]"] = {constructor:!0, toString:!0, valueOf:!0};
-  aa["[object Error]"] = aa["[object Function]"] = aa["[object RegExp]"] = {constructor:!0, toString:!0};
-  aa["[object Object]"] = {constructor:!0};
-  Pc(Ib, function(a) {
-    for (var c in aa) {
-      if (bb.call(aa, c)) {
-        var b = aa[c];
-        b[a] = bb.call(b, a);
-      }
-    }
-  });
-  var rb = function(a) {
-    if (null == a) {
-      return [];
-    }
-    sa(a) || (a = Object(a));
-    for (var c = a.length, c = c && Ka(c) && (ab(a) || $a(a) || Cb(a)) && c || 0, b = a.constructor, e = -1, b = Fb(b) && b.prototype || Ma, g = b === a, k = Array(c), d = 0 < c, f = Rc && (a === $c || a instanceof Error), h = Eb && Fb(a);++e < c;) {
-      k[e] = e + "";
-    }
-    for (var l in a) {
-      h && "prototype" == l || f && ("message" == l || "name" == l) || d && Hb(l, c) || "constructor" == l && (g || !bb.call(a, l)) || k.push(l);
-    }
-    if (Sc && a !== Ma) {
-      for (c = a === Fe ? "[object String]" : a === $c ? "[object Error]" : Ge.call(a), e = aa[c] || aa["[object Object]"], "[object Object]" == c && (b = Ma), c = Ib.length;c--;) {
-        l = Ib[c], d = e[l], g && d || (d ? !bb.call(a, l) : a[l] === b[l]) || k.push(l);
-      }
-    }
-    return k;
-  }, ad = function(a, c) {
-    return De(a, c, rb);
-  }, bd = Object.prototype, Jb = bd.hasOwnProperty, He = bd.toString, H = {};
-  H["[object Float32Array]"] = H["[object Float64Array]"] = H["[object Int8Array]"] = H["[object Int16Array]"] = H["[object Int32Array]"] = H["[object Uint8Array]"] = H["[object Uint8ClampedArray]"] = H["[object Uint16Array]"] = H["[object Uint32Array]"] = !0;
-  H["[object Arguments]"] = H["[object Array]"] = H["[object ArrayBuffer]"] = H["[object Boolean]"] = H["[object Date]"] = H["[object Error]"] = H["[object Function]"] = H["[object Map]"] = H["[object Number]"] = H["[object Object]"] = H["[object RegExp]"] = H["[object Set]"] = H["[object String]"] = H["[object WeakMap]"] = !1;
-  var Ie = Object.prototype.toString, cd = function(a) {
-    return ya(a) && Ka(a.length) && !!H[Ie.call(a)];
-  }, sc = $a, qc = ab, pc = La, rc = function(a) {
-    var c;
-    if (!ya(a) || "[object Object]" != He.call(a) || Xc(a) || $a(a) || !(Jb.call(a, "constructor") || (c = a.constructor, "function" != typeof c || c instanceof c))) {
-      return !1;
-    }
-    var b;
-    if (Tc) {
-      return ad(a, function(a, c, k) {
-        b = Jb.call(k, c);
-        return !1;
-      }), !1 !== b;
-    }
-    ad(a, function(a, c) {
-      b = c;
-    });
-    return void 0 === b || Jb.call(a, b);
-  }, ie = cd, Je = Object.prototype.hasOwnProperty, dd = function(a) {
-    for (var c = rb(a), b = c.length, e = b && a.length, g = !!e && Ka(e) && (ab(a) || $a(a) || Cb(a)), k = -1, d = [];++k < b;) {
-      var f = c[k];
-      (g && Hb(f, e) || Je.call(a, f)) && d.push(f);
-    }
-    return d;
-  }, ed = Gb(Object, "keys"), ge = Pc, de = ab, ce = La, be = sa, he = ya, ee = cd, fe = ed ? function(a) {
-    var c = null == a ? void 0 : a.constructor;
-    return "function" == typeof c && c.prototype === a || ("function" == typeof a ? Eb : La(a)) ? dd(a) : sa(a) ? ed(a) : [];
-  } : dd, Ke = function(a) {
-    return a;
-  }, fd = Math.max, Le = function(a, c, b) {
-    if ("function" != typeof a) {
-      return Ke;
-    }
-    if (void 0 === c) {
-      return a;
-    }
-    switch(b) {
-      case 1:
-        return function(b) {
-          return a.call(c, b);
-        };
-      case 3:
-        return function(b, g, k) {
-          return a.call(c, b, g, k);
-        };
-      case 4:
-        return function(b, g, k, d) {
-          return a.call(c, b, g, k, d);
-        };
-      case 5:
-        return function(b, g, k, d, f) {
-          return a.call(c, b, g, k, d, f);
-        };
-    }
-    return function() {
-      return a.apply(c, arguments);
-    };
-  }, Me = function(a, c) {
-    if ("function" != typeof a) {
-      throw new TypeError("Expected a function");
-    }
-    c = fd(void 0 === c ? a.length - 1 : +c || 0, 0);
-    return function() {
-      for (var b = arguments, e = -1, g = fd(b.length - c, 0), k = Array(g);++e < g;) {
-        k[e] = b[c + e];
-      }
-      switch(c) {
-        case 0:
-          return a.call(this, k);
-        case 1:
-          return a.call(this, b[0], k);
-        case 2:
-          return a.call(this, b[0], b[1], k);
-      }
-      g = Array(c + 1);
-      for (e = -1;++e < c;) {
-        g[e] = b[e];
-      }
-      g[c] = k;
-      return a.apply(this, g);
-    };
-  }, uc = function(a) {
-    return Me(function(c, b) {
-      var e = -1, g = null == c ? 0 : b.length, k = 2 < g ? b[g - 2] : void 0, d = 2 < g ? b[2] : void 0, f = 1 < g ? b[g - 1] : void 0;
-      "function" == typeof k ? (k = Le(k, f, 5), g -= 2) : (k = "function" == typeof f ? f : void 0, g -= k ? 1 : 0);
-      if (f = d) {
-        var f = b[0], h = b[1];
-        if (sa(d)) {
-          var l = typeof h;
-          ("number" == l ? La(d) && Hb(h, d.length) : "string" == l && h in d) ? (d = d[h], f = f === f ? f === d : d !== d) : f = !1;
-        } else {
-          f = !1;
-        }
-      }
-      f && (k = 3 > g ? void 0 : k, g = 1);
-      for (;++e < g;) {
-        (d = b[e]) && a(c, d, k);
-      }
-      return c;
-    });
-  }(oc), n = function() {
-    function a(a, b, e) {
-      this.player_ = !a && this.play ? a = this : a;
-      this.options_ = V({}, this.options_);
-      b = this.options_ = V(this.options_, b);
-      this.id_ = b.id || b.el && b.el.id;
-      this.id_ || (this.id_ = (a && a.id && a.id() || "no_player") + "_component_" + xa++);
-      this.name_ = b.name || null;
-      b.el ? this.el_ = b.el : !1 !== b.createEl && (this.el_ = this.createEl());
-      this.children_ = [];
-      this.childIndex_ = {};
-      this.childNameIndex_ = {};
-      !1 !== b.initChildren && this.initChildren();
-      this.ready(e);
-      !1 !== b.reportTouchActivity && this.enableTouchActivity();
-    }
-    a.prototype.dispose = function() {
-      this.trigger({type:"dispose", bubbles:!1});
-      if (this.children_) {
-        for (var a = this.children_.length - 1;0 <= a;a--) {
-          this.children_[a].dispose && this.children_[a].dispose();
-        }
-      }
-      this.childNameIndex_ = this.childIndex_ = this.children_ = null;
-      this.off();
-      this.el_.parentNode && this.el_.parentNode.removeChild(this.el_);
-      Fa(this.el_);
-      this.el_ = null;
-    };
-    a.prototype.player = function() {
-      return this.player_;
-    };
-    a.prototype.options = function(a) {
-      B.warn("this.options() has been deprecated and will be moved to the constructor in 6.0");
-      return a ? this.options_ = V(this.options_, a) : this.options_;
-    };
-    a.prototype.el = function() {
-      return this.el_;
-    };
-    a.prototype.createEl = function(a, b, e) {
-      return A(a, b, e);
-    };
-    a.prototype.localize = function(a) {
-      var b = this.player_.language && this.player_.language(), c = this.player_.languages && this.player_.languages();
-      if (!b || !c) {
-        return a;
-      }
-      var g = c[b];
-      if (g && g[a]) {
-        return g[a];
-      }
-      b = b.split("-")[0];
-      return (c = c[b]) && c[a] ? c[a] : a;
-    };
-    a.prototype.contentEl = function() {
-      return this.contentEl_ || this.el_;
-    };
-    a.prototype.id = function() {
-      return this.id_;
-    };
-    a.prototype.name = function() {
-      return this.name_;
-    };
-    a.prototype.children = function() {
-      return this.children_;
-    };
-    a.prototype.getChildById = function(a) {
-      return this.childIndex_[a];
-    };
-    a.prototype.getChild = function(a) {
-      return this.childNameIndex_[a];
-    };
-    a.prototype.addChild = function(c, b, e) {
-      void 0 === b && (b = {});
-      void 0 === e && (e = this.children_.length);
-      var g;
-      if ("string" === typeof c) {
-        g = c;
-        b || (b = {});
-        !0 === b && (B.warn("Initializing a child component with `true` is deprecated. Children should be defined in an array when possible, but if necessary use an object instead of `true`."), b = {});
-        c = b.componentClass || U(g);
-        b.name = g;
-        var k = a.getComponent(c);
-        if (!k) {
-          throw Error("Component " + c + " does not exist");
-        }
-        if ("function" !== typeof k) {
-          return null;
-        }
-        b = new k(this.player_ || this, b);
-      } else {
-        b = c;
-      }
-      this.children_.splice(e, 0, b);
-      "function" === typeof b.id && (this.childIndex_[b.id()] = b);
-      (g = g || b.name && b.name()) && (this.childNameIndex_[g] = b);
-      "function" === typeof b.el && b.el() && (e = this.contentEl().children[e] || null, this.contentEl().insertBefore(b.el(), e));
-      return b;
-    };
-    a.prototype.removeChild = function(a) {
-      "string" === typeof a && (a = this.getChild(a));
-      if (a && this.children_) {
-        for (var b = !1, c = this.children_.length - 1;0 <= c;c--) {
-          if (this.children_[c] === a) {
-            b = !0;
-            this.children_.splice(c, 1);
-            break;
-          }
-        }
-        b && (this.childIndex_[a.id()] = null, this.childNameIndex_[a.name()] = null, (b = a.el()) && b.parentNode === this.contentEl() && this.contentEl().removeChild(a.el()));
-      }
-    };
-    a.prototype.initChildren = function() {
-      var c = this, b = this.options_.children;
-      if (b) {
-        var e = this.options_, g, k = a.getComponent("Tech");
-        g = Array.isArray(b) ? b : Object.keys(b);
-        g.concat(Object.keys(this.options_).filter(function(b) {
-          return !g.some(function(a) {
-            return "string" === typeof a ? b === a : b === a.name;
-          });
-        })).map(function(a) {
-          var e;
-          "string" === typeof a ? (e = a, a = b[e] || c.options_[e] || {}) : e = a.name;
-          return {name:e, opts:a};
-        }).filter(function(b) {
-          return (b = a.getComponent(b.opts.componentClass || U(b.name))) && !k.isTech(b);
-        }).forEach(function(b) {
-          var a = b.name;
-          b = b.opts;
-          void 0 !== e[a] && (b = e[a]);
-          !1 !== b && (!0 === b && (b = {}), b.playerOptions = c.options_.playerOptions, (b = c.addChild(a, b)) && (c[a] = b));
-        });
-      }
-    };
-    a.prototype.buildCSSClass = function() {
-      return "";
-    };
-    a.prototype.on = function(a, b, e) {
-      var c = this;
-      if ("string" === typeof a || Array.isArray(a)) {
-        I(this.el_, a, w(this, b));
-      } else {
-        var k = w(this, e), d = function() {
-          return c.off(a, b, k);
-        };
-        d.guid = k.guid;
-        this.on("dispose", d);
-        e = function() {
-          return c.off("dispose", d);
-        };
-        e.guid = k.guid;
-        a.nodeName ? (I(a, b, k), I(a, "dispose", e)) : "function" === typeof a.on && (a.on(b, k), a.on("dispose", e));
-      }
-      return this;
-    };
-    a.prototype.off = function(a, b, e) {
-      !a || "string" === typeof a || Array.isArray(a) ? la(this.el_, a, b) : (e = w(this, e), this.off("dispose", e), a.nodeName ? (la(a, b, e), la(a, "dispose", e)) : (a.off(b, e), a.off("dispose", e)));
-      return this;
-    };
-    a.prototype.one = function(a, b, e) {
-      var c = this;
-      if ("string" === typeof a || Array.isArray(a)) {
-        Ia(this.el_, a, w(this, b));
-      } else {
-        var k = w(this, e), d = function() {
-          c.off(a, b, d);
-          k.apply(null, arguments);
-        };
-        d.guid = k.guid;
-        this.on(a, b, d);
-      }
-      return this;
-    };
-    a.prototype.trigger = function(a, b) {
-      Ua(this.el_, a, b);
-      return this;
-    };
-    a.prototype.ready = function(a, b) {
-      void 0 === b && (b = !1);
-      a && (this.isReady_ ? b ? a.call(this) : this.setTimeout(a, 1) : (this.readyQueue_ = this.readyQueue_ || [], this.readyQueue_.push(a)));
-      return this;
-    };
-    a.prototype.triggerReady = function() {
-      this.isReady_ = !0;
-      this.setTimeout(function() {
-        var a = this.readyQueue_;
-        this.readyQueue_ = [];
-        a && 0 < a.length && a.forEach(function(b) {
-          b.call(this);
-        }, this);
-        this.trigger("ready");
-      }, 1);
-    };
-    a.prototype.$ = function(a, b) {
-      return Ja(a, b || this.contentEl());
-    };
-    a.prototype.$$ = function(a, b) {
-      return ue(a, b || this.contentEl());
-    };
-    a.prototype.hasClass = function(a) {
-      return l(this.el_, a);
-    };
-    a.prototype.addClass = function(a) {
-      M(this.el_, a);
-      return this;
-    };
-    a.prototype.removeClass = function(a) {
-      qa(this.el_, a);
-      return this;
-    };
-    a.prototype.toggleClass = function(a, b) {
-      Ga(this.el_, a, b);
-      return this;
-    };
-    a.prototype.show = function() {
-      this.removeClass("vjs-hidden");
-      return this;
-    };
-    a.prototype.hide = function() {
-      this.addClass("vjs-hidden");
-      return this;
-    };
-    a.prototype.lockShowing = function() {
-      this.addClass("vjs-lock-showing");
-      return this;
-    };
-    a.prototype.unlockShowing = function() {
-      this.removeClass("vjs-lock-showing");
-      return this;
-    };
-    a.prototype.width = function(a, b) {
-      return this.dimension("width", a, b);
-    };
-    a.prototype.height = function(a, b) {
-      return this.dimension("height", a, b);
-    };
-    a.prototype.dimensions = function(a, b) {
-      return this.width(a, !0).height(b);
-    };
-    a.prototype.dimension = function(a, b, e) {
-      if (void 0 !== b) {
-        if (null === b || b !== b) {
-          b = 0;
-        }
-        -1 !== ("" + b).indexOf("%") || -1 !== ("" + b).indexOf("px") ? this.el_.style[a] = b : this.el_.style[a] = "auto" === b ? "" : b + "px";
-        e || this.trigger("resize");
-        return this;
-      }
-      if (!this.el_) {
-        return 0;
-      }
-      b = this.el_.style[a];
-      e = b.indexOf("px");
-      return -1 !== e ? parseInt(b.slice(0, e), 10) : parseInt(this.el_["offset" + U(a)], 10);
-    };
-    a.prototype.currentDimension = function(a) {
-      var b = 0;
-      if ("width" !== a && "height" !== a) {
-        throw Error("currentDimension only accepts width or height value");
-      }
-      "function" === typeof p.getComputedStyle ? (b = p.getComputedStyle(this.el_), b = b.getPropertyValue(a) || b[a]) : this.el_.currentStyle && (a = "offset" + U(a), b = this.el_[a]);
-      return b = parseFloat(b);
-    };
-    a.prototype.currentDimensions = function() {
-      return {width:this.currentDimension("width"), height:this.currentDimension("height")};
-    };
-    a.prototype.currentWidth = function() {
-      return this.currentDimension("width");
-    };
-    a.prototype.currentHeight = function() {
-      return this.currentDimension("height");
-    };
-    a.prototype.emitTapEvents = function() {
-      var a = 0, b = null, e;
-      this.on("touchstart", function(c) {
-        1 === c.touches.length && (b = {pageX:c.touches[0].pageX, pageY:c.touches[0].pageY}, a = (new Date).getTime(), e = !0);
-      });
-      this.on("touchmove", function(a) {
-        if (1 < a.touches.length) {
-          e = !1;
-        } else {
-          if (b) {
-            var c = a.touches[0].pageX - b.pageX;
-            a = a.touches[0].pageY - b.pageY;
-            10 < Math.sqrt(c * c + a * a) && (e = !1);
-          }
-        }
-      });
-      var g = function() {
-        e = !1;
-      };
-      this.on("touchleave", g);
-      this.on("touchcancel", g);
-      this.on("touchend", function(c) {
-        b = null;
-        !0 === e && 200 > (new Date).getTime() - a && (c.preventDefault(), this.trigger("tap"));
-      });
-    };
-    a.prototype.enableTouchActivity = function() {
-      if (this.player() && this.player().reportUserActivity) {
-        var a = w(this.player(), this.player().reportUserActivity), b;
-        this.on("touchstart", function() {
-          a();
-          this.clearInterval(b);
-          b = this.setInterval(a, 250);
-        });
-        var e = function(c) {
-          a();
-          this.clearInterval(b);
-        };
-        this.on("touchmove", a);
-        this.on("touchend", e);
-        this.on("touchcancel", e);
-      }
-    };
-    a.prototype.setTimeout = function(a, b) {
-      a = w(this, a);
-      var c = p.setTimeout(a, b);
-      a = function() {
-        this.clearTimeout(c);
-      };
-      a.guid = "vjs-timeout-" + c;
-      this.on("dispose", a);
-      return c;
-    };
-    a.prototype.clearTimeout = function(a) {
-      p.clearTimeout(a);
-      var b = function() {
-      };
-      b.guid = "vjs-timeout-" + a;
-      this.off("dispose", b);
-      return a;
-    };
-    a.prototype.setInterval = function(a, b) {
-      a = w(this, a);
-      var c = p.setInterval(a, b);
-      a = function() {
-        this.clearInterval(c);
-      };
-      a.guid = "vjs-interval-" + c;
-      this.on("dispose", a);
-      return c;
-    };
-    a.prototype.clearInterval = function(a) {
-      p.clearInterval(a);
-      var b = function() {
-      };
-      b.guid = "vjs-interval-" + a;
-      this.off("dispose", b);
-      return a;
-    };
-    a.registerComponent = function(c, b) {
-      a.components_ || (a.components_ = {});
-      return a.components_[c] = b;
-    };
-    a.getComponent = function(c) {
-      if (a.components_ && a.components_[c]) {
-        return a.components_[c];
-      }
-      if (p && p.videojs && p.videojs[c]) {
-        return B.warn("The " + c + " component was added to the videojs object when it should be registered using videojs.registerComponent(name, component)"), p.videojs[c];
-      }
-    };
-    a.extend = function(c) {
-      c = c || {};
-      B.warn("Component.extend({}) has been deprecated, use videojs.extend(Component, {}) instead");
-      var b = c.init || c.init || this.prototype.init || this.prototype.init || function() {
-      }, e = function() {
-        b.apply(this, arguments);
-      };
-      e.prototype = Object.create(this.prototype);
-      e.prototype.constructor = e;
-      e.extend = a.extend;
-      for (var g in c) {
-        c.hasOwnProperty(g) && (e.prototype[g] = c[g]);
-      }
-      return e;
-    };
-    return a;
-  }();
-  n.registerComponent("Component", n);
-  var Y = function() {
-  };
-  Y.prototype.allowedEvents_ = {};
-  Y.prototype.on = function(a, c) {
-    var b = this.addEventListener;
-    this.addEventListener = function() {
-    };
-    I(this, a, c);
-    this.addEventListener = b;
-  };
-  Y.prototype.addEventListener = Y.prototype.on;
-  Y.prototype.off = function(a, c) {
-    la(this, a, c);
-  };
-  Y.prototype.removeEventListener = Y.prototype.off;
-  Y.prototype.one = function(a, c) {
-    var b = this.addEventListener;
-    this.addEventListener = function() {
-    };
-    Ia(this, a, c);
-    this.addEventListener = b;
-  };
-  Y.prototype.trigger = function(a) {
-    var c = a.type || a;
-    "string" === typeof a && (a = {type:c});
-    a = qb(a);
-    if (this.allowedEvents_[c] && this["on" + c]) {
-      this["on" + c](a);
-    }
-    Ua(this, a);
-  };
-  Y.prototype.dispatchEvent = Y.prototype.trigger;
-  for (var ta = {}, cb = ["requestFullscreen exitFullscreen fullscreenElement fullscreenEnabled fullscreenchange fullscreenerror".split(" "), "webkitRequestFullscreen webkitExitFullscreen webkitFullscreenElement webkitFullscreenEnabled webkitfullscreenchange webkitfullscreenerror".split(" "), "webkitRequestFullScreen webkitCancelFullScreen webkitCurrentFullScreenElement webkitCancelFullScreen webkitfullscreenchange webkitfullscreenerror".split(" "), "mozRequestFullScreen mozCancelFullScreen mozFullScreenElement mozFullScreenEnabled mozfullscreenchange mozfullscreenerror".split(" "), 
-  "msRequestFullscreen msExitFullscreen msFullscreenElement msFullscreenEnabled MSFullscreenChange MSFullscreenError".split(" ")], Ne = cb[0], db, R = 0;R < cb.length;R++) {
-    if (cb[R][1] in x) {
-      db = cb[R];
-      break;
-    }
-  }
-  if (db) {
-    for (R = 0;R < db.length;R++) {
-      ta[Ne[R]] = db[R];
-    }
-  }
-  var gd = Object.prototype.toString, eb = Object.prototype.hasOwnProperty, hd = Object.prototype.toString, Oe = Array.prototype.slice, id = function(a) {
-    var c = gd.call(a), b = "[object Arguments]" === c;
-    b || (b = "[object Array]" !== c && null !== a && "object" === typeof a && "number" === typeof a.length && 0 <= a.length && "[object Function]" === gd.call(a.callee));
-    return b;
-  }, jd = Object.prototype.propertyIsEnumerable, Pe = !jd.call({toString:null}, "toString"), Qe = jd.call(function() {
-  }, "prototype"), fb = "toString toLocaleString valueOf hasOwnProperty isPrototypeOf propertyIsEnumerable constructor".split(" "), Kb = function(a) {
-    var c = a.constructor;
-    return c && c.prototype === a;
-  }, Re = {$console:!0, $external:!0, $frame:!0, $frameElement:!0, $frames:!0, $innerHeight:!0, $innerWidth:!0, $outerHeight:!0, $outerWidth:!0, $pageXOffset:!0, $pageYOffset:!0, $parent:!0, $scrollLeft:!0, $scrollTop:!0, $scrollX:!0, $scrollY:!0, $self:!0, $webkitIndexedDB:!0, $webkitStorageInfo:!0, $window:!0}, Se = function() {
-    if ("undefined" === typeof window) {
-      return !1;
-    }
-    for (var a in window) {
-      try {
-        if (!Re["$" + a] && eb.call(window, a) && null !== window[a] && "object" === typeof window[a]) {
-          try {
-            Kb(window[a]);
-          } catch (c) {
-            return !0;
-          }
-        }
-      } catch (c) {
-        return !0;
-      }
-    }
-    return !1;
-  }(), gb = function(a) {
-    var c = null !== a && "object" === typeof a, b = "[object Function]" === hd.call(a), e = id(a), g = c && "[object String]" === hd.call(a), k = [];
-    if (!c && !b && !e) {
-      throw new TypeError("Object.keys called on a non-object");
-    }
-    c = Qe && b;
-    if (g && 0 < a.length && !eb.call(a, 0)) {
-      for (g = 0;g < a.length;++g) {
-        k.push(String(g));
-      }
-    }
-    if (e && 0 < a.length) {
-      for (e = 0;e < a.length;++e) {
-        k.push(String(e));
-      }
-    } else {
-      for (var d in a) {
-        c && "prototype" === d || !eb.call(a, d) || k.push(String(d));
-      }
-    }
-    if (Pe) {
-      var f;
-      if ("undefined" !== typeof window && Se) {
-        try {
-          f = Kb(a);
-        } catch (J) {
-          f = !1;
-        }
-      } else {
-        f = Kb(a);
-      }
-      for (e = 0;e < fb.length;++e) {
-        f && "constructor" === fb[e] || !eb.call(a, fb[e]) || k.push(fb[e]);
-      }
-    }
-    return k;
-  };
-  gb.shim = function() {
-    if (Object.keys) {
-      if (!function() {
-        return 2 === (Object.keys(arguments) || "").length;
-      }(1, 2)) {
-        var a = Object.keys;
-        Object.keys = function(c) {
-          return id(c) ? a(Oe.call(c)) : a(c);
-        };
-      }
-    } else {
-      Object.keys = gb;
-    }
-    return Object.keys || gb;
-  };
-  var Te = Object.prototype.hasOwnProperty, Ue = Object.prototype.toString, Ve = function(a, c, b) {
-    if ("[object Function]" !== Ue.call(c)) {
-      throw new TypeError("iterator must be a function");
-    }
-    var e = a.length;
-    if (e === +e) {
-      for (var g = 0;g < e;g++) {
-        c.call(b, a[g], g, a);
-      }
-    } else {
-      for (g in a) {
-        Te.call(a, g) && c.call(b, a[g], g, a);
-      }
-    }
-  }, We = "function" === typeof Symbol && "symbol" === typeof Symbol(), Xe = Object.prototype.toString, Ye = function() {
-    var a = {};
-    try {
-      Object.defineProperty(a, "x", {enumerable:!1, value:a});
-      for (var c in a) {
-        return !1;
-      }
-      return a.x === a;
-    } catch (b) {
-      return !1;
-    }
-  }, kd = Object.defineProperty && Ye(), Lb = function(a, c) {
-    var b = 2 < arguments.length ? arguments[2] : {}, e = gb(c);
-    We && (e = e.concat(Object.getOwnPropertySymbols(c)));
-    Ve(e, function(e) {
-      var g = c[e], d = b[e];
-      if (!(e in a) || "function" === typeof d && "[object Function]" === Xe.call(d) && d()) {
-        kd ? Object.defineProperty(a, e, {configurable:!0, enumerable:!1, value:g, writable:!0}) : a[e] = g;
-      }
-    });
-  };
-  Lb.supportsDescriptors = !!kd;
-  var ld = Object.prototype.toString, hb = Object.prototype.hasOwnProperty, md = Object.prototype.toString, Ze = Array.prototype.slice, nd = function(a) {
-    var c = ld.call(a), b = "[object Arguments]" === c;
-    b || (b = "[object Array]" !== c && null !== a && "object" === typeof a && "number" === typeof a.length && 0 <= a.length && "[object Function]" === ld.call(a.callee));
-    return b;
-  }, od = Object.prototype.propertyIsEnumerable, $e = !od.call({toString:null}, "toString"), af = od.call(function() {
-  }, "prototype"), ib = "toString toLocaleString valueOf hasOwnProperty isPrototypeOf propertyIsEnumerable constructor".split(" "), Mb = function(a) {
-    var c = a.constructor;
-    return c && c.prototype === a;
-  }, bf = {$console:!0, $external:!0, $frame:!0, $frameElement:!0, $frames:!0, $innerHeight:!0, $innerWidth:!0, $outerHeight:!0, $outerWidth:!0, $pageXOffset:!0, $pageYOffset:!0, $parent:!0, $scrollLeft:!0, $scrollTop:!0, $scrollX:!0, $scrollY:!0, $self:!0, $webkitIndexedDB:!0, $webkitStorageInfo:!0, $window:!0}, cf = function() {
-    if ("undefined" === typeof window) {
-      return !1;
-    }
-    for (var a in window) {
-      try {
-        if (!bf["$" + a] && hb.call(window, a) && null !== window[a] && "object" === typeof window[a]) {
-          try {
-            Mb(window[a]);
-          } catch (c) {
-            return !0;
-          }
-        }
-      } catch (c) {
-        return !0;
-      }
-    }
-    return !1;
-  }(), Na = function(a) {
-    var c = null !== a && "object" === typeof a, b = "[object Function]" === md.call(a), e = nd(a), g = c && "[object String]" === md.call(a), k = [];
-    if (!c && !b && !e) {
-      throw new TypeError("Object.keys called on a non-object");
-    }
-    c = af && b;
-    if (g && 0 < a.length && !hb.call(a, 0)) {
-      for (g = 0;g < a.length;++g) {
-        k.push(String(g));
-      }
-    }
-    if (e && 0 < a.length) {
-      for (e = 0;e < a.length;++e) {
-        k.push(String(e));
-      }
-    } else {
-      for (var d in a) {
-        c && "prototype" === d || !hb.call(a, d) || k.push(String(d));
-      }
-    }
-    if ($e) {
-      var f;
-      if ("undefined" !== typeof window && cf) {
-        try {
-          f = Mb(a);
-        } catch (J) {
-          f = !1;
-        }
-      } else {
-        f = Mb(a);
-      }
-      for (e = 0;e < ib.length;++e) {
-        f && "constructor" === ib[e] || !hb.call(a, ib[e]) || k.push(ib[e]);
-      }
-    }
-    return k;
-  };
-  Na.shim = function() {
-    if (Object.keys) {
-      if (!function() {
-        return 2 === (Object.keys(arguments) || "").length;
-      }(1, 2)) {
-        var a = Object.keys;
-        Object.keys = function(c) {
-          return nd(c) ? a(Ze.call(c)) : a(c);
-        };
-      }
-    } else {
-      Object.keys = Na;
-    }
-    return Object.keys || Na;
-  };
-  var Nb = Array.prototype.slice, df = Object.prototype.toString, ef = function(a) {
-    var c = this;
-    if ("function" !== typeof c || "[object Function]" !== df.call(c)) {
-      throw new TypeError("Function.prototype.bind called on incompatible " + c);
-    }
-    for (var b = Nb.call(arguments, 1), e, g = Math.max(0, c.length - b.length), k = [], d = 0;d < g;d++) {
-      k.push("$" + d);
-    }
-    e = Function("binder", "return function (" + k.join(",") + "){ return binder.apply(this,arguments); }")(function() {
-      if (this instanceof e) {
-        var g = c.apply(this, b.concat(Nb.call(arguments)));
-        return Object(g) === g ? g : this;
-      }
-      return c.apply(a, b.concat(Nb.call(arguments)));
-    });
-    c.prototype && (g = function() {
-    }, g.prototype = c.prototype, e.prototype = new g, g.prototype = null);
-    return e;
-  }, pd = Function.prototype.bind || ef, qd = function() {
-    if ("function" !== typeof Symbol || "function" !== typeof Object.getOwnPropertySymbols) {
-      return !1;
-    }
-    if ("symbol" === typeof Symbol.iterator) {
-      return !0;
-    }
-    var a = {}, c = Symbol("test"), b = Object(c);
-    if ("string" === typeof c || "[object Symbol]" !== Object.prototype.toString.call(c) || "[object Symbol]" !== Object.prototype.toString.call(b)) {
-      return !1;
-    }
-    a[c] = 42;
-    for (c in a) {
-      return !1;
-    }
-    if (0 !== Na(a).length || "function" === typeof Object.keys && 0 !== Object.keys(a).length || "function" === typeof Object.getOwnPropertyNames && 0 !== Object.getOwnPropertyNames(a).length) {
-      return !1;
-    }
-    b = Object.getOwnPropertySymbols(a);
-    return 1 !== b.length || b[0] !== c || !Object.prototype.propertyIsEnumerable.call(a, c) || "function" === typeof Object.getOwnPropertyDescriptor && (a = Object.getOwnPropertyDescriptor(a, c), 42 !== a.value || !0 !== a.enumerable) ? !1 : !0;
-  }(), rd = Object, ff = pd.call(Function.call, Array.prototype.push), sd = pd.call(Function.call, Object.prototype.propertyIsEnumerable), gf = qd ? Object.getOwnPropertySymbols : null, Ob = function(a, c) {
-    if ("undefined" === typeof a || null === a) {
-      throw new TypeError("target must be an object");
-    }
-    var b = rd(a), e, g, k, d, f, h;
-    for (e = 1;e < arguments.length;++e) {
-      g = rd(arguments[e]);
-      d = Na(g);
-      if (k = qd && (Object.getOwnPropertySymbols || gf)) {
-        for (f = k(g), k = 0;k < f.length;++k) {
-          h = f[k], sd(g, h) && ff(d, h);
-        }
-      }
-      for (k = 0;k < d.length;++k) {
-        h = d[k], f = g[h], sd(g, h) && (b[h] = f);
-      }
-    }
-    return b;
-  }, hf = function() {
-    if (!Object.assign || !Object.preventExtensions) {
-      return !1;
-    }
-    var a = Object.preventExtensions({1:2});
-    try {
-      Object.assign(a, "xy");
-    } catch (c) {
-      return "y" === a[1];
-    }
-    return !1;
-  }, Pb = function() {
-    if (!Object.assign) {
-      return Ob;
-    }
-    var a;
-    if (Object.assign) {
-      for (var c = "abcdefghijklmnopqrst".split(""), b = {}, e = 0;e < c.length;++e) {
-        b[c[e]] = c[e];
-      }
-      c = Object.assign({}, b);
-      b = "";
-      for (a in c) {
-        b += a;
-      }
-      a = "abcdefghijklmnopqrst" !== b;
-    } else {
-      a = !1;
-    }
-    return a || hf() ? Ob : Object.assign;
-  }, td = Pb();
-  Lb(td, {implementation:Ob, getPolyfill:Pb, shim:function() {
-    var a = Pb();
-    Lb(Object, {assign:a}, {assign:function() {
-      return Object.assign !== a;
-    }});
-    return a;
-  }});
-  var O = td;
-  W.prototype.code = 0;
-  W.prototype.message = "";
-  W.prototype.status = null;
-  W.errorTypes = "MEDIA_ERR_CUSTOM MEDIA_ERR_ABORTED MEDIA_ERR_NETWORK MEDIA_ERR_DECODE MEDIA_ERR_SRC_NOT_SUPPORTED MEDIA_ERR_ENCRYPTED".split(" ");
-  W.defaultMessages = {1:"You aborted the media playback", 2:"A network error caused the media download to fail part-way.", 3:"The media playback was aborted due to a corruption problem or because the media used features your browser did not support.", 4:"The media could not be loaded, either because the server or network failed or because the format is not supported.", 5:"The media is encrypted and we do not have the keys to decrypt it."};
-  for (var Aa = 0;Aa < W.errorTypes.length;Aa++) {
-    W[W.errorTypes[Aa]] = Aa, W.prototype[W.errorTypes[Aa]] = Aa;
-  }
-  var ud = function(a, c) {
-    var b, e = null;
-    try {
-      b = JSON.parse(a, c);
-    } catch (g) {
-      e = g;
-    }
-    return [e, b];
-  }, Qb = function(a) {
-    return "kind label language id inBandMetadataTrackDispatchType mode src".split(" ").reduce(function(c, b, e) {
-      a[b] && (c[b] = a[b]);
-      return c;
-    }, {cues:a.cues && Array.prototype.map.call(a.cues, function(a) {
-      return {startTime:a.startTime, endTime:a.endTime, text:a.text, id:a.id};
-    })});
-  }, vd = {textTracksToJson:function(a) {
-    var c = a.$$("track"), b = Array.prototype.map.call(c, function(b) {
-      return b.track;
-    });
-    return Array.prototype.map.call(c, function(b) {
-      var a = Qb(b.track);
-      b.src && (a.src = b.src);
-      return a;
-    }).concat(Array.prototype.filter.call(a.textTracks(), function(a) {
-      return -1 === b.indexOf(a);
-    }).map(Qb));
-  }, jsonToTextTracks:function(a, c) {
-    a.forEach(function(b) {
-      var a = c.addRemoteTextTrack(b).track;
-      !b.src && b.cues && b.cues.forEach(function(b) {
-        return a.addCue(b);
-      });
-    });
-    return c.textTracks();
-  }, trackToJson_:Qb}, Oa = function(a) {
-    function c(b, c) {
-      b = a.call(this, b, c) || this;
-      b.opened_ = b.hasBeenOpened_ = b.hasBeenFilled_ = !1;
-      b.closeable(!b.options_.uncloseable);
-      b.content(b.options_.content);
-      b.contentEl_ = A("div", {className:"vjs-modal-dialog-content"}, {role:"document"});
-      b.descEl_ = A("p", {className:"vjs-modal-dialog-description vjs-offscreen", id:b.el().getAttribute("aria-describedby")});
-      c = b.descEl_;
-      var e = b.description();
-      "undefined" === typeof c.textContent ? c.innerText = e : c.textContent = e;
-      b.el_.appendChild(b.descEl_);
-      b.el_.appendChild(b.contentEl_);
-      return b;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function() {
-      return a.prototype.createEl.call(this, "div", {className:this.buildCSSClass(), tabIndex:-1}, {"aria-describedby":this.id() + "_description", "aria-hidden":"true", "aria-label":this.label(), role:"dialog"});
-    };
-    c.prototype.buildCSSClass = function() {
-      return "vjs-modal-dialog vjs-hidden " + a.prototype.buildCSSClass.call(this);
-    };
-    c.prototype.handleKeyPress = function(b) {
-      27 === b.which && this.closeable() && this.close();
-    };
-    c.prototype.label = function() {
-      return this.options_.label || this.localize("Modal Window");
-    };
-    c.prototype.description = function() {
-      var b = this.options_.description || this.localize("This is a modal window.");
-      this.closeable() && (b += " " + this.localize("This modal can be closed by pressing the Escape key or activating the close button."));
-      return b;
-    };
-    c.prototype.open = function() {
-      if (!this.opened_) {
-        var b = this.player();
-        this.trigger("beforemodalopen");
-        this.opened_ = !0;
-        (this.options_.fillAlways || !this.hasBeenOpened_ && !this.hasBeenFilled_) && this.fill();
-        (this.wasPlaying_ = !b.paused()) && b.pause();
-        if (this.closeable()) {
-          this.on(this.el_.ownerDocument, "keydown", w(this, this.handleKeyPress));
-        }
-        b.controls(!1);
-        this.show();
-        this.el().setAttribute("aria-hidden", "false");
-        this.trigger("modalopen");
-        this.hasBeenOpened_ = !0;
-      }
-      return this;
-    };
-    c.prototype.opened = function(b) {
-      if ("boolean" === typeof b) {
-        this[b ? "open" : "close"]();
-      }
-      return this.opened_;
-    };
-    c.prototype.close = function() {
-      if (this.opened_) {
-        var b = this.player();
-        this.trigger("beforemodalclose");
-        this.opened_ = !1;
-        this.wasPlaying_ && b.play();
-        this.closeable() && this.off(this.el_.ownerDocument, "keydown", w(this, this.handleKeyPress));
-        b.controls(!0);
-        this.hide();
-        this.el().setAttribute("aria-hidden", "true");
-        this.trigger("modalclose");
-        this.options_.temporary && this.dispose();
-      }
-      return this;
-    };
-    c.prototype.closeable = function(b) {
-      if ("boolean" === typeof b) {
-        b = this.closeable_ = !!b;
-        var a = this.getChild("closeButton");
-        if (b && !a) {
-          var c = this.contentEl_;
-          this.contentEl_ = this.el_;
-          a = this.addChild("closeButton", {controlText:"Close Modal Dialog"});
-          this.contentEl_ = c;
-          this.on(a, "close", this.close);
-        }
-        !b && a && (this.off(a, "close", this.close), this.removeChild(a), a.dispose());
-      }
-      return this.closeable_;
-    };
-    c.prototype.fill = function() {
-      return this.fillWith(this.content());
-    };
-    c.prototype.fillWith = function(b) {
-      var a = this.contentEl(), c = a.parentNode, k = a.nextSibling;
-      this.trigger("beforemodalfill");
-      this.hasBeenFilled_ = !0;
-      c.removeChild(a);
-      this.empty();
-      N(a, b);
-      this.trigger("modalfill");
-      k ? c.insertBefore(a, k) : c.appendChild(a);
-      return this;
-    };
-    c.prototype.empty = function() {
-      this.trigger("beforemodalempty");
-      S(this.contentEl());
-      this.trigger("modalempty");
-      return this;
-    };
-    c.prototype.content = function(b) {
-      "undefined" !== typeof b && (this.content_ = b);
-      return this.content_;
-    };
-    return c;
-  }(n);
-  Oa.prototype.options_ = {temporary:!0};
-  n.registerComponent("ModalDialog", Oa);
-  var wd = function() {
-    function a(c) {
-      var b = this;
-      if (X) {
-        var b = x.createElement("custom"), e;
-        for (e in a.prototype) {
-          "constructor" !== e && (b[e] = a.prototype[e]);
-        }
-      }
-      a.prototype.setCues_.call(b, c);
-      Object.defineProperty(b, "length", {get:function() {
-        return this.length_;
-      }});
-      if (X) {
-        return b;
-      }
-    }
-    a.prototype.setCues_ = function(a) {
-      var b = this.length || 0, c = 0, g = a.length;
-      this.cues_ = a;
-      this.length_ = a.length;
-      a = function(b) {
-        "" + b in this || Object.defineProperty(this, "" + b, {get:function() {
-          return this.cues_[b];
-        }});
-      };
-      if (b < g) {
-        for (c = b;c < g;c++) {
-          a.call(this, c);
-        }
-      }
-    };
-    a.prototype.getCueById = function(a) {
-      for (var b = null, c = 0, g = this.length;c < g;c++) {
-        var k = this[c];
-        if (k.id === a) {
-          b = k;
-          break;
-        }
-      }
-      return b;
-    };
-    return a;
-  }(), jf = {alternative:"alternative", captions:"captions", main:"main", sign:"sign", subtitles:"subtitles", commentary:"commentary"}, kf = {alternative:"alternative", descriptions:"descriptions", main:"main", "main-desc":"main-desc", translation:"translation", commentary:"commentary"}, lf = {subtitles:"subtitles", captions:"captions", descriptions:"descriptions", chapters:"chapters", metadata:"metadata"}, xd = {disabled:"disabled", hidden:"hidden", showing:"showing"}, Rb = function(a) {
-    function c(b) {
-      void 0 === b && (b = {});
-      var e = a.call(this) || this;
-      if (X) {
-        var e = x.createElement("custom"), g;
-        for (g in c.prototype) {
-          "constructor" !== g && (e[g] = c.prototype[g]);
-        }
-      }
-      var k = {id:b.id || "vjs_track_" + xa++, kind:b.kind || "", label:b.label || "", language:b.language || ""};
-      b = function(b) {
-        Object.defineProperty(e, b, {get:function() {
-          return k[b];
-        }, set:function() {
-        }});
-      };
-      for (var d in k) {
-        b(d);
-      }
-      return e;
-    }
-    __extends(c, a);
-    return c;
-  }(Y), yd = function(a) {
-    var c = "protocol hostname port pathname search hash host".split(" "), b = x.createElement("a");
-    b.href = a;
-    var e = "" === b.host && "file:" !== b.protocol, g;
-    e && (g = x.createElement("div"), g.innerHTML = '<a href="' + a + '"></a>', b = g.firstChild, g.setAttribute("style", "display:none; position:absolute;"), x.body.appendChild(g));
-    a = {};
-    for (var k = 0;k < c.length;k++) {
-      a[c[k]] = b[c[k]];
-    }
-    "http:" === a.protocol && (a.host = a.host.replace(/:80$/, ""));
-    "https:" === a.protocol && (a.host = a.host.replace(/:443$/, ""));
-    e && x.body.removeChild(g);
-    return a;
-  }, mf = function(a) {
-    if (!a.match(/^https?:\/\//)) {
-      var c = x.createElement("div");
-      c.innerHTML = '<a href="' + a + '">x</a>';
-      a = c.firstChild.href;
-    }
-    return a;
-  }, zd = function(a) {
-    return "string" === typeof a && (a = /^(\/?)([\s\S]*?)((?:\.{1,2}|[^\/]+?)(\.([^\.\/\?]+)))(?:[\/]*|[\?].*)$/i.exec(a)) ? a.pop().toLowerCase() : "";
-  }, Sb = function(a) {
-    var c = p.location;
-    a = yd(a);
-    return (":" === a.protocol ? c.protocol : a.protocol) + a.host !== c.protocol + c.host;
-  }, Ad = function(a) {
-    var c = nf.call(a);
-    return "[object Function]" === c || "function" === typeof a && "[object RegExp]" !== c || "undefined" !== typeof window && (a === window.setTimeout || a === window.alert || a === window.confirm || a === window.prompt);
-  }, nf = Object.prototype.toString, Tb = f(function(a, c) {
-    c = a.exports = function(b) {
-      return b.replace(/^\s*|\s*$/g, "");
-    };
-    c.left = function(b) {
-      return b.replace(/^\s*/, "");
-    };
-    c.right = function(b) {
-      return b.replace(/\s*$/, "");
-    };
-  }), of = Object.prototype.toString, Bd = Object.prototype.hasOwnProperty, pf = function(a, c, b) {
-    if (!Ad(c)) {
-      throw new TypeError("iterator must be a function");
-    }
-    3 > arguments.length && (b = this);
-    if ("[object Array]" === of.call(a)) {
-      for (var e = b, g = 0, k = a.length;g < k;g++) {
-        Bd.call(a, g) && c.call(e, a[g], g, a);
-      }
-    } else {
-      if ("string" === typeof a) {
-        for (e = b, g = 0, k = a.length;g < k;g++) {
-          c.call(e, a.charAt(g), g, a);
-        }
-      } else {
-        for (g in e = b, a) {
-          Bd.call(a, g) && c.call(e, a[g], g, a);
-        }
-      }
-    }
-  }, qf = Object.prototype.hasOwnProperty, Cd = p, le = Ad, ne = function(a) {
-    if (!a) {
-      return {};
-    }
-    var c = {};
-    pf(Tb(a).split("\n"), function(b) {
-      var a = b.indexOf(":"), g = Tb(b.slice(0, a)).toLowerCase();
-      b = Tb(b.slice(a + 1));
-      "undefined" === typeof c[g] ? c[g] = b : "[object Array]" === Object.prototype.toString.call(c[g]) ? c[g].push(b) : c[g] = [c[g], b];
-    });
-    return c;
-  }, me = function() {
-    for (var a = {}, c = 0;c < arguments.length;c++) {
-      var b = arguments[c], e;
-      for (e in b) {
-        qf.call(b, e) && (a[e] = b[e]);
-      }
-    }
-    return a;
-  };
-  na.XMLHttpRequest = Cd.XMLHttpRequest || oe;
-  na.XDomainRequest = "withCredentials" in new na.XMLHttpRequest ? na.XMLHttpRequest : Cd.XDomainRequest;
-  (function(a, c) {
-    for (var b = 0;b < a.length;b++) {
-      c(a[b]);
-    }
-  })("get put post patch head delete".split(" "), function(a) {
-    na["delete" === a ? "del" : a] = function(c, b, e) {
-      b = xc(c, b, e);
-      b.method = a.toUpperCase();
-      return yc(b);
-    };
-  });
-  var Dd = function(a, c) {
-    var b = new p.WebVTT.Parser(p, p.vttjs, p.WebVTT.StringDecoder()), e = [];
-    b.oncue = function(b) {
-      c.addCue(b);
-    };
-    b.onparsingerror = function(b) {
-      e.push(b);
-    };
-    b.onflush = function() {
-      c.trigger({type:"loadeddata", target:c});
-    };
-    b.parse(a);
-    0 < e.length && (p.console && p.console.groupCollapsed && p.console.groupCollapsed("Text Track parsing errors for " + c.src), e.forEach(function(b) {
-      return B.error(b);
-    }), p.console && p.console.groupEnd && p.console.groupEnd());
-    b.flush();
-  }, rf = function(a, c) {
-    var b = {uri:a};
-    if (a = Sb(a)) {
-      b.cors = a;
-    }
-    na(b, w(this, function(b, a, k) {
-      if (b) {
-        return B.error(b, a);
-      }
-      c.loaded_ = !0;
-      if ("function" !== typeof p.WebVTT) {
-        if (c.tech_) {
-          var e = function() {
-            return Dd(k, c);
-          };
-          c.tech_.on("vttjsloaded", e);
-          c.tech_.on("vttjserror", function() {
-            B.error("vttjs failed to load, stopping trying to process " + c.src);
-            c.tech_.off("vttjsloaded", e);
-          });
-        }
-      } else {
-        Dd(k, c);
-      }
-    }));
-  }, jb = function(a) {
-    function c(b) {
-      void 0 === b && (b = {});
-      if (!b.tech) {
-        throw Error("A tech was not provided.");
-      }
-      b = V(b, {kind:lf[b.kind] || "subtitles", language:b.language || b.srclang || ""});
-      var e = xd[b.mode] || "disabled", g = b["default"];
-      if ("metadata" === b.kind || "chapters" === b.kind) {
-        e = "hidden";
-      }
-      var k = a.call(this, b) || this;
-      k.tech_ = b.tech;
-      if (X) {
-        for (var d in c.prototype) {
-          "constructor" !== d && (k[d] = c.prototype[d]);
-        }
-      }
-      k.cues_ = [];
-      k.activeCues_ = [];
-      var f = new wd(k.cues_), h = new wd(k.activeCues_), l = !1, m = w(k, function() {
-        this.activeCues;
-        l && (this.trigger("cuechange"), l = !1);
-      });
-      if ("disabled" !== e) {
-        k.tech_.on("timeupdate", m);
-      }
-      Object.defineProperty(k, "default", {get:function() {
-        return g;
-      }, set:function() {
-      }});
-      Object.defineProperty(k, "mode", {get:function() {
-        return e;
-      }, set:function(b) {
-        if (xd[b]) {
-          e = b;
-          if ("showing" === e) {
-            this.tech_.on("timeupdate", m);
-          }
-          this.trigger("modechange");
-        }
-      }});
-      Object.defineProperty(k, "cues", {get:function() {
-        return this.loaded_ ? f : null;
-      }, set:function() {
-      }});
-      Object.defineProperty(k, "activeCues", {get:function() {
-        if (!this.loaded_) {
-          return null;
-        }
-        if (0 === this.cues.length) {
-          return h;
-        }
-        for (var b = this.tech_.currentTime(), a = [], c = 0, e = this.cues.length;c < e;c++) {
-          var g = this.cues[c];
-          g.startTime <= b && g.endTime >= b ? a.push(g) : g.startTime === g.endTime && g.startTime <= b && g.startTime + .5 >= b && a.push(g);
-        }
-        l = !1;
-        if (a.length !== this.activeCues_.length) {
-          l = !0;
-        } else {
-          for (c = 0;c < a.length;c++) {
-            -1 === this.activeCues_.indexOf(a[c]) && (l = !0);
-          }
-        }
-        this.activeCues_ = a;
-        h.setCues_(this.activeCues_);
-        return h;
-      }, set:function() {
-      }});
-      b.src ? (k.src = b.src, rf(b.src, k)) : k.loaded_ = !0;
-      return k;
-    }
-    __extends(c, a);
-    c.prototype.addCue = function(b) {
-      var a = this.tech_.textTracks();
-      if (a) {
-        for (var c = 0;c < a.length;c++) {
-          a[c] !== this && a[c].removeCue(b);
-        }
-      }
-      this.cues_.push(b);
-      this.cues.setCues_(this.cues_);
-    };
-    c.prototype.removeCue = function(b) {
-      for (var a = !1, c = 0, k = this.cues_.length;c < k;c++) {
-        this.cues_[c] === b && (this.cues_.splice(c, 1), a = !0);
-      }
-      a && this.cues.setCues_(this.cues_);
-    };
-    return c;
-  }(Rb);
-  jb.prototype.allowedEvents_ = {cuechange:"cuechange"};
-  var Ba = function(a) {
-    function c(b) {
-      void 0 === b && (b = {});
-      var e = a.call(this) || this, g, k = e;
-      if (X) {
-        var k = x.createElement("custom"), d;
-        for (d in c.prototype) {
-          "constructor" !== d && (k[d] = c.prototype[d]);
-        }
-      }
-      var f = new jb(b);
-      k.kind = f.kind;
-      k.src = f.src;
-      k.srclang = f.language;
-      k.label = f.label;
-      k["default"] = f["default"];
-      Object.defineProperty(k, "readyState", {get:function() {
-        return g;
-      }});
-      Object.defineProperty(k, "track", {get:function() {
-        return f;
-      }});
-      g = 0;
-      f.addEventListener("loadeddata", function() {
-        g = 2;
-        k.trigger({type:"load", target:k});
-      });
-      return X ? k : e;
-    }
-    __extends(c, a);
-    return c;
-  }(Y);
-  Ba.prototype.allowedEvents_ = {load:"load"};
-  Ba.NONE = 0;
-  Ba.LOADING = 1;
-  Ba.LOADED = 2;
-  Ba.ERROR = 3;
-  var sf = function() {
-    function a(c) {
-      void 0 === c && (c = []);
-      var b = this;
-      if (X) {
-        var b = x.createElement("custom"), e;
-        for (e in a.prototype) {
-          "constructor" !== e && (b[e] = a.prototype[e]);
-        }
-      }
-      b.trackElements_ = [];
-      Object.defineProperty(b, "length", {get:function() {
-        return this.trackElements_.length;
-      }});
-      e = 0;
-      for (var g = c.length;e < g;e++) {
-        b.addTrackElement_(c[e]);
-      }
-      if (X) {
-        return b;
-      }
-    }
-    a.prototype.addTrackElement_ = function(a) {
-      this.trackElements_.push(a);
-    };
-    a.prototype.getTrackElementByTrack_ = function(a) {
-      for (var b, c = 0, g = this.trackElements_.length;c < g;c++) {
-        if (a === this.trackElements_[c].track) {
-          b = this.trackElements_[c];
-          break;
-        }
-      }
-      return b;
-    };
-    a.prototype.removeTrackElement_ = function(a) {
-      for (var b = 0, c = this.trackElements_.length;b < c;b++) {
-        if (a === this.trackElements_[b]) {
-          this.trackElements_.splice(b, 1);
-          break;
-        }
-      }
-    };
-    return a;
-  }(), fa = function(a) {
-    function c(b, e) {
-      void 0 === b && (b = []);
-      void 0 === e && (e = null);
-      var g = a.call(this) || this;
-      if (!e && (e = g, X)) {
-        e = x.createElement("custom");
-        for (var k in c.prototype) {
-          "constructor" !== k && (e[k] = c.prototype[k]);
-        }
-      }
-      e.tracks_ = [];
-      Object.defineProperty(e, "length", {get:function() {
-        return this.tracks_.length;
-      }});
-      for (g = 0;g < b.length;g++) {
-        e.addTrack_(b[g]);
-      }
-      return e;
-    }
-    __extends(c, a);
-    c.prototype.addTrack_ = function(b) {
-      var a = this.tracks_.length;
-      "" + a in this || Object.defineProperty(this, a, {get:function() {
-        return this.tracks_[a];
-      }});
-      -1 === this.tracks_.indexOf(b) && (this.tracks_.push(b), this.trigger({track:b, type:"addtrack"}));
-    };
-    c.prototype.removeTrack_ = function(b) {
-      for (var a, c = 0, k = this.length;c < k;c++) {
-        if (this[c] === b) {
-          a = this[c];
-          a.off && a.off();
-          this.tracks_.splice(c, 1);
-          break;
-        }
-      }
-      a && this.trigger({track:a, type:"removetrack"});
-    };
-    c.prototype.getTrackById = function(b) {
-      for (var a = null, c = 0, k = this.length;c < k;c++) {
-        var d = this[c];
-        if (d.id === b) {
-          a = d;
-          break;
-        }
-      }
-      return a;
-    };
-    return c;
-  }(Y);
-  fa.prototype.allowedEvents_ = {change:"change", addtrack:"addtrack", removetrack:"removetrack"};
-  for (var tf in fa.prototype.allowedEvents_) {
-    fa.prototype["on" + tf] = null;
-  }
-  var Ed = function(a) {
-    function c(b) {
-      void 0 === b && (b = []);
-      var e;
-      if (X) {
-        e = x.createElement("custom");
-        for (var g in fa.prototype) {
-          "constructor" !== g && (e[g] = fa.prototype[g]);
-        }
-        for (g in c.prototype) {
-          "constructor" !== g && (e[g] = c.prototype[g]);
-        }
-      }
-      return e = a.call(this, b, e) || this;
-    }
-    __extends(c, a);
-    c.prototype.addTrack_ = function(b) {
-      a.prototype.addTrack_.call(this, b);
-      b.addEventListener("modechange", w(this, function() {
-        this.trigger("change");
-      }));
-    };
-    c.prototype.removeTrack_ = function(b) {
-      for (var a, c = 0, k = this.length;c < k;c++) {
-        if (this[c] === b) {
-          a = this[c];
-          a.off && a.off();
-          this.tracks_.splice(c, 1);
-          break;
-        }
-      }
-      a && this.trigger({track:a, type:"removetrack"});
-    };
-    c.prototype.getTrackById = function(b) {
-      for (var a = null, c = 0, k = this.length;c < k;c++) {
-        var d = this[c];
-        if (d.id === b) {
-          a = d;
-          break;
-        }
-      }
-      return a;
-    };
-    return c;
-  }(fa), Ub = function(a, c) {
-    for (var b = 0;b < a.length;b++) {
-      c.id !== a[b].id && (a[b].selected = !1);
-    }
-  }, Fd = function(a) {
-    function c(b) {
-      void 0 === b && (b = []);
-      for (var e, g = b.length - 1;0 <= g;g--) {
-        if (b[g].selected) {
-          Ub(b, b[g]);
-          break;
-        }
-      }
-      if (X) {
-        e = x.createElement("custom");
-        for (var k in fa.prototype) {
-          "constructor" !== k && (e[k] = fa.prototype[k]);
-        }
-        for (k in c.prototype) {
-          "constructor" !== k && (e[k] = c.prototype[k]);
-        }
-      }
-      e = a.call(this, b, e) || this;
-      e.changing_ = !1;
-      Object.defineProperty(e, "selectedIndex", {get:function() {
-        for (var b = 0;b < this.length;b++) {
-          if (this[b].selected) {
-            return b;
-          }
-        }
-        return -1;
-      }, set:function() {
-      }});
-      return e;
-    }
-    __extends(c, a);
-    c.prototype.addTrack_ = function(b) {
-      var c = this;
-      b.selected && Ub(this, b);
-      a.prototype.addTrack_.call(this, b);
-      b.addEventListener && b.addEventListener("selectedchange", function() {
-        c.changing_ || (c.changing_ = !0, Ub(c, b), c.changing_ = !1, c.trigger("change"));
-      });
-    };
-    c.prototype.addTrack = function(b) {
-      this.addTrack_(b);
-    };
-    c.prototype.removeTrack = function(b) {
-      a.prototype.removeTrack_.call(this, b);
-    };
-    return c;
-  }(fa), Vb = function(a, c) {
-    for (var b = 0;b < a.length;b++) {
-      c.id !== a[b].id && (a[b].enabled = !1);
-    }
-  }, Gd = function(a) {
-    function c(b) {
-      void 0 === b && (b = []);
-      for (var e, g = b.length - 1;0 <= g;g--) {
-        if (b[g].enabled) {
-          Vb(b, b[g]);
-          break;
-        }
-      }
-      if (X) {
-        e = x.createElement("custom");
-        for (var k in fa.prototype) {
-          "constructor" !== k && (e[k] = fa.prototype[k]);
-        }
-        for (k in c.prototype) {
-          "constructor" !== k && (e[k] = c.prototype[k]);
-        }
-      }
-      e = a.call(this, b, e) || this;
-      e.changing_ = !1;
-      return e;
-    }
-    __extends(c, a);
-    c.prototype.addTrack_ = function(b) {
-      var c = this;
-      b.enabled && Vb(this, b);
-      a.prototype.addTrack_.call(this, b);
-      b.addEventListener && b.addEventListener("enabledchange", function() {
-        c.changing_ || (c.changing_ = !0, Vb(c, b), c.changing_ = !1, c.trigger("change"));
-      });
-    };
-    c.prototype.addTrack = function(b) {
-      this.addTrack_(b);
-    };
-    c.prototype.removeTrack = function(b) {
-      a.prototype.removeTrack_.call(this, b);
-    };
-    return c;
-  }(fa), F = function(a) {
-    function c(b, c) {
-      void 0 === b && (b = {});
-      void 0 === c && (c = function() {
-      });
-      b.reportTouchActivity = !1;
-      c = a.call(this, null, b, c) || this;
-      c.hasStarted_ = !1;
-      c.on("playing", function() {
-        this.hasStarted_ = !0;
-      });
-      c.on("loadstart", function() {
-        this.hasStarted_ = !1;
-      });
-      c.textTracks_ = b.textTracks;
-      c.videoTracks_ = b.videoTracks;
-      c.audioTracks_ = b.audioTracks;
-      c.featuresProgressEvents || c.manualProgressOn();
-      c.featuresTimeupdateEvents || c.manualTimeUpdatesOn();
-      if (!1 === b.nativeCaptions || !1 === b.nativeTextTracks) {
-        c.featuresNativeTextTracks = !1;
-      }
-      if (!c.featuresNativeTextTracks) {
-        c.on("ready", c.emulateTextTracks);
-      }
-      c.initTextTrackListeners();
-      c.initTrackListeners();
-      c.emitTapEvents();
-      return c;
-    }
-    __extends(c, a);
-    c.prototype.manualProgressOn = function() {
-      this.on("durationchange", this.onDurationChange);
-      this.manualProgress = !0;
-      this.one("ready", this.trackProgress);
-    };
-    c.prototype.manualProgressOff = function() {
-      this.manualProgress = !1;
-      this.stopTrackingProgress();
-      this.off("durationchange", this.onDurationChange);
-    };
-    c.prototype.trackProgress = function() {
-      this.stopTrackingProgress();
-      this.progressInterval = this.setInterval(w(this, function() {
-        var b = this.bufferedPercent();
-        this.bufferedPercent_ !== b && this.trigger("progress");
-        this.bufferedPercent_ = b;
-        1 === b && this.stopTrackingProgress();
-      }), 500);
-    };
-    c.prototype.onDurationChange = function() {
-      this.duration_ = this.duration();
-    };
-    c.prototype.buffered = function() {
-      return ma(0, 0);
-    };
-    c.prototype.bufferedPercent = function() {
-      return wc(this.buffered(), this.duration_);
-    };
-    c.prototype.stopTrackingProgress = function() {
-      this.clearInterval(this.progressInterval);
-    };
-    c.prototype.manualTimeUpdatesOn = function() {
-      this.manualTimeUpdates = !0;
-      this.on("play", this.trackCurrentTime);
-      this.on("pause", this.stopTrackingCurrentTime);
-    };
-    c.prototype.manualTimeUpdatesOff = function() {
-      this.manualTimeUpdates = !1;
-      this.stopTrackingCurrentTime();
-      this.off("play", this.trackCurrentTime);
-      this.off("pause", this.stopTrackingCurrentTime);
-    };
-    c.prototype.trackCurrentTime = function() {
-      this.currentTimeInterval && this.stopTrackingCurrentTime();
-      this.currentTimeInterval = this.setInterval(function() {
-        this.trigger({type:"timeupdate", target:this, manuallyTriggered:!0});
-      }, 250);
-    };
-    c.prototype.stopTrackingCurrentTime = function() {
-      this.clearInterval(this.currentTimeInterval);
-      this.trigger({type:"timeupdate", target:this, manuallyTriggered:!0});
-    };
-    c.prototype.dispose = function() {
-      this.clearTracks(["audio", "video", "text"]);
-      this.manualProgress && this.manualProgressOff();
-      this.manualTimeUpdates && this.manualTimeUpdatesOff();
-      a.prototype.dispose.call(this);
-    };
-    c.prototype.clearTracks = function(b) {
-      var a = this;
-      b = [].concat(b);
-      b.forEach(function(b) {
-        for (var c = a[b + "Tracks"]() || [], e = c.length;e--;) {
-          var g = c[e];
-          "text" === b && a.removeRemoteTextTrack(g);
-          c.removeTrack_(g);
-        }
-      });
-    };
-    c.prototype.reset = function() {
-    };
-    c.prototype.error = function(b) {
-      void 0 !== b && (this.error_ = new W(b), this.trigger("error"));
-      return this.error_;
-    };
-    c.prototype.played = function() {
-      return this.hasStarted_ ? ma(0, 0) : ma();
-    };
-    c.prototype.setCurrentTime = function() {
-      this.manualTimeUpdates && this.trigger({type:"timeupdate", target:this, manuallyTriggered:!0});
-    };
-    c.prototype.initTextTrackListeners = function() {
-      var b = w(this, function() {
-        this.trigger("texttrackchange");
-      }), a = this.textTracks();
-      a && (a.addEventListener("removetrack", b), a.addEventListener("addtrack", b), this.on("dispose", w(this, function() {
-        a.removeEventListener("removetrack", b);
-        a.removeEventListener("addtrack", b);
-      })));
-    };
-    c.prototype.initTrackListeners = function() {
-      var b = this;
-      ["video", "audio"].forEach(function(a) {
-        var c = function() {
-          b.trigger(a + "trackchange");
-        }, e = b[a + "Tracks"]();
-        e.addEventListener("removetrack", c);
-        e.addEventListener("addtrack", c);
-        b.on("dispose", function() {
-          e.removeEventListener("removetrack", c);
-          e.removeEventListener("addtrack", c);
-        });
-      });
-    };
-    c.prototype.emulateTextTracks = function() {
-      var b = this, a = this.textTracks();
-      if (a) {
-        if (!p.WebVTT && null !== this.el().parentNode && void 0 !== this.el().parentNode) {
-          var c = x.createElement("script");
-          c.src = this.options_["vtt.js"] || "../node_modules/videojs-vtt.js/dist/vtt.js";
-          c.onload = function() {
-            b.trigger("vttjsloaded");
-          };
-          c.onerror = function() {
-            b.trigger("vttjserror");
-          };
-          this.on("dispose", function() {
-            c.onload = null;
-            c.onerror = null;
-          });
-          p.WebVTT = !0;
-          this.el().parentNode.appendChild(c);
-        }
-        var k = function() {
-          return b.trigger("texttrackchange");
-        }, d = function() {
-          k();
-          for (var b = 0;b < a.length;b++) {
-            var c = a[b];
-            c.removeEventListener("cuechange", k);
-            "showing" === c.mode && c.addEventListener("cuechange", k);
-          }
-        };
-        d();
-        a.addEventListener("change", d);
-        this.on("dispose", function() {
-          a.removeEventListener("change", d);
-        });
-      }
-    };
-    c.prototype.videoTracks = function() {
-      return this.videoTracks_ = this.videoTracks_ || new Fd;
-    };
-    c.prototype.audioTracks = function() {
-      return this.audioTracks_ = this.audioTracks_ || new Gd;
-    };
-    c.prototype.textTracks = function() {
-      return this.textTracks_ = this.textTracks_ || new Ed;
-    };
-    c.prototype.remoteTextTracks = function() {
-      return this.remoteTextTracks_ = this.remoteTextTracks_ || new Ed;
-    };
-    c.prototype.remoteTextTrackEls = function() {
-      return this.remoteTextTrackEls_ = this.remoteTextTrackEls_ || new sf;
-    };
-    c.prototype.addTextTrack = function(b, a, c) {
-      if (!b) {
-        throw Error("TextTrack kind is required but was not provided");
-      }
-      var e = void 0;
-      void 0 === e && (e = {});
-      var g = this.textTracks();
-      e.kind = b;
-      a && (e.label = a);
-      c && (e.language = c);
-      e.tech = this;
-      b = new jb(e);
-      g.addTrack_(b);
-      return b;
-    };
-    c.prototype.addRemoteTextTrack = function(b) {
-      b = V(b, {tech:this});
-      b = new Ba(b);
-      this.remoteTextTrackEls().addTrackElement_(b);
-      this.remoteTextTracks().addTrack_(b.track);
-      this.textTracks().addTrack_(b.track);
-      return b;
-    };
-    c.prototype.removeRemoteTextTrack = function(b) {
-      this.textTracks().removeTrack_(b);
-      var a = this.remoteTextTrackEls().getTrackElementByTrack_(b);
-      this.remoteTextTrackEls().removeTrackElement_(a);
-      this.remoteTextTracks().removeTrack_(b);
-    };
-    c.prototype.setPoster = function() {
-    };
-    c.prototype.canPlayType = function() {
-      return "";
-    };
-    c.isTech = function(b) {
-      return b.prototype instanceof c || b instanceof c || b === c;
-    };
-    c.registerTech = function(b, a) {
-      c.techs_ || (c.techs_ = {});
-      if (!c.isTech(a)) {
-        throw Error("Tech " + b + " must be a Tech");
-      }
-      return c.techs_[b] = a;
-    };
-    c.getTech = function(b) {
-      if (c.techs_ && c.techs_[b]) {
-        return c.techs_[b];
-      }
-      if (p && p.videojs && p.videojs[b]) {
-        return B.warn("The " + b + " tech was added to the videojs object when it should be registered using videojs.registerTech(name, tech)"), p.videojs[b];
-      }
-    };
-    return c;
-  }(n);
-  F.prototype.featuresVolumeControl = !0;
-  F.prototype.featuresFullscreenResize = !1;
-  F.prototype.featuresPlaybackRate = !1;
-  F.prototype.featuresProgressEvents = !1;
-  F.prototype.featuresTimeupdateEvents = !1;
-  F.prototype.featuresNativeTextTracks = !1;
-  F.withSourceHandlers = function(a) {
-    a.registerSourceHandler = function(c, b) {
-      var e = a.sourceHandlers;
-      e || (e = a.sourceHandlers = []);
-      void 0 === b && (b = e.length);
-      e.splice(b, 0, c);
-    };
-    a.canPlayType = function(c) {
-      for (var b = a.sourceHandlers || [], e, g = 0;g < b.length;g++) {
-        if (e = b[g].canPlayType(c)) {
-          return e;
-        }
-      }
-      return "";
-    };
-    a.selectSourceHandler = function(c, b) {
-      for (var e = a.sourceHandlers || [], g, d = 0;d < e.length;d++) {
-        if (g = e[d].canHandleSource(c, b)) {
-          return e[d];
-        }
-      }
-      return null;
-    };
-    a.canPlaySource = function(c, b) {
-      var e = a.selectSourceHandler(c, b);
-      return e ? e.canHandleSource(c, b) : "";
-    };
-    ["seekable", "duration"].forEach(function(a) {
-      var b = this[a];
-      "function" === typeof b && (this[a] = function() {
-        return this.sourceHandler_ && this.sourceHandler_[a] ? this.sourceHandler_[a].apply(this.sourceHandler_, arguments) : b.apply(this, arguments);
-      });
-    }, a.prototype);
-    a.prototype.setSource = function(c) {
-      var b = a.selectSourceHandler(c, this.options_);
-      b || (a.nativeSourceHandler ? b = a.nativeSourceHandler : B.error("No source hander found for the current source."));
-      this.disposeSourceHandler();
-      this.off("dispose", this.disposeSourceHandler);
-      this.currentSource_ && (this.clearTracks(["audio", "video"]), this.currentSource_ = null);
-      b !== a.nativeSourceHandler && (this.currentSource_ = c, this.off(this.el_, "loadstart", a.prototype.firstLoadStartListener_), this.off(this.el_, "loadstart", a.prototype.successiveLoadStartListener_), this.one(this.el_, "loadstart", a.prototype.firstLoadStartListener_));
-      this.sourceHandler_ = b.handleSource(c, this, this.options_);
-      this.on("dispose", this.disposeSourceHandler);
-      return this;
-    };
-    a.prototype.firstLoadStartListener_ = function() {
-      this.one(this.el_, "loadstart", a.prototype.successiveLoadStartListener_);
-    };
-    a.prototype.successiveLoadStartListener_ = function() {
-      this.currentSource_ = null;
-      this.disposeSourceHandler();
-      this.one(this.el_, "loadstart", a.prototype.successiveLoadStartListener_);
-    };
-    a.prototype.disposeSourceHandler = function() {
-      this.sourceHandler_ && this.sourceHandler_.dispose && (this.off(this.el_, "loadstart", a.prototype.firstLoadStartListener_), this.off(this.el_, "loadstart", a.prototype.successiveLoadStartListener_), this.sourceHandler_.dispose(), this.sourceHandler_ = null);
-    };
-  };
-  n.registerComponent("Tech", F);
-  n.registerComponent("MediaTechController", F);
-  F.registerTech("Tech", F);
-  var uf = function(a) {
-    function c(b, c, g) {
-      g = a.call(this, b, c, g) || this;
-      if (c.playerOptions.sources && 0 !== c.playerOptions.sources.length) {
-        b.src(c.playerOptions.sources);
-      } else {
-        var e = 0;
-        for (c = c.playerOptions.techOrder;e < c.length;e++) {
-          var d = U(c[e]), f = F.getTech(d);
-          d || (f = n.getComponent(d));
-          if (f && f.isSupported()) {
-            b.loadTech_(d);
-            break;
-          }
-        }
-      }
-      return g;
-    }
-    __extends(c, a);
-    return c;
-  }(n);
-  n.registerComponent("MediaLoader", uf);
-  for (var Wb = p.navigator, E = function(a) {
-    function c(b, e) {
-      e = a.call(this, b, e) || this;
-      b.source && e.ready(function() {
-        this.setSource(b.source);
-      }, !0);
-      b.startTime && e.ready(function() {
-        this.load();
-        this.play();
-        this.currentTime(b.startTime);
-      }, !0);
-      p.videojs = p.videojs || {};
-      p.videojs.Flash = p.videojs.Flash || {};
-      p.videojs.Flash.onReady = c.onReady;
-      p.videojs.Flash.onEvent = c.onEvent;
-      p.videojs.Flash.onError = c.onError;
-      e.on("seeked", function() {
-        this.lastSeekTarget_ = void 0;
-      });
-      return e;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function() {
-      var b = this.options_;
-      b.swf || (b.swf = "//vjs.zencdn.net/swf/5.1.0/video-js.swf");
-      var a = b.techId, g = O({readyFunction:"videojs.Flash.onReady", eventProxyFunction:"videojs.Flash.onEvent", errorEventProxyFunction:"videojs.Flash.onError", autoplay:b.autoplay, preload:b.preload, loop:b.loop, muted:b.muted}, b.flashVars), d = O({wmode:"opaque", bgcolor:"#000000"}, b.params), a = O({id:a, name:a, "class":"vjs-tech"}, b.attributes);
-      this.el_ = c.embed(b.swf, g, d, a);
-      this.el_.tech = this;
-      return this.el_;
-    };
-    c.prototype.play = function() {
-      this.ended() && this.setCurrentTime(0);
-      this.el_.vjs_play();
-    };
-    c.prototype.pause = function() {
-      this.el_.vjs_pause();
-    };
-    c.prototype.src = function(b) {
-      return void 0 === b ? this.currentSrc() : this.setSrc(b);
-    };
-    c.prototype.setSrc = function(b) {
-      var a = this;
-      b = mf(b);
-      this.el_.vjs_src(b);
-      this.autoplay() && this.setTimeout(function() {
-        return a.play();
-      }, 0);
-    };
-    c.prototype.seeking = function() {
-      return void 0 !== this.lastSeekTarget_;
-    };
-    c.prototype.setCurrentTime = function(b) {
-      var c = this.seekable();
-      c.length && (b = b > c.start(0) ? b : c.start(0), this.lastSeekTarget_ = b = b < c.end(c.length - 1) ? b : c.end(c.length - 1), this.trigger("seeking"), this.el_.vjs_setProperty("currentTime", b), a.prototype.setCurrentTime.call(this));
-    };
-    c.prototype.currentTime = function(b) {
-      return this.seeking() ? this.lastSeekTarget_ || 0 : this.el_.vjs_getProperty("currentTime");
-    };
-    c.prototype.currentSrc = function() {
-      return this.currentSource_ ? this.currentSource_.src : this.el_.vjs_getProperty("currentSrc");
-    };
-    c.prototype.duration = function() {
-      if (0 === this.readyState()) {
-        return NaN;
-      }
-      var b = this.el_.vjs_getProperty("duration");
-      return 0 <= b ? b : Infinity;
-    };
-    c.prototype.load = function() {
-      this.el_.vjs_load();
-    };
-    c.prototype.poster = function() {
-      this.el_.vjs_getProperty("poster");
-    };
-    c.prototype.setPoster = function() {
-    };
-    c.prototype.seekable = function() {
-      var b = this.duration();
-      return 0 === b ? ma() : ma(0, b);
-    };
-    c.prototype.buffered = function() {
-      var b = this.el_.vjs_getProperty("buffered");
-      return 0 === b.length ? ma() : ma(b[0][0], b[0][1]);
-    };
-    c.prototype.supportsFullScreen = function() {
-      return !1;
-    };
-    c.prototype.enterFullScreen = function() {
-      return !1;
-    };
-    return c;
-  }(F), zc = E.prototype, Xb = "rtmpConnection rtmpStream preload defaultPlaybackRate playbackRate autoplay loop mediaGroup controller controls volume muted defaultMuted".split(" "), Hd = "networkState readyState initialTime startOffsetTime paused ended videoWidth videoHeight".split(" "), R = 0;R < Xb.length;R++) {
-    Ac(Xb[R]), pe(Xb[R]);
-  }
-  for (R = 0;R < Hd.length;R++) {
-    Ac(Hd[R]);
-  }
-  E.isSupported = function() {
-    return 10 <= E.version()[0];
-  };
-  F.withSourceHandlers(E);
-  E.nativeSourceHandler = {};
-  E.nativeSourceHandler.canPlayType = function(a) {
-    return a in E.formats ? "maybe" : "";
-  };
-  E.nativeSourceHandler.canHandleSource = function(a, c) {
-    a = a.type ? a.type.replace(/;.*/, "").toLowerCase() : (a = zd(a.src)) ? "video/" + a : "";
-    return E.nativeSourceHandler.canPlayType(a);
-  };
-  E.nativeSourceHandler.handleSource = function(a, c, b) {
-    c.setSrc(a.src);
-  };
-  E.nativeSourceHandler.dispose = function() {
-  };
-  E.registerSourceHandler(E.nativeSourceHandler);
-  E.formats = {"video/flv":"FLV", "video/x-flv":"FLV", "video/mp4":"MP4", "video/m4v":"MP4"};
-  E.onReady = function(a) {
-    (a = (a = ka(a)) && a.tech) && a.el() && E.checkReady(a);
-  };
-  E.checkReady = function(a) {
-    a.el() && (a.el().vjs_getProperty ? a.triggerReady() : this.setTimeout(function() {
-      E.checkReady(a);
-    }, 50));
-  };
-  E.onEvent = function(a, c) {
-    ka(a).tech.trigger(c, Array.prototype.slice.call(arguments, 2));
-  };
-  E.onError = function(a, c) {
-    a = ka(a).tech;
-    if ("srcnotfound" === c) {
-      return a.error(4);
-    }
-    a.error("FLASH: " + c);
-  };
-  E.version = function() {
-    var a = "0,0,0";
-    try {
-      a = (new p.ActiveXObject("ShockwaveFlash.ShockwaveFlash")).GetVariable("$version").replace(/\D+/g, ",").match(/^,?(.+),?$/)[1];
-    } catch (c) {
-      try {
-        Wb.mimeTypes["application/x-shockwave-flash"].enabledPlugin && (a = (Wb.plugins["Shockwave Flash 2.0"] || Wb.plugins["Shockwave Flash"]).description.replace(/\D+/g, ",").match(/^,?(.+),?$/)[1]);
-      } catch (b) {
-      }
-    }
-    return a.split(",");
-  };
-  E.embed = function(a, c, b, e) {
-    a = E.getEmbedCode(a, c, b, e);
-    return A("div", {innerHTML:a}).childNodes[0];
-  };
-  E.getEmbedCode = function(a, c, b, e) {
-    var g = "", d = "", f = "";
-    c && Object.getOwnPropertyNames(c).forEach(function(b) {
-      g += b + "=" + c[b] + "&amp;";
-    });
-    b = O({movie:a, flashvars:g, allowScriptAccess:"always", allowNetworking:"all"}, b);
-    Object.getOwnPropertyNames(b).forEach(function(a) {
-      d += '<param name="' + a + '" value="' + b[a] + '" />';
-    });
-    e = O({data:a, width:"100%", height:"100%"}, e);
-    Object.getOwnPropertyNames(e).forEach(function(b) {
-      f += b + '="' + e[b] + '" ';
-    });
-    return '<object type="application/x-shockwave-flash" ' + f + ">" + d + "</object>";
-  };
-  (function(a) {
-    a.streamingFormats = {"rtmp/mp4":"MP4", "rtmp/flv":"FLV"};
-    a.streamFromParts = function(a, b) {
-      return a + "&" + b;
-    };
-    a.streamToParts = function(a) {
-      var b = {connection:"", stream:""};
-      if (!a) {
-        return b;
-      }
-      var c = a.search(/&(?!\w+=)/), g;
-      -1 !== c ? g = c + 1 : (c = g = a.lastIndexOf("/") + 1, 0 === c && (c = g = a.length));
-      b.connection = a.substring(0, c);
-      b.stream = a.substring(g, a.length);
-      return b;
-    };
-    a.isStreamingType = function(c) {
-      return c in a.streamingFormats;
-    };
-    a.RTMP_RE = /^rtmp[set]?:\/\//i;
-    a.isStreamingSrc = function(c) {
-      return a.RTMP_RE.test(c);
-    };
-    a.rtmpSourceHandler = {};
-    a.rtmpSourceHandler.canPlayType = function(c) {
-      return a.isStreamingType(c) ? "maybe" : "";
-    };
-    a.rtmpSourceHandler.canHandleSource = function(c, b) {
-      return (b = a.rtmpSourceHandler.canPlayType(c.type)) ? b : a.isStreamingSrc(c.src) ? "maybe" : "";
-    };
-    a.rtmpSourceHandler.handleSource = function(c, b, e) {
-      c = a.streamToParts(c.src);
-      b.setRtmpConnection(c.connection);
-      b.setRtmpStream(c.stream);
-    };
-    a.registerSourceHandler(a.rtmpSourceHandler);
-    return a;
-  })(E);
-  n.registerComponent("Flash", E);
-  F.registerTech("Flash", E);
-  var Ca = function(a) {
-    function c(b, c) {
-      b = a.call(this, b, c) || this;
-      b.emitTapEvents();
-      b.on("tap", b.handleClick);
-      b.on("click", b.handleClick);
-      b.on("focus", b.handleFocus);
-      b.on("blur", b.handleBlur);
-      return b;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function(b, c, g) {
-      void 0 === b && (b = "div");
-      void 0 === c && (c = {});
-      void 0 === g && (g = {});
-      c = O({className:this.buildCSSClass(), tabIndex:0}, c);
-      "button" === b && B.error("Creating a ClickableComponent with an HTML element of " + b + " is not supported; use a Button instead.");
-      g = O({role:"button", "aria-live":"polite"}, g);
-      b = a.prototype.createEl.call(this, b, c, g);
-      this.createControlTextEl(b);
-      return b;
-    };
-    c.prototype.createControlTextEl = function(b) {
-      this.controlTextEl_ = A("span", {className:"vjs-control-text"});
-      b && b.appendChild(this.controlTextEl_);
-      this.controlText(this.controlText_, b);
-      return this.controlTextEl_;
-    };
-    c.prototype.controlText = function(b, a) {
-      void 0 === a && (a = this.el());
-      if (!b) {
-        return this.controlText_ || "Need Text";
-      }
-      var c = this.localize(b);
-      this.controlText_ = b;
-      this.controlTextEl_.innerHTML = c;
-      a.setAttribute("title", c);
-      return this;
-    };
-    c.prototype.buildCSSClass = function() {
-      return "vjs-control vjs-button " + a.prototype.buildCSSClass.call(this);
-    };
-    c.prototype.addChild = function(b, c) {
-      void 0 === c && (c = {});
-      return a.prototype.addChild.call(this, b, c);
-    };
-    c.prototype.enable = function() {
-      this.removeClass("vjs-disabled");
-      this.el_.setAttribute("aria-disabled", "false");
-      return this;
-    };
-    c.prototype.disable = function() {
-      this.addClass("vjs-disabled");
-      this.el_.setAttribute("aria-disabled", "true");
-      return this;
-    };
-    c.prototype.handleClick = function() {
-    };
-    c.prototype.handleFocus = function() {
-      I(x, "keydown", w(this, this.handleKeyPress));
-    };
-    c.prototype.handleKeyPress = function(b) {
-      32 === b.which || 13 === b.which ? (b.preventDefault(), this.handleClick(b)) : a.prototype.handleKeyPress && a.prototype.handleKeyPress.call(this, b);
-    };
-    c.prototype.handleBlur = function() {
-      la(x, "keydown", w(this, this.handleKeyPress));
-    };
-    return c;
-  }(n);
-  n.registerComponent("ClickableComponent", Ca);
-  var vf = function(a) {
-    function c(b, c) {
-      c = a.call(this, b, c) || this;
-      c.update();
-      b.on("posterchange", w(c, c.update));
-      return c;
-    }
-    __extends(c, a);
-    c.prototype.dispose = function() {
-      this.player().off("posterchange", this.update);
-      a.prototype.dispose.call(this);
-    };
-    c.prototype.createEl = function() {
-      var b = A("div", {className:"vjs-poster", tabIndex:-1});
-      Lc || (this.fallbackImg_ = A("img"), b.appendChild(this.fallbackImg_));
-      return b;
-    };
-    c.prototype.update = function() {
-      var b = this.player().poster();
-      this.setSrc(b);
-      b ? this.show() : this.hide();
-    };
-    c.prototype.setSrc = function(b) {
-      if (this.fallbackImg_) {
-        this.fallbackImg_.src = b;
-      } else {
-        var a = "";
-        b && (a = 'url("' + b + '")');
-        this.el_.style.backgroundImage = a;
-      }
-    };
-    c.prototype.handleClick = function() {
-      this.player_.paused() ? this.player_.play() : this.player_.pause();
-    };
-    return c;
-  }(Ca);
-  n.registerComponent("PosterImage", vf);
-  var wf = {monospace:"monospace", sansSerif:"sans-serif", serif:"serif", monospaceSansSerif:'"Andale Mono", "Lucida Console", monospace', monospaceSerif:'"Courier New", monospace', proportionalSansSerif:"sans-serif", proportionalSerif:"serif", casual:'"Comic Sans MS", Impact, fantasy', script:'"Monotype Corsiva", cursive', smallcaps:'"Andale Mono", "Lucida Console", monospace, sans-serif'}, xf = function(a) {
-    function c(b, c, g) {
-      c = a.call(this, b, c, g) || this;
-      b.on("loadstart", w(c, c.toggleDisplay));
-      b.on("texttrackchange", w(c, c.updateDisplay));
-      b.ready(w(c, function() {
-        if (b.tech_ && b.tech_.featuresNativeTextTracks) {
-          this.hide();
-        } else {
-          b.on("fullscreenchange", w(this, this.updateDisplay));
-          for (var a = this.options_.playerOptions.tracks || [], c = 0;c < a.length;c++) {
-            this.player_.addRemoteTextTrack(a[c]);
-          }
-          var a = {captions:1, subtitles:1}, e = this.player_.textTracks(), g, d;
-          if (e) {
-            for (c = 0;c < e.length;c++) {
-              var f = e[c];
-              f["default"] && ("descriptions" !== f.kind || g ? f.kind in a && !d && (d = f) : g = f);
-            }
-            d ? d.mode = "showing" : g && (g.mode = "showing");
-          }
-        }
-      }));
-      return c;
-    }
-    __extends(c, a);
-    c.prototype.toggleDisplay = function() {
-      this.player_.tech_ && this.player_.tech_.featuresNativeTextTracks ? this.hide() : this.show();
-    };
-    c.prototype.createEl = function() {
-      return a.prototype.createEl.call(this, "div", {className:"vjs-text-track-display"}, {"aria-live":"assertive", "aria-atomic":"true"});
-    };
-    c.prototype.clearDisplay = function() {
-      "function" === typeof p.WebVTT && p.WebVTT.processCues(p, [], this.el_);
-    };
-    c.prototype.updateDisplay = function() {
-      var b = this.player_.textTracks();
-      this.clearDisplay();
-      if (b) {
-        for (var a = null, c = null, d = b.length;d--;) {
-          var f = b[d];
-          "showing" === f.mode && ("descriptions" === f.kind ? a = f : c = f);
-        }
-        c ? this.updateForTrack(c) : a && this.updateForTrack(a);
-      }
-    };
-    c.prototype.updateForTrack = function(b) {
-      if ("function" === typeof p.WebVTT && b.activeCues) {
-        for (var a = this.player_.textTrackSettings.getValues(), c = [], d = 0;d < b.activeCues.length;d++) {
-          c.push(b.activeCues[d]);
-        }
-        p.WebVTT.processCues(p, c, this.el_);
-        for (b = c.length;b--;) {
-          if (d = c[b]) {
-            d = d.displayState;
-            a.color && (d.firstChild.style.color = a.color);
-            if (a.textOpacity) {
-              var f = tb(a.color || "#fff", a.textOpacity);
-              try {
-                d.firstChild.style.color = f;
-              } catch (ha) {
-              }
-            }
-            a.backgroundColor && (d.firstChild.style.backgroundColor = a.backgroundColor);
-            if (a.backgroundOpacity) {
-              f = tb(a.backgroundColor || "#000", a.backgroundOpacity);
-              try {
-                d.firstChild.style.backgroundColor = f;
-              } catch (ha) {
-              }
-            }
-            if (a.windowColor) {
-              if (a.windowOpacity) {
-                f = tb(a.windowColor, a.windowOpacity);
-                try {
-                  d.style.backgroundColor = f;
-                } catch (ha) {
-                }
-              } else {
-                d.style.backgroundColor = a.windowColor;
-              }
-            }
-            a.edgeStyle && ("dropshadow" === a.edgeStyle ? d.firstChild.style.textShadow = "2px 2px 3px #222, 2px 2px 4px #222, 2px 2px 5px #222" : "raised" === a.edgeStyle ? d.firstChild.style.textShadow = "1px 1px #222, 2px 2px #222, 3px 3px #222" : "depressed" === a.edgeStyle ? d.firstChild.style.textShadow = "1px 1px #ccc, 0 1px #ccc, -1px -1px #222, 0 -1px #222" : "uniform" === a.edgeStyle && (d.firstChild.style.textShadow = "0 0 4px #222, 0 0 4px #222, 0 0 4px #222, 0 0 4px #222"));
-            a.fontPercent && 1 !== a.fontPercent && (f = p.parseFloat(d.style.fontSize), d.style.fontSize = f * a.fontPercent + "px", d.style.height = "auto", d.style.top = "auto", d.style.bottom = "2px");
-            a.fontFamily && "default" !== a.fontFamily && ("small-caps" === a.fontFamily ? d.firstChild.style.fontVariant = "small-caps" : d.firstChild.style.fontFamily = wf[a.fontFamily]);
-          }
-        }
-      }
-    };
-    return c;
-  }(n);
-  n.registerComponent("TextTrackDisplay", xf);
-  var yf = function(a) {
-    function c() {
-      return a.apply(this, arguments) || this;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function() {
-      return a.prototype.createEl.call(this, "div", {className:"vjs-loading-spinner", dir:"ltr"});
-    };
-    return c;
-  }(n);
-  n.registerComponent("LoadingSpinner", yf);
-  var Da = function(a) {
-    function c(b, c) {
-      return a.call(this, b, c) || this;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function(b, a, c) {
-      void 0 === b && (b = "button");
-      void 0 === a && (a = {});
-      void 0 === c && (c = {});
-      a = O({className:this.buildCSSClass()}, a);
-      "button" !== b && (B.warn("Creating a Button with an HTML element of " + b + " is deprecated; use ClickableComponent instead."), a = O({tabIndex:0}, a), c = O({role:"button"}, c));
-      c = O({type:"button", "aria-live":"polite"}, c);
-      b = n.prototype.createEl.call(this, b, a, c);
-      this.createControlTextEl(b);
-      return b;
-    };
-    c.prototype.addChild = function(b, a) {
-      void 0 === a && (a = {});
-      B.warn("Adding an actionable (user controllable) child to a Button (" + this.constructor.name + ") is not supported; use a ClickableComponent instead.");
-      return n.prototype.addChild.call(this, b, a);
-    };
-    c.prototype.handleKeyPress = function(b) {
-      32 !== b.which && 13 !== b.which && a.prototype.handleKeyPress.call(this, b);
-    };
-    return c;
-  }(Ca);
-  n.registerComponent("Button", Da);
-  var Id = function(a) {
-    function c(b, c) {
-      return a.call(this, b, c) || this;
-    }
-    __extends(c, a);
-    c.prototype.buildCSSClass = function() {
-      return "vjs-big-play-button";
-    };
-    c.prototype.handleClick = function() {
-      this.player_.play();
-    };
-    return c;
-  }(Da);
-  Id.prototype.controlText_ = "Play Video";
-  n.registerComponent("BigPlayButton", Id);
-  var zf = function(a) {
-    function c(b, c) {
-      b = a.call(this, b, c) || this;
-      b.controlText(c && c.controlText || b.localize("Close"));
-      return b;
-    }
-    __extends(c, a);
-    c.prototype.buildCSSClass = function() {
-      return "vjs-close-button " + a.prototype.buildCSSClass.call(this);
-    };
-    c.prototype.handleClick = function() {
-      this.trigger({type:"close", bubbles:!1});
-    };
-    return c;
-  }(Da);
-  n.registerComponent("CloseButton", zf);
-  var Jd = function(a) {
-    function c(b, c) {
-      c = a.call(this, b, c) || this;
-      c.on(b, "play", c.handlePlay);
-      c.on(b, "pause", c.handlePause);
-      return c;
-    }
-    __extends(c, a);
-    c.prototype.buildCSSClass = function() {
-      return "vjs-play-control " + a.prototype.buildCSSClass.call(this);
-    };
-    c.prototype.handleClick = function() {
-      this.player_.paused() ? this.player_.play() : this.player_.pause();
-    };
-    c.prototype.handlePlay = function() {
-      this.removeClass("vjs-paused");
-      this.addClass("vjs-playing");
-      this.controlText("Pause");
-    };
-    c.prototype.handlePause = function() {
-      this.removeClass("vjs-playing");
-      this.addClass("vjs-paused");
-      this.controlText("Play");
-    };
-    return c;
-  }(Da);
-  Jd.prototype.controlText_ = "Play";
-  n.registerComponent("PlayToggle", Jd);
-  var Af = function(a) {
-    function c(b, c) {
-      c = a.call(this, b, c) || this;
-      c.on(b, "timeupdate", c.updateContent);
-      return c;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function() {
-      var b = a.prototype.createEl.call(this, "div", {className:"vjs-current-time vjs-time-control vjs-control"});
-      this.contentEl_ = A("div", {className:"vjs-current-time-display", innerHTML:'<span class="vjs-control-text">Current Time </span>0:00'}, {"aria-live":"off"});
-      b.appendChild(this.contentEl_);
-      return b;
-    };
-    c.prototype.updateContent = function() {
-      var b = this.player_.scrubbing() ? this.player_.getCache().currentTime : this.player_.currentTime(), a = this.localize("Current Time"), b = ra(b, this.player_.duration());
-      b !== this.formattedTime_ && (this.formattedTime_ = b, this.contentEl_.innerHTML = '<span class="vjs-control-text">' + a + "</span> " + b);
-    };
-    return c;
-  }(n);
-  n.registerComponent("CurrentTimeDisplay", Af);
-  var Bf = function(a) {
-    function c(b, c) {
-      c = a.call(this, b, c) || this;
-      c.on(b, "durationchange", c.updateContent);
-      c.on(b, "timeupdate", c.updateContent);
-      c.on(b, "loadedmetadata", c.updateContent);
-      return c;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function() {
-      var b = a.prototype.createEl.call(this, "div", {className:"vjs-duration vjs-time-control vjs-control"});
-      this.contentEl_ = A("div", {className:"vjs-duration-display", innerHTML:'<span class="vjs-control-text">' + this.localize("Duration Time") + "</span> 0:00"}, {"aria-live":"off"});
-      b.appendChild(this.contentEl_);
-      return b;
-    };
-    c.prototype.updateContent = function() {
-      var b = this.player_.duration();
-      if (b && this.duration_ !== b) {
-        this.duration_ = b;
-        var a = this.localize("Duration Time"), b = ra(b);
-        this.contentEl_.innerHTML = '<span class="vjs-control-text">' + a + "</span> " + b;
-      }
-    };
-    return c;
-  }(n);
-  n.registerComponent("DurationDisplay", Bf);
-  var Cf = function(a) {
-    function c() {
-      return a.apply(this, arguments) || this;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function() {
-      return a.prototype.createEl.call(this, "div", {className:"vjs-time-control vjs-time-divider", innerHTML:"<div><span>/</span></div>"});
-    };
-    return c;
-  }(n);
-  n.registerComponent("TimeDivider", Cf);
-  var Df = function(a) {
-    function c(b, c) {
-      c = a.call(this, b, c) || this;
-      c.on(b, "timeupdate", c.updateContent);
-      c.on(b, "durationchange", c.updateContent);
-      return c;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function() {
-      var b = a.prototype.createEl.call(this, "div", {className:"vjs-remaining-time vjs-time-control vjs-control"});
-      this.contentEl_ = A("div", {className:"vjs-remaining-time-display", innerHTML:'<span class="vjs-control-text">' + this.localize("Remaining Time") + "</span> -0:00"}, {"aria-live":"off"});
-      b.appendChild(this.contentEl_);
-      return b;
-    };
-    c.prototype.updateContent = function() {
-      if (this.player_.duration()) {
-        var b = this.localize("Remaining Time"), a = ra(this.player_.remainingTime());
-        a !== this.formattedTime_ && (this.formattedTime_ = a, this.contentEl_.innerHTML = '<span class="vjs-control-text">' + b + "</span> -" + a);
-      }
-    };
-    return c;
-  }(n);
-  n.registerComponent("RemainingTimeDisplay", Df);
-  var Ef = function(a) {
-    function c(b, c) {
-      b = a.call(this, b, c) || this;
-      b.updateShowing();
-      b.on(b.player(), "durationchange", b.updateShowing);
-      return b;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function() {
-      var b = a.prototype.createEl.call(this, "div", {className:"vjs-live-control vjs-control"});
-      this.contentEl_ = A("div", {className:"vjs-live-display", innerHTML:'<span class="vjs-control-text">' + this.localize("Stream Type") + "</span>" + this.localize("LIVE")}, {"aria-live":"off"});
-      b.appendChild(this.contentEl_);
-      return b;
-    };
-    c.prototype.updateShowing = function() {
-      Infinity === this.player().duration() ? this.show() : this.hide();
-    };
-    return c;
-  }(n);
-  n.registerComponent("LiveDisplay", Ef);
-  var Yb = function(a) {
-    function c(b, c) {
-      c = a.call(this, b, c) || this;
-      c.bar = c.getChild(c.options_.barName);
-      c.vertical(!!c.options_.vertical);
-      c.on("mousedown", c.handleMouseDown);
-      c.on("touchstart", c.handleMouseDown);
-      c.on("focus", c.handleFocus);
-      c.on("blur", c.handleBlur);
-      c.on("click", c.handleClick);
-      c.on(b, "controlsvisible", c.update);
-      c.on(b, c.playerEvent, c.update);
-      return c;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function(b, c, g) {
-      void 0 === c && (c = {});
-      void 0 === g && (g = {});
-      c.className += " vjs-slider";
-      c = O({tabIndex:0}, c);
-      g = O({role:"slider", "aria-valuenow":0, "aria-valuemin":0, "aria-valuemax":100, tabIndex:0}, g);
-      return a.prototype.createEl.call(this, b, c, g);
-    };
-    c.prototype.handleMouseDown = function(b) {
-      var a = this.bar.el_.ownerDocument;
-      b.preventDefault();
-      Zd();
-      this.addClass("vjs-sliding");
-      this.trigger("slideractive");
-      this.on(a, "mousemove", this.handleMouseMove);
-      this.on(a, "mouseup", this.handleMouseUp);
-      this.on(a, "touchmove", this.handleMouseMove);
-      this.on(a, "touchend", this.handleMouseUp);
-      this.handleMouseMove(b);
-    };
-    c.prototype.handleMouseMove = function() {
-    };
-    c.prototype.handleMouseUp = function() {
-      var b = this.bar.el_.ownerDocument;
-      K();
-      this.removeClass("vjs-sliding");
-      this.trigger("sliderinactive");
-      this.off(b, "mousemove", this.handleMouseMove);
-      this.off(b, "mouseup", this.handleMouseUp);
-      this.off(b, "touchmove", this.handleMouseMove);
-      this.off(b, "touchend", this.handleMouseUp);
-      this.update();
-    };
-    c.prototype.update = function() {
-      if (this.el_) {
-        var b = this.getPercent(), a = this.bar;
-        if (a) {
-          if ("number" !== typeof b || b !== b || 0 > b || Infinity === b) {
-            b = 0;
-          }
-          b = (100 * b).toFixed(2) + "%";
-          this.vertical() ? a.el().style.height = b : a.el().style.width = b;
-        }
-      }
-    };
-    c.prototype.calculateDistance = function(b) {
-      b = kc(this.el_, b);
-      return this.vertical() ? b.y : b.x;
-    };
-    c.prototype.handleFocus = function() {
-      this.on(this.bar.el_.ownerDocument, "keydown", this.handleKeyPress);
-    };
-    c.prototype.handleKeyPress = function(b) {
-      if (37 === b.which || 40 === b.which) {
-        b.preventDefault(), this.stepBack();
-      } else {
-        if (38 === b.which || 39 === b.which) {
-          b.preventDefault(), this.stepForward();
-        }
-      }
-    };
-    c.prototype.handleBlur = function() {
-      this.off(this.bar.el_.ownerDocument, "keydown", this.handleKeyPress);
-    };
-    c.prototype.handleClick = function(b) {
-      b.stopImmediatePropagation();
-      b.preventDefault();
-    };
-    c.prototype.vertical = function(b) {
-      if (void 0 === b) {
-        return this.vertical_ || !1;
-      }
-      (this.vertical_ = !!b) ? this.addClass("vjs-slider-vertical") : this.addClass("vjs-slider-horizontal");
-      return this;
-    };
-    return c;
-  }(n);
-  n.registerComponent("Slider", Yb);
-  var Ff = function(a) {
-    function c(b, c) {
-      c = a.call(this, b, c) || this;
-      c.partEls_ = [];
-      c.on(b, "progress", c.update);
-      return c;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function() {
-      return a.prototype.createEl.call(this, "div", {className:"vjs-load-progress", innerHTML:'<span class="vjs-control-text"><span>' + this.localize("Loaded") + "</span>: 0%</span>"});
-    };
-    c.prototype.update = function() {
-      var b = this.player_.buffered(), a = this.player_.duration(), c = this.player_.bufferedEnd(), d = this.partEls_, f = function(b, a) {
-        b = b / a || 0;
-        return 100 * (1 <= b ? 1 : b) + "%";
-      };
-      this.el_.style.width = f(c, a);
-      for (a = 0;a < b.length;a++) {
-        var h = b.start(a), l = b.end(a), m = d[a];
-        m || (m = this.el_.appendChild(A()), d[a] = m);
-        m.style.left = f(h, c);
-        m.style.width = f(l - h, c);
-      }
-      for (a = d.length;a > b.length;a--) {
-        this.el_.removeChild(d[a - 1]);
-      }
-      d.length = b.length;
-    };
-    return c;
-  }(n);
-  n.registerComponent("LoadProgressBar", Ff);
-  var Gf = function(a) {
-    function c(b, c) {
-      var e = a.call(this, b, c) || this;
-      e.updateDataAttr();
-      e.on(b, "timeupdate", e.updateDataAttr);
-      b.ready(w(e, e.updateDataAttr));
-      c.playerOptions && c.playerOptions.controlBar && c.playerOptions.controlBar.progressControl && c.playerOptions.controlBar.progressControl.keepTooltipsInside && (e.keepTooltipsInside = c.playerOptions.controlBar.progressControl.keepTooltipsInside);
-      e.keepTooltipsInside && e.addClass("vjs-keep-tooltips-inside");
-      return e;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function() {
-      return a.prototype.createEl.call(this, "div", {className:"vjs-play-progress vjs-slider-bar", innerHTML:'<span class="vjs-control-text"><span>' + this.localize("Progress") + "</span>: 0%</span>"});
-    };
-    c.prototype.updateDataAttr = function() {
-      var b = this.player_.scrubbing() ? this.player_.getCache().currentTime : this.player_.currentTime();
-      this.el_.setAttribute("data-current-time", ra(b, this.player_.duration()));
-    };
-    return c;
-  }(n);
-  n.registerComponent("PlayProgressBar", Gf);
-  var Hf = function(a) {
-    function c(b, c) {
-      c = a.call(this, b, c) || this;
-      c.updateDataAttr();
-      c.on(b, "timeupdate", c.updateDataAttr);
-      b.ready(w(c, c.updateDataAttr));
-      return c;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function() {
-      var b = a.prototype.createEl.call(this, "div", {className:"vjs-tooltip-progress-bar vjs-slider-bar", innerHTML:'<div class="vjs-time-tooltip"></div>\n        <span class="vjs-control-text"><span>' + this.localize("Progress") + "</span>: 0%</span>"});
-      this.tooltip = b.querySelector(".vjs-time-tooltip");
-      return b;
-    };
-    c.prototype.updateDataAttr = function() {
-      var b = this.player_.scrubbing() ? this.player_.getCache().currentTime : this.player_.currentTime(), b = ra(b, this.player_.duration());
-      this.el_.setAttribute("data-current-time", b);
-      this.tooltip.innerHTML = b;
-    };
-    return c;
-  }(n);
-  n.registerComponent("TooltipProgressBar", Hf);
-  var Zb = function(a) {
-    function c(b, c) {
-      var e = a.call(this, b, c) || this;
-      e.on(b, "timeupdate", e.updateProgress);
-      e.on(b, "ended", e.updateProgress);
-      b.ready(w(e, e.updateProgress));
-      c.playerOptions && c.playerOptions.controlBar && c.playerOptions.controlBar.progressControl && c.playerOptions.controlBar.progressControl.keepTooltipsInside && (e.keepTooltipsInside = c.playerOptions.controlBar.progressControl.keepTooltipsInside);
-      e.keepTooltipsInside && (e.tooltipProgressBar = e.addChild("TooltipProgressBar"));
-      return e;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function() {
-      return a.prototype.createEl.call(this, "div", {className:"vjs-progress-holder"}, {"aria-label":"progress bar"});
-    };
-    c.prototype.updateProgress = function() {
-      this.updateAriaAttributes(this.el_);
-      if (this.keepTooltipsInside) {
-        this.updateAriaAttributes(this.tooltipProgressBar.el_);
-        this.tooltipProgressBar.el_.style.width = this.bar.el_.style.width;
-        var b = parseFloat(p.getComputedStyle(this.player().el()).width), a = parseFloat(p.getComputedStyle(this.tooltipProgressBar.tooltip).width), c = this.tooltipProgressBar.el().style;
-        c.maxWidth = Math.floor(b - a / 2) + "px";
-        c.minWidth = Math.ceil(a / 2) + "px";
-        c.right = "-" + a / 2 + "px";
-      }
-    };
-    c.prototype.updateAriaAttributes = function(b) {
-      var a = this.player_.scrubbing() ? this.player_.getCache().currentTime : this.player_.currentTime();
-      b.setAttribute("aria-valuenow", (100 * this.getPercent()).toFixed(2));
-      b.setAttribute("aria-valuetext", ra(a, this.player_.duration()));
-    };
-    c.prototype.getPercent = function() {
-      var b = this.player_.currentTime() / this.player_.duration();
-      return 1 <= b ? 1 : b;
-    };
-    c.prototype.handleMouseDown = function(b) {
-      a.prototype.handleMouseDown.call(this, b);
-      this.player_.scrubbing(!0);
-      this.videoWasPlaying = !this.player_.paused();
-      this.player_.pause();
-    };
-    c.prototype.handleMouseMove = function(b) {
-      b = this.calculateDistance(b) * this.player_.duration();
-      b === this.player_.duration() && (b -= .1);
-      this.player_.currentTime(b);
-    };
-    c.prototype.handleMouseUp = function(b) {
-      a.prototype.handleMouseUp.call(this, b);
-      this.player_.scrubbing(!1);
-      this.videoWasPlaying && this.player_.play();
-    };
-    c.prototype.stepForward = function() {
-      this.player_.currentTime(this.player_.currentTime() + 5);
-    };
-    c.prototype.stepBack = function() {
-      this.player_.currentTime(this.player_.currentTime() - 5);
-    };
-    return c;
-  }(Yb);
-  Zb.prototype.options_ = {children:["loadProgressBar", "mouseTimeDisplay", "playProgressBar"], barName:"playProgressBar"};
-  Zb.prototype.playerEvent = "timeupdate";
-  n.registerComponent("SeekBar", Zb);
-  var $b = Gb(Date, "now") || function() {
-    return (new Date).getTime();
-  }, If = Math.max, Jf = function(a, c, b) {
-    function e(b, c) {
-      c && clearTimeout(c);
-      l = q = r = void 0;
-      b && (t = $b(), m = a.apply(p, h), q || l || (h = p = void 0));
-    }
-    function g() {
-      var b = c - ($b() - n);
-      0 >= b || b > c ? e(r, l) : q = setTimeout(g, b);
-    }
-    function d() {
-      e(v, q);
-    }
-    function f() {
-      h = arguments;
-      n = $b();
-      p = this;
-      r = v && (q || !w);
-      if (!1 === u) {
-        var b = w && !q;
-      } else {
-        l || w || (t = n);
-        var e = u - (n - t), f = 0 >= e || e > u;
-        f ? (l && (l = clearTimeout(l)), t = n, m = a.apply(p, h)) : l || (l = setTimeout(d, e));
-      }
-      f && q ? q = clearTimeout(q) : q || c === u || (q = setTimeout(g, c));
-      b && (f = !0, m = a.apply(p, h));
-      !f || q || l || (h = p = void 0);
-      return m;
-    }
-    var h, l, m, n, p, q, r, t = 0, u = !1, v = !0;
-    if ("function" != typeof a) {
-      throw new TypeError("Expected a function");
-    }
-    c = 0 > c ? 0 : +c || 0;
-    if (!0 === b) {
-      var w = !0, v = !1;
-    } else {
-      sa(b) && (w = !!b.leading, u = "maxWait" in b && If(+b.maxWait || 0, c), v = "trailing" in b ? !!b.trailing : v);
-    }
-    f.cancel = function() {
-      q && clearTimeout(q);
-      l && clearTimeout(l);
-      t = 0;
-      l = q = r = void 0;
-    };
-    return f;
-  }, Kf = function(a, c, b) {
-    var e = !0, g = !0;
-    if ("function" != typeof a) {
-      throw new TypeError("Expected a function");
-    }
-    !1 === b ? e = !1 : sa(b) && (e = "leading" in b ? !!b.leading : e, g = "trailing" in b ? !!b.trailing : g);
-    return Jf(a, c, {leading:e, maxWait:+c, trailing:g});
-  }, Lf = function(a) {
-    function c(b, c) {
-      var e = a.call(this, b, c) || this;
-      c.playerOptions && c.playerOptions.controlBar && c.playerOptions.controlBar.progressControl && c.playerOptions.controlBar.progressControl.keepTooltipsInside && (e.keepTooltipsInside = c.playerOptions.controlBar.progressControl.keepTooltipsInside);
-      e.keepTooltipsInside && (e.tooltip = A("div", {className:"vjs-time-tooltip"}), e.el().appendChild(e.tooltip), e.addClass("vjs-keep-tooltips-inside"));
-      e.update(0, 0);
-      b.on("ready", function() {
-        e.on(b.controlBar.progressControl.el(), "mousemove", Kf(w(e, e.handleMouseMove), 25));
-      });
-      return e;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function() {
-      return a.prototype.createEl.call(this, "div", {className:"vjs-mouse-display"});
-    };
-    c.prototype.handleMouseMove = function(b) {
-      var a = this.player_.duration(), a = this.calculateDistance(b) * a;
-      b = b.pageX - jc(this.el().parentNode).left;
-      this.update(a, b);
-    };
-    c.prototype.update = function(b, a) {
-      b = ra(b, this.player_.duration());
-      this.el().style.left = a + "px";
-      this.el().setAttribute("data-current-time", b);
-      if (this.keepTooltipsInside) {
-        var c = this.clampPosition_(a);
-        a = a - c + 1;
-        c = parseFloat(p.getComputedStyle(this.tooltip).width);
-        this.tooltip.innerHTML = b;
-        this.tooltip.style.right = "-" + (c / 2 - a) + "px";
-      }
-    };
-    c.prototype.calculateDistance = function(b) {
-      return kc(this.el().parentNode, b).x;
-    };
-    c.prototype.clampPosition_ = function(b) {
-      if (!this.keepTooltipsInside) {
-        return b;
-      }
-      var a = parseFloat(p.getComputedStyle(this.player().el()).width), c = parseFloat(p.getComputedStyle(this.tooltip).width) / 2, d = b;
-      b < c ? d = Math.ceil(c) : b > a - c && (d = Math.floor(a - c));
-      return d;
-    };
-    return c;
-  }(n);
-  n.registerComponent("MouseTimeDisplay", Lf);
-  var Kd = function(a) {
-    function c() {
-      return a.apply(this, arguments) || this;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function() {
-      return a.prototype.createEl.call(this, "div", {className:"vjs-progress-control vjs-control"});
-    };
-    return c;
-  }(n);
-  Kd.prototype.options_ = {children:["seekBar"]};
-  n.registerComponent("ProgressControl", Kd);
-  var Ld = function(a) {
-    function c(b, c) {
-      c = a.call(this, b, c) || this;
-      c.on(b, "fullscreenchange", c.handleFullscreenChange);
-      return c;
-    }
-    __extends(c, a);
-    c.prototype.buildCSSClass = function() {
-      return "vjs-fullscreen-control " + a.prototype.buildCSSClass.call(this);
-    };
-    c.prototype.handleFullscreenChange = function() {
-      this.player_.isFullscreen() ? this.controlText("Non-Fullscreen") : this.controlText("Fullscreen");
-    };
-    c.prototype.handleClick = function() {
-      this.player_.isFullscreen() ? this.player_.exitFullscreen() : this.player_.requestFullscreen();
-    };
-    return c;
-  }(Da);
-  Ld.prototype.controlText_ = "Fullscreen";
-  n.registerComponent("FullscreenToggle", Ld);
-  var Mf = function(a) {
-    function c() {
-      return a.apply(this, arguments) || this;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function() {
-      return a.prototype.createEl.call(this, "div", {className:"vjs-volume-level", innerHTML:'<span class="vjs-control-text"></span>'});
-    };
-    return c;
-  }(n);
-  n.registerComponent("VolumeLevel", Mf);
-  var kb = function(a) {
-    function c(b, c) {
-      c = a.call(this, b, c) || this;
-      c.on(b, "volumechange", c.updateARIAAttributes);
-      b.ready(w(c, c.updateARIAAttributes));
-      return c;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function() {
-      return a.prototype.createEl.call(this, "div", {className:"vjs-volume-bar vjs-slider-bar"}, {"aria-label":"volume level"});
-    };
-    c.prototype.handleMouseMove = function(b) {
-      this.checkMuted();
-      this.player_.volume(this.calculateDistance(b));
-    };
-    c.prototype.checkMuted = function() {
-      this.player_.muted() && this.player_.muted(!1);
-    };
-    c.prototype.getPercent = function() {
-      return this.player_.muted() ? 0 : this.player_.volume();
-    };
-    c.prototype.stepForward = function() {
-      this.checkMuted();
-      this.player_.volume(this.player_.volume() + .1);
-    };
-    c.prototype.stepBack = function() {
-      this.checkMuted();
-      this.player_.volume(this.player_.volume() - .1);
-    };
-    c.prototype.updateARIAAttributes = function() {
-      var b = (100 * this.player_.volume()).toFixed(2);
-      this.el_.setAttribute("aria-valuenow", b);
-      this.el_.setAttribute("aria-valuetext", b + "%");
-    };
-    return c;
-  }(Yb);
-  kb.prototype.options_ = {children:["volumeLevel"], barName:"volumeLevel"};
-  kb.prototype.playerEvent = "volumechange";
-  n.registerComponent("VolumeBar", kb);
-  var Md = function(a) {
-    function c(b, c) {
-      c = a.call(this, b, c) || this;
-      b.tech_ && !1 === b.tech_.featuresVolumeControl && c.addClass("vjs-hidden");
-      c.on(b, "loadstart", function() {
-        !1 === b.tech_.featuresVolumeControl ? this.addClass("vjs-hidden") : this.removeClass("vjs-hidden");
-      });
-      return c;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function() {
-      return a.prototype.createEl.call(this, "div", {className:"vjs-volume-control vjs-control"});
-    };
-    return c;
-  }(n);
-  Md.prototype.options_ = {children:["volumeBar"]};
-  n.registerComponent("VolumeControl", Md);
-  var Nd = function(a) {
-    function c() {
-      return a.apply(this, arguments) || this;
-    }
-    __extends(c, a);
-    c.prototype.addItem = function(b) {
-      this.addChild(b);
-      b.on("click", w(this, function() {
-        this.unlockShowing();
-      }));
-    };
-    c.prototype.createEl = function() {
-      this.contentEl_ = A(this.options_.contentElType || "ul", {className:"vjs-menu-content"});
-      var b = a.prototype.createEl.call(this, "div", {append:this.contentEl_, className:"vjs-menu"});
-      b.appendChild(this.contentEl_);
-      I(b, "click", function(b) {
-        b.preventDefault();
-        b.stopImmediatePropagation();
-      });
-      return b;
-    };
-    return c;
-  }(n);
-  n.registerComponent("Popup", Nd);
-  var Od = function(a) {
-    function c(b, c) {
-      void 0 === c && (c = {});
-      b = a.call(this, b, c) || this;
-      b.update();
-      return b;
-    }
-    __extends(c, a);
-    c.prototype.update = function() {
-      var b = this.createPopup();
-      this.popup && this.removeChild(this.popup);
-      this.popup = b;
-      this.addChild(b);
-      this.items && 0 === this.items.length ? this.hide() : this.items && 1 < this.items.length && this.show();
-    };
-    c.prototype.createPopup = function() {
-    };
-    c.prototype.createEl = function() {
-      return a.prototype.createEl.call(this, "div", {className:this.buildCSSClass()});
-    };
-    c.prototype.buildCSSClass = function() {
-      var b = "vjs-menu-button", b = !0 === this.options_.inline ? b + "-inline" : b + "-popup";
-      return "vjs-menu-button " + b + " " + a.prototype.buildCSSClass.call(this);
-    };
-    return c;
-  }(Ca);
-  n.registerComponent("PopupButton", Od);
-  var lb = function(a) {
-    function c(b, c) {
-      c = a.call(this, b, c) || this;
-      c.on(b, "volumechange", c.update);
-      b.tech_ && !1 === b.tech_.featuresVolumeControl && c.addClass("vjs-hidden");
-      c.on(b, "loadstart", function() {
-        this.update();
-        !1 === b.tech_.featuresVolumeControl ? this.addClass("vjs-hidden") : this.removeClass("vjs-hidden");
-      });
-      return c;
-    }
-    __extends(c, a);
-    c.prototype.buildCSSClass = function() {
-      return "vjs-mute-control " + a.prototype.buildCSSClass.call(this);
-    };
-    c.prototype.handleClick = function() {
-      this.player_.muted(this.player_.muted() ? !1 : !0);
-    };
-    c.prototype.update = function() {
-      var b = this.player_.volume(), a = 3;
-      0 === b || this.player_.muted() ? a = 0 : .33 > b ? a = 1 : .67 > b && (a = 2);
-      b = this.player_.muted() ? "Unmute" : "Mute";
-      this.controlText() !== b && this.controlText(b);
-      for (b = 0;4 > b;b++) {
-        qa(this.el_, "vjs-vol-" + b);
-      }
-      M(this.el_, "vjs-vol-" + a);
-    };
-    return c;
-  }(Da);
-  lb.prototype.controlText_ = "Mute";
-  n.registerComponent("MuteToggle", lb);
-  var ac = function(a) {
-    function c(b, c) {
-      function e() {
-        b.tech_ && !1 === b.tech_.featuresVolumeControl ? this.addClass("vjs-hidden") : this.removeClass("vjs-hidden");
-      }
-      void 0 === c && (c = {});
-      void 0 === c.inline && (c.inline = !0);
-      void 0 === c.vertical && (c.vertical = c.inline ? !1 : !0);
-      c.volumeBar = c.volumeBar || {};
-      c.volumeBar.vertical = !!c.vertical;
-      c = a.call(this, b, c) || this;
-      c.on(b, "volumechange", c.volumeUpdate);
-      c.on(b, "loadstart", c.volumeUpdate);
-      e.call(c);
-      c.on(b, "loadstart", e);
-      c.on(c.volumeBar, ["slideractive", "focus"], function() {
-        this.addClass("vjs-slider-active");
-      });
-      c.on(c.volumeBar, ["sliderinactive", "blur"], function() {
-        this.removeClass("vjs-slider-active");
-      });
-      c.on(c.volumeBar, ["focus"], function() {
-        this.addClass("vjs-lock-showing");
-      });
-      c.on(c.volumeBar, ["blur"], function() {
-        this.removeClass("vjs-lock-showing");
-      });
-      return c;
-    }
-    __extends(c, a);
-    c.prototype.buildCSSClass = function() {
-      var b;
-      b = this.options_.vertical ? "vjs-volume-menu-button-vertical" : "vjs-volume-menu-button-horizontal";
-      return "vjs-volume-menu-button " + a.prototype.buildCSSClass.call(this) + " " + b;
-    };
-    c.prototype.createPopup = function() {
-      var b = new Nd(this.player_, {contentElType:"div"}), a = new kb(this.player_, this.options_.volumeBar);
-      b.addChild(a);
-      this.menuContent = b;
-      this.volumeBar = a;
-      this.attachVolumeBarEvents();
-      return b;
-    };
-    c.prototype.handleClick = function() {
-      lb.prototype.handleClick.call(this);
-      a.prototype.handleClick.call(this);
-    };
-    c.prototype.attachVolumeBarEvents = function() {
-      this.menuContent.on(["mousedown", "touchdown"], w(this, this.handleMouseDown));
-    };
-    c.prototype.handleMouseDown = function(b) {
-      this.on(["mousemove", "touchmove"], w(this.volumeBar, this.volumeBar.handleMouseMove));
-      this.on(this.el_.ownerDocument, ["mouseup", "touchend"], this.handleMouseUp);
-    };
-    c.prototype.handleMouseUp = function(b) {
-      this.off(["mousemove", "touchmove"], w(this.volumeBar, this.volumeBar.handleMouseMove));
-    };
-    return c;
-  }(Od);
-  ac.prototype.volumeUpdate = lb.prototype.update;
-  ac.prototype.controlText_ = "Mute";
-  n.registerComponent("VolumeMenuButton", ac);
-  var mb = function(a) {
-    function c(b, c) {
-      b = a.call(this, b, c) || this;
-      b.focusedChild_ = -1;
-      b.on("keydown", b.handleKeyPress);
-      return b;
-    }
-    __extends(c, a);
-    c.prototype.addItem = function(b) {
-      this.addChild(b);
-      b.on("click", w(this, function() {
-        this.unlockShowing();
-      }));
-    };
-    c.prototype.createEl = function() {
-      this.contentEl_ = A(this.options_.contentElType || "ul", {className:"vjs-menu-content"});
-      this.contentEl_.setAttribute("role", "menu");
-      var b = a.prototype.createEl.call(this, "div", {append:this.contentEl_, className:"vjs-menu"});
-      b.setAttribute("role", "presentation");
-      b.appendChild(this.contentEl_);
-      I(b, "click", function(b) {
-        b.preventDefault();
-        b.stopImmediatePropagation();
-      });
-      return b;
-    };
-    c.prototype.handleKeyPress = function(b) {
-      if (37 === b.which || 40 === b.which) {
-        b.preventDefault(), this.stepForward();
-      } else {
-        if (38 === b.which || 39 === b.which) {
-          b.preventDefault(), this.stepBack();
-        }
-      }
-    };
-    c.prototype.stepForward = function() {
-      var b = 0;
-      void 0 !== this.focusedChild_ && (b = this.focusedChild_ + 1);
-      this.focus(b);
-    };
-    c.prototype.stepBack = function() {
-      var b = 0;
-      void 0 !== this.focusedChild_ && (b = this.focusedChild_ - 1);
-      this.focus(b);
-    };
-    c.prototype.focus = function(b) {
-      void 0 === b && (b = 0);
-      var a = this.children().slice();
-      a.length && a[0].className && /vjs-menu-title/.test(a[0].className) && a.shift();
-      0 < a.length && (0 > b ? b = 0 : b >= a.length && (b = a.length - 1), this.focusedChild_ = b, a[b].el_.focus());
-    };
-    return c;
-  }(n);
-  n.registerComponent("Menu", mb);
-  var bc = function(a) {
-    function c(b, c) {
-      void 0 === c && (c = {});
-      b = a.call(this, b, c) || this;
-      b.update();
-      b.enabled_ = !0;
-      b.el_.setAttribute("aria-haspopup", "true");
-      b.el_.setAttribute("role", "menuitem");
-      b.on("keydown", b.handleSubmenuKeyPress);
-      return b;
-    }
-    __extends(c, a);
-    c.prototype.update = function() {
-      var b = this.createMenu();
-      this.menu && this.removeChild(this.menu);
-      this.menu = b;
-      this.addChild(b);
-      this.buttonPressed_ = !1;
-      this.el_.setAttribute("aria-expanded", "false");
-      this.items && 0 === this.items.length ? this.hide() : this.items && 1 < this.items.length && this.show();
-    };
-    c.prototype.createMenu = function() {
-      var b = new mb(this.player_);
-      if (this.options_.title) {
-        var a = A("li", {className:"vjs-menu-title", innerHTML:U(this.options_.title), tabIndex:-1});
-        b.children_.unshift(a);
-        d(a, b.contentEl());
-      }
-      if (this.items = this.createItems()) {
-        for (a = 0;a < this.items.length;a++) {
-          b.addItem(this.items[a]);
-        }
-      }
-      return b;
-    };
-    c.prototype.createItems = function() {
-    };
-    c.prototype.createEl = function() {
-      return a.prototype.createEl.call(this, "div", {className:this.buildCSSClass()});
-    };
-    c.prototype.buildCSSClass = function() {
-      var b = "vjs-menu-button", b = !0 === this.options_.inline ? b + "-inline" : b + "-popup";
-      return "vjs-menu-button " + b + " " + a.prototype.buildCSSClass.call(this);
-    };
-    c.prototype.handleClick = function() {
-      this.one(this.menu.contentEl(), "mouseleave", w(this, function(b) {
-        this.unpressButton();
-        this.el_.blur();
-      }));
-      this.buttonPressed_ ? this.unpressButton() : this.pressButton();
-    };
-    c.prototype.handleKeyPress = function(b) {
-      27 === b.which || 9 === b.which ? (this.buttonPressed_ && this.unpressButton(), 9 !== b.which && b.preventDefault()) : 38 === b.which || 40 === b.which ? this.buttonPressed_ || (this.pressButton(), b.preventDefault()) : a.prototype.handleKeyPress.call(this, b);
-    };
-    c.prototype.handleSubmenuKeyPress = function(b) {
-      if (27 === b.which || 9 === b.which) {
-        this.buttonPressed_ && this.unpressButton(), 9 !== b.which && b.preventDefault();
-      }
-    };
-    c.prototype.pressButton = function() {
-      this.enabled_ && (this.buttonPressed_ = !0, this.menu.lockShowing(), this.el_.setAttribute("aria-expanded", "true"), this.menu.focus());
-    };
-    c.prototype.unpressButton = function() {
-      this.enabled_ && (this.buttonPressed_ = !1, this.menu.unlockShowing(), this.el_.setAttribute("aria-expanded", "false"), this.el_.focus());
-    };
-    c.prototype.disable = function() {
-      this.buttonPressed_ = !1;
-      this.menu.unlockShowing();
-      this.el_.setAttribute("aria-expanded", "false");
-      this.enabled_ = !1;
-      return a.prototype.disable.call(this);
-    };
-    c.prototype.enable = function() {
-      this.enabled_ = !0;
-      return a.prototype.enable.call(this);
-    };
-    return c;
-  }(Ca);
-  n.registerComponent("MenuButton", bc);
-  var cc = function(a) {
-    function c(b, c) {
-      var e = c.tracks;
-      b = a.call(this, b, c) || this;
-      1 >= b.items.length && b.hide();
-      if (e) {
-        var d = w(b, b.update);
-        e.addEventListener("removetrack", d);
-        e.addEventListener("addtrack", d);
-        b.player_.on("dispose", function() {
-          e.removeEventListener("removetrack", d);
-          e.removeEventListener("addtrack", d);
-        });
-        return b;
-      }
-    }
-    __extends(c, a);
-    return c;
-  }(bc);
-  n.registerComponent("TrackButton", cc);
-  var Pa = function(a) {
-    function c(b, c) {
-      b = a.call(this, b, c) || this;
-      b.selectable = c.selectable;
-      b.selected(c.selected);
-      b.selectable ? b.el_.setAttribute("role", "menuitemcheckbox") : b.el_.setAttribute("role", "menuitem");
-      return b;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function(b, c, g) {
-      return a.prototype.createEl.call(this, "li", O({className:"vjs-menu-item", innerHTML:this.localize(this.options_.label), tabIndex:-1}, c), g);
-    };
-    c.prototype.handleClick = function() {
-      this.selected(!0);
-    };
-    c.prototype.selected = function(b) {
-      this.selectable && (b ? (this.addClass("vjs-selected"), this.el_.setAttribute("aria-checked", "true"), this.controlText(", selected")) : (this.removeClass("vjs-selected"), this.el_.setAttribute("aria-checked", "false"), this.controlText(" ")));
-    };
-    return c;
-  }(Ca);
-  n.registerComponent("MenuItem", Pa);
-  var Qa = function(a) {
-    function c(b, c) {
-      var e = c.track, d = b.textTracks();
-      c.label = e.label || e.language || "Unknown";
-      c.selected = e["default"] || "showing" === e.mode;
-      b = a.call(this, b, c) || this;
-      b.track = e;
-      if (d) {
-        var f = w(b, b.handleTracksChange);
-        d.addEventListener("change", f);
-        b.on("dispose", function() {
-          d.removeEventListener("change", f);
-        });
-      }
-      if (d && void 0 === d.onchange) {
-        var h;
-        b.on(["tap", "click"], function() {
-          if ("object" !== typeof p.Event) {
-            try {
-              h = new p.Event("change");
-            } catch (J) {
-            }
-          }
-          h || (h = x.createEvent("Event"), h.initEvent("change", !0, !0));
-          d.dispatchEvent(h);
-        });
-      }
-      return b;
-    }
-    __extends(c, a);
-    c.prototype.handleClick = function(b) {
-      var c = this.track.kind, g = this.player_.textTracks();
-      a.prototype.handleClick.call(this, b);
-      if (g) {
-        for (b = 0;b < g.length;b++) {
-          var d = g[b];
-          d.kind === c && (d.mode = d === this.track ? "showing" : "disabled");
-        }
-      }
-    };
-    c.prototype.handleTracksChange = function(b) {
-      this.selected("showing" === this.track.mode);
-    };
-    return c;
-  }(Pa);
-  n.registerComponent("TextTrackMenuItem", Qa);
-  var Pd = function(a) {
-    function c(b, c) {
-      c.track = {player:b, kind:c.kind, label:c.kind + " off", "default":!1, mode:"disabled"};
-      c.selectable = !0;
-      b = a.call(this, b, c) || this;
-      b.selected(!0);
-      return b;
-    }
-    __extends(c, a);
-    c.prototype.handleTracksChange = function(b) {
-      b = this.player().textTracks();
-      for (var a = !0, c = 0, d = b.length;c < d;c++) {
-        var f = b[c];
-        if (f.kind === this.track.kind && "showing" === f.mode) {
-          a = !1;
-          break;
-        }
-      }
-      this.selected(a);
-    };
-    return c;
-  }(Qa);
-  n.registerComponent("OffTextTrackMenuItem", Pd);
-  var Ra = function(a) {
-    function c(b, c) {
-      void 0 === c && (c = {});
-      c.tracks = b.textTracks();
-      return a.call(this, b, c) || this;
-    }
-    __extends(c, a);
-    c.prototype.createItems = function(b) {
-      void 0 === b && (b = []);
-      b.push(new Pd(this.player_, {kind:this.kind_}));
-      var a = this.player_.textTracks();
-      if (!a) {
-        return b;
-      }
-      for (var c = 0;c < a.length;c++) {
-        var d = a[c];
-        d.kind === this.kind_ && b.push(new Qa(this.player_, {track:d, selectable:!0}));
-      }
-      return b;
-    };
-    return c;
-  }(cc);
-  n.registerComponent("TextTrackButton", Ra);
-  var Qd = function(a) {
-    function c(b, c) {
-      var e = c.track, d = c.cue, f = b.currentTime();
-      c.label = d.text;
-      c.selected = d.startTime <= f && f < d.endTime;
-      b = a.call(this, b, c) || this;
-      b.track = e;
-      b.cue = d;
-      e.addEventListener("cuechange", w(b, b.update));
-      return b;
-    }
-    __extends(c, a);
-    c.prototype.handleClick = function() {
-      a.prototype.handleClick.call(this);
-      this.player_.currentTime(this.cue.startTime);
-      this.update(this.cue.startTime);
-    };
-    c.prototype.update = function() {
-      var b = this.cue, a = this.player_.currentTime();
-      this.selected(b.startTime <= a && a < b.endTime);
-    };
-    return c;
-  }(Pa);
-  n.registerComponent("ChaptersTrackMenuItem", Qd);
-  var dc = function(a) {
-    function c(b, c, g) {
-      b = a.call(this, b, c, g) || this;
-      b.el_.setAttribute("aria-label", "Chapters Menu");
-      return b;
-    }
-    __extends(c, a);
-    c.prototype.buildCSSClass = function() {
-      return "vjs-chapters-button " + a.prototype.buildCSSClass.call(this);
-    };
-    c.prototype.createItems = function() {
-      var b = [], a = this.player_.textTracks();
-      if (!a) {
-        return b;
-      }
-      for (var c = 0;c < a.length;c++) {
-        var d = a[c];
-        d.kind === this.kind_ && b.push(new Qa(this.player_, {track:d}));
-      }
-      return b;
-    };
-    c.prototype.createMenu = function() {
-      for (var b = this, a = this.player_.textTracks() || [], c, f = this.items || [], h = a.length - 1;0 <= h;h--) {
-        var l = a[h];
-        if (l.kind === this.kind_) {
-          c = l;
-          break;
-        }
-      }
-      var m = this.menu;
-      void 0 === m ? (m = new mb(this.player_), h = A("li", {className:"vjs-menu-title", innerHTML:U(this.kind_), tabIndex:-1}), m.children_.unshift(h), d(h, m.contentEl())) : (f.forEach(function(b) {
-        return m.removeChild(b);
-      }), f = []);
-      !c || null !== c.cues && void 0 !== c.cues || (c.mode = "hidden", (h = this.player_.remoteTextTrackEls().getTrackElementByTrack_(c)) && h.addEventListener("load", function(a) {
-        return b.update();
-      }));
-      if (c && c.cues && 0 < c.cues.length) {
-        for (a = c.cues, h = 0, l = a.length;h < l;h++) {
-          var n = new Qd(this.player_, {cue:a[h], track:c});
-          f.push(n);
-          m.addChild(n);
-        }
-      }
-      0 < f.length && this.show();
-      this.items = f;
-      return m;
-    };
-    return c;
-  }(Ra);
-  dc.prototype.kind_ = "chapters";
-  dc.prototype.controlText_ = "Chapters";
-  n.registerComponent("ChaptersButton", dc);
-  var ec = function(a) {
-    function c(b, c, g) {
-      c = a.call(this, b, c, g) || this;
-      c.el_.setAttribute("aria-label", "Descriptions Menu");
-      var e = b.textTracks();
-      if (e) {
-        var d = w(c, c.handleTracksChange);
-        e.addEventListener("change", d);
-        c.on("dispose", function() {
-          e.removeEventListener("change", d);
-        });
-      }
-      return c;
-    }
-    __extends(c, a);
-    c.prototype.handleTracksChange = function(b) {
-      b = this.player().textTracks();
-      for (var a = !1, c = 0, d = b.length;c < d;c++) {
-        var f = b[c];
-        if (f.kind !== this.kind_ && "showing" === f.mode) {
-          a = !0;
-          break;
-        }
-      }
-      a ? this.disable() : this.enable();
-    };
-    c.prototype.buildCSSClass = function() {
-      return "vjs-descriptions-button " + a.prototype.buildCSSClass.call(this);
-    };
-    return c;
-  }(Ra);
-  ec.prototype.kind_ = "descriptions";
-  ec.prototype.controlText_ = "Descriptions";
-  n.registerComponent("DescriptionsButton", ec);
-  var fc = function(a) {
-    function c(b, c, g) {
-      b = a.call(this, b, c, g) || this;
-      b.el_.setAttribute("aria-label", "Subtitles Menu");
-      return b;
-    }
-    __extends(c, a);
-    c.prototype.buildCSSClass = function() {
-      return "vjs-subtitles-button " + a.prototype.buildCSSClass.call(this);
-    };
-    return c;
-  }(Ra);
-  fc.prototype.kind_ = "subtitles";
-  fc.prototype.controlText_ = "Subtitles";
-  n.registerComponent("SubtitlesButton", fc);
-  var Rd = function(a) {
-    function c(b, c) {
-      c.track = {player:b, kind:c.kind, label:c.kind + " settings", selectable:!1, "default":!1, mode:"disabled"};
-      c.selectable = !1;
-      b = a.call(this, b, c) || this;
-      b.addClass("vjs-texttrack-settings");
-      b.controlText(", opens " + c.kind + " settings dialog");
-      return b;
-    }
-    __extends(c, a);
-    c.prototype.handleClick = function() {
-      this.player().getChild("textTrackSettings").show();
-      this.player().getChild("textTrackSettings").el_.focus();
-    };
-    return c;
-  }(Qa);
-  n.registerComponent("CaptionSettingsMenuItem", Rd);
-  var gc = function(a) {
-    function c(b, c, g) {
-      b = a.call(this, b, c, g) || this;
-      b.el_.setAttribute("aria-label", "Captions Menu");
-      return b;
-    }
-    __extends(c, a);
-    c.prototype.buildCSSClass = function() {
-      return "vjs-captions-button " + a.prototype.buildCSSClass.call(this);
-    };
-    c.prototype.update = function() {
-      var b = 2;
-      a.prototype.update.call(this);
-      this.player().tech_ && this.player().tech_.featuresNativeTextTracks && (b = 1);
-      this.items && this.items.length > b ? this.show() : this.hide();
-    };
-    c.prototype.createItems = function() {
-      var b = [];
-      this.player().tech_ && this.player().tech_.featuresNativeTextTracks || b.push(new Rd(this.player_, {kind:this.kind_}));
-      return a.prototype.createItems.call(this, b);
-    };
-    return c;
-  }(Ra);
-  gc.prototype.kind_ = "captions";
-  gc.prototype.controlText_ = "Captions";
-  n.registerComponent("CaptionsButton", gc);
-  var Sd = function(a) {
-    function c(b, c) {
-      var e = c.track, d = b.audioTracks();
-      c.label = e.label || e.language || "Unknown";
-      c.selected = e.enabled;
-      b = a.call(this, b, c) || this;
-      b.track = e;
-      if (d) {
-        var f = w(b, b.handleTracksChange);
-        d.addEventListener("change", f);
-        b.on("dispose", function() {
-          d.removeEventListener("change", f);
-        });
-      }
-      return b;
-    }
-    __extends(c, a);
-    c.prototype.handleClick = function(b) {
-      var c = this.player_.audioTracks();
-      a.prototype.handleClick.call(this, b);
-      if (c) {
-        for (b = 0;b < c.length;b++) {
-          var g = c[b];
-          g.enabled = g === this.track;
-        }
-      }
-    };
-    c.prototype.handleTracksChange = function(b) {
-      this.selected(this.track.enabled);
-    };
-    return c;
-  }(Pa);
-  n.registerComponent("AudioTrackMenuItem", Sd);
-  var Td = function(a) {
-    function c(b, c) {
-      void 0 === c && (c = {});
-      c.tracks = b.audioTracks && b.audioTracks();
-      b = a.call(this, b, c) || this;
-      b.el_.setAttribute("aria-label", "Audio Menu");
-      return b;
-    }
-    __extends(c, a);
-    c.prototype.buildCSSClass = function() {
-      return "vjs-audio-button " + a.prototype.buildCSSClass.call(this);
-    };
-    c.prototype.createItems = function(b) {
-      void 0 === b && (b = []);
-      var a = this.player_.audioTracks && this.player_.audioTracks();
-      if (!a) {
-        return b;
-      }
-      for (var c = 0;c < a.length;c++) {
-        b.push(new Sd(this.player_, {track:a[c], selectable:!0}));
-      }
-      return b;
-    };
-    return c;
-  }(cc);
-  Td.prototype.controlText_ = "Audio Track";
-  n.registerComponent("AudioTrackButton", Td);
-  var hc = function(a) {
-    function c(b, c) {
-      var e = c.rate, d = parseFloat(e, 10);
-      c.label = e;
-      c.selected = 1 === d;
-      c = a.call(this, b, c) || this;
-      c.label = e;
-      c.rate = d;
-      c.on(b, "ratechange", c.update);
-      return c;
-    }
-    __extends(c, a);
-    c.prototype.handleClick = function() {
-      a.prototype.handleClick.call(this);
-      this.player().playbackRate(this.rate);
-    };
-    c.prototype.update = function() {
-      this.selected(this.player().playbackRate() === this.rate);
-    };
-    return c;
-  }(Pa);
-  hc.prototype.contentElType = "button";
-  n.registerComponent("PlaybackRateMenuItem", hc);
-  var Ud = function(a) {
-    function c(b, c) {
-      c = a.call(this, b, c) || this;
-      c.updateVisibility();
-      c.updateLabel();
-      c.on(b, "loadstart", c.updateVisibility);
-      c.on(b, "ratechange", c.updateLabel);
-      return c;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function() {
-      var b = a.prototype.createEl.call(this);
-      this.labelEl_ = A("div", {className:"vjs-playback-rate-value", innerHTML:1});
-      b.appendChild(this.labelEl_);
-      return b;
-    };
-    c.prototype.buildCSSClass = function() {
-      return "vjs-playback-rate " + a.prototype.buildCSSClass.call(this);
-    };
-    c.prototype.createMenu = function() {
-      var b = new mb(this.player()), a = this.playbackRates();
-      if (a) {
-        for (var c = a.length - 1;0 <= c;c--) {
-          b.addChild(new hc(this.player(), {rate:a[c] + "x"}));
-        }
-      }
-      return b;
-    };
-    c.prototype.updateARIAAttributes = function() {
-      this.el().setAttribute("aria-valuenow", this.player().playbackRate());
-    };
-    c.prototype.handleClick = function() {
-      for (var b = this.player().playbackRate(), a = this.playbackRates(), c = a[0], d = 0;d < a.length;d++) {
-        if (a[d] > b) {
-          c = a[d];
-          break;
-        }
-      }
-      this.player().playbackRate(c);
-    };
-    c.prototype.playbackRates = function() {
-      return this.options_.playbackRates || this.options_.playerOptions && this.options_.playerOptions.playbackRates;
-    };
-    c.prototype.playbackRateSupported = function() {
-      return this.player().tech_ && this.player().tech_.featuresPlaybackRate && this.playbackRates() && 0 < this.playbackRates().length;
-    };
-    c.prototype.updateVisibility = function() {
-      this.playbackRateSupported() ? this.removeClass("vjs-hidden") : this.addClass("vjs-hidden");
-    };
-    c.prototype.updateLabel = function() {
-      this.playbackRateSupported() && (this.labelEl_.innerHTML = this.player().playbackRate() + "x");
-    };
-    return c;
-  }(bc);
-  Ud.prototype.controlText_ = "Playback Rate";
-  n.registerComponent("PlaybackRateMenuButton", Ud);
-  var Vd = function(a) {
-    function c() {
-      return a.apply(this, arguments) || this;
-    }
-    __extends(c, a);
-    c.prototype.buildCSSClass = function() {
-      return "vjs-spacer " + a.prototype.buildCSSClass.call(this);
-    };
-    c.prototype.createEl = function() {
-      return a.prototype.createEl.call(this, "div", {className:this.buildCSSClass()});
-    };
-    return c;
-  }(n);
-  n.registerComponent("Spacer", Vd);
-  var Nf = function(a) {
-    function c() {
-      return a.apply(this, arguments) || this;
-    }
-    __extends(c, a);
-    c.prototype.buildCSSClass = function() {
-      return "vjs-custom-control-spacer " + a.prototype.buildCSSClass.call(this);
-    };
-    c.prototype.createEl = function() {
-      var b = a.prototype.createEl.call(this, {className:this.buildCSSClass()});
-      b.innerHTML = "&nbsp;";
-      return b;
-    };
-    return c;
-  }(Vd);
-  n.registerComponent("CustomControlSpacer", Nf);
-  var Wd = function(a) {
-    function c() {
-      return a.apply(this, arguments) || this;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function() {
-      return a.prototype.createEl.call(this, "div", {className:"vjs-control-bar", dir:"ltr"}, {role:"group"});
-    };
-    return c;
-  }(n);
-  Wd.prototype.options_ = {children:"playToggle volumeMenuButton currentTimeDisplay timeDivider durationDisplay progressControl liveDisplay remainingTimeDisplay customControlSpacer playbackRateMenuButton chaptersButton descriptionsButton subtitlesButton captionsButton audioTrackButton fullscreenToggle".split(" ")};
-  n.registerComponent("ControlBar", Wd);
-  var Xd = function(a) {
-    function c(b, c) {
-      c = a.call(this, b, c) || this;
-      c.on(b, "error", c.open);
-      return c;
-    }
-    __extends(c, a);
-    c.prototype.buildCSSClass = function() {
-      return "vjs-error-display " + a.prototype.buildCSSClass.call(this);
-    };
-    c.prototype.content = function() {
-      var b = this.player().error();
-      return b ? this.localize(b.message) : "";
-    };
-    return c;
-  }(Oa);
-  Xd.prototype.options_ = V(Oa.prototype.options_, {fillAlways:!0, temporary:!1, uncloseable:!0});
-  n.registerComponent("ErrorDisplay", Xd);
-  var Of = function(a) {
-    function c(b, c) {
-      b = a.call(this, b, c) || this;
-      b.hide();
-      void 0 === c.persistTextTrackSettings && (b.options_.persistTextTrackSettings = b.options_.playerOptions.persistTextTrackSettings);
-      I(b.$(".vjs-done-button"), "click", w(b, function() {
-        this.saveSettings();
-        this.hide();
-      }));
-      I(b.$(".vjs-default-button"), "click", w(b, function() {
-        this.$(".vjs-fg-color > select").selectedIndex = 0;
-        this.$(".vjs-bg-color > select").selectedIndex = 0;
-        this.$(".window-color > select").selectedIndex = 0;
-        this.$(".vjs-text-opacity > select").selectedIndex = 0;
-        this.$(".vjs-bg-opacity > select").selectedIndex = 0;
-        this.$(".vjs-window-opacity > select").selectedIndex = 0;
-        this.$(".vjs-edge-style select").selectedIndex = 0;
-        this.$(".vjs-font-family select").selectedIndex = 0;
-        this.$(".vjs-font-percent select").selectedIndex = 2;
-        this.updateDisplay();
-      }));
-      I(b.$(".vjs-fg-color > select"), "change", w(b, b.updateDisplay));
-      I(b.$(".vjs-bg-color > select"), "change", w(b, b.updateDisplay));
-      I(b.$(".window-color > select"), "change", w(b, b.updateDisplay));
-      I(b.$(".vjs-text-opacity > select"), "change", w(b, b.updateDisplay));
-      I(b.$(".vjs-bg-opacity > select"), "change", w(b, b.updateDisplay));
-      I(b.$(".vjs-window-opacity > select"), "change", w(b, b.updateDisplay));
-      I(b.$(".vjs-font-percent select"), "change", w(b, b.updateDisplay));
-      I(b.$(".vjs-edge-style select"), "change", w(b, b.updateDisplay));
-      I(b.$(".vjs-font-family select"), "change", w(b, b.updateDisplay));
-      b.options_.persistTextTrackSettings && b.restoreSettings();
-      return b;
-    }
-    __extends(c, a);
-    c.prototype.createEl = function() {
-      var b = this.id_, c = "TTsettingsDialogLabel-" + b, g = "TTsettingsDialogDescription-" + b;
-      return a.prototype.createEl.call(this, "div", {className:"vjs-caption-settings vjs-modal-overlay", innerHTML:'\n    <div role="document">\n      <div role="heading" aria-level="1" id="' + c + '" class="vjs-control-text">Captions Settings Dialog</div>\n      <div id="' + g + '" class="vjs-control-text">Beginning of dialog window. Escape will cancel and close the window.</div>\n      <div class="vjs-tracksettings">\n        <div class="vjs-tracksettings-colors">\n          <fieldset class="vjs-fg-color vjs-tracksetting">\n            <legend>Text</legend>\n            <label class="vjs-label" for="captions-foreground-color-' + 
-      b + '">Color</label>\n            <select id="captions-foreground-color-' + b + '">\n              <option value="#FFF" selected>White</option>\n              <option value="#000">Black</option>\n              <option value="#F00">Red</option>\n              <option value="#0F0">Green</option>\n              <option value="#00F">Blue</option>\n              <option value="#FF0">Yellow</option>\n              <option value="#F0F">Magenta</option>\n              <option value="#0FF">Cyan</option>\n            </select>\n            <span class="vjs-text-opacity vjs-opacity">\n              <label class="vjs-label" for="captions-foreground-opacity-' + 
-      b + '">Transparency</label>\n              <select id="captions-foreground-opacity-' + b + '">\n                <option value="1" selected>Opaque</option>\n                <option value="0.5">Semi-Opaque</option>\n              </select>\n            </span>\n          </fieldset>\n          <fieldset class="vjs-bg-color vjs-tracksetting">\n            <legend>Background</legend>\n            <label class="vjs-label" for="captions-background-color-' + b + '">Color</label>\n            <select id="captions-background-color-' + 
-      b + '">\n              <option value="#000" selected>Black</option>\n              <option value="#FFF">White</option>\n              <option value="#F00">Red</option>\n              <option value="#0F0">Green</option>\n              <option value="#00F">Blue</option>\n              <option value="#FF0">Yellow</option>\n              <option value="#F0F">Magenta</option>\n              <option value="#0FF">Cyan</option>\n            </select>\n            <span class="vjs-bg-opacity vjs-opacity">\n              <label class="vjs-label" for="captions-background-opacity-' + 
-      b + '">Transparency</label>\n              <select id="captions-background-opacity-' + b + '">\n                <option value="1" selected>Opaque</option>\n                <option value="0.5">Semi-Transparent</option>\n                <option value="0">Transparent</option>\n              </select>\n            </span>\n          </fieldset>\n          <fieldset class="window-color vjs-tracksetting">\n            <legend>Window</legend>\n            <label class="vjs-label" for="captions-window-color-' + 
-      b + '">Color</label>\n            <select id="captions-window-color-' + b + '">\n              <option value="#000" selected>Black</option>\n              <option value="#FFF">White</option>\n              <option value="#F00">Red</option>\n              <option value="#0F0">Green</option>\n              <option value="#00F">Blue</option>\n              <option value="#FF0">Yellow</option>\n              <option value="#F0F">Magenta</option>\n              <option value="#0FF">Cyan</option>\n            </select>\n            <span class="vjs-window-opacity vjs-opacity">\n              <label class="vjs-label" for="captions-window-opacity-' + 
-      b + '">Transparency</label>\n              <select id="captions-window-opacity-' + b + '">\n                <option value="0" selected>Transparent</option>\n                <option value="0.5">Semi-Transparent</option>\n                <option value="1">Opaque</option>\n              </select>\n            </span>\n          </fieldset>\n        </div> \x3c!-- vjs-tracksettings-colors --\x3e\n        <div class="vjs-tracksettings-font">\n          <div class="vjs-font-percent vjs-tracksetting">\n            <label class="vjs-label" for="captions-font-size-' + 
-      b + '">Font Size</label>\n            <select id="captions-font-size-' + b + '">\n              <option value="0.50">50%</option>\n              <option value="0.75">75%</option>\n              <option value="1.00" selected>100%</option>\n              <option value="1.25">125%</option>\n              <option value="1.50">150%</option>\n              <option value="1.75">175%</option>\n              <option value="2.00">200%</option>\n              <option value="3.00">300%</option>\n              <option value="4.00">400%</option>\n            </select>\n          </div>\n          <div class="vjs-edge-style vjs-tracksetting">\n            <label class="vjs-label" for="captions-edge-style-' + 
-      b + '">Text Edge Style</label>\n            <select id="captions-edge-style-' + b + '">\n              <option value="none" selected>None</option>\n              <option value="raised">Raised</option>\n              <option value="depressed">Depressed</option>\n              <option value="uniform">Uniform</option>\n              <option value="dropshadow">Dropshadow</option>\n            </select>\n          </div>\n          <div class="vjs-font-family vjs-tracksetting">\n            <label class="vjs-label" for="captions-font-family-' + 
-      b + '">Font Family</label>\n            <select id="captions-font-family-' + b + '">\n              <option value="proportionalSansSerif" selected>Proportional Sans-Serif</option>\n              <option value="monospaceSansSerif">Monospace Sans-Serif</option>\n              <option value="proportionalSerif">Proportional Serif</option>\n              <option value="monospaceSerif">Monospace Serif</option>\n              <option value="casual">Casual</option>\n              <option value="script">Script</option>\n              <option value="small-caps">Small Caps</option>\n            </select>\n          </div>\n        </div> \x3c!-- vjs-tracksettings-font --\x3e\n        <div class="vjs-tracksettings-controls">\n          <button class="vjs-default-button">Defaults</button>\n          <button class="vjs-done-button">Done</button>\n        </div>\n      </div> \x3c!-- vjs-tracksettings --\x3e\n    </div> \x3c!--  role="document" --\x3e\n  ', 
-      tabIndex:-1}, {role:"dialog", "aria-labelledby":c, "aria-describedby":g});
-    };
-    c.prototype.getValues = function() {
-      var b = oa(this.$(".vjs-edge-style select")), a = oa(this.$(".vjs-font-family select")), c = oa(this.$(".vjs-fg-color > select")), d = oa(this.$(".vjs-text-opacity > select")), f = oa(this.$(".vjs-bg-color > select")), h = oa(this.$(".vjs-bg-opacity > select")), l = oa(this.$(".window-color > select")), m = oa(this.$(".vjs-window-opacity > select")), b = {fontPercent:p.parseFloat(oa(this.$(".vjs-font-percent > select"))), fontFamily:a, textOpacity:d, windowColor:l, windowOpacity:m, backgroundOpacity:h, 
-      edgeStyle:b, color:c, backgroundColor:f}, n;
-      for (n in b) {
-        ("" === b[n] || "none" === b[n] || "fontPercent" === n && 1 === b[n]) && delete b[n];
-      }
-      return b;
-    };
-    c.prototype.setValues = function(b) {
-      pa(this.$(".vjs-edge-style select"), b.edgeStyle);
-      pa(this.$(".vjs-font-family select"), b.fontFamily);
-      pa(this.$(".vjs-fg-color > select"), b.color);
-      pa(this.$(".vjs-text-opacity > select"), b.textOpacity);
-      pa(this.$(".vjs-bg-color > select"), b.backgroundColor);
-      pa(this.$(".vjs-bg-opacity > select"), b.backgroundOpacity);
-      pa(this.$(".window-color > select"), b.windowColor);
-      pa(this.$(".vjs-window-opacity > select"), b.windowOpacity);
-      (b = b.fontPercent) && (b = b.toFixed(2));
-      pa(this.$(".vjs-font-percent > select"), b);
-    };
-    c.prototype.restoreSettings = function() {
-      var b, a;
-      try {
-        c = ud(p.localStorage.getItem("vjs-text-track-settings")), b = c[0], a = c[1], b && B.error(b);
-      } catch (k) {
-        B.warn(k);
-      }
-      a && this.setValues(a);
-      var c;
-    };
-    c.prototype.saveSettings = function() {
-      if (this.options_.persistTextTrackSettings) {
-        var b = this.getValues();
-        try {
-          0 < Object.getOwnPropertyNames(b).length ? p.localStorage.setItem("vjs-text-track-settings", JSON.stringify(b)) : p.localStorage.removeItem("vjs-text-track-settings");
-        } catch (e) {
-          B.warn(e);
-        }
-      }
-    };
-    c.prototype.updateDisplay = function() {
-      var b = this.player_.getChild("textTrackDisplay");
-      b && b.updateDisplay();
-    };
-    return c;
-  }(n);
-  n.registerComponent("TextTrackSettings", Of);
-  var v = function(a) {
-    function c(b, c) {
-      var e = a.call(this, b, c) || this, d = b.source;
-      c = !1;
-      d && (e.el_.currentSrc !== d.src || b.tag && 3 === b.tag.initNetworkState_) ? e.setSource(d) : e.handleLateInit_(e.el_);
-      if (e.el_.hasChildNodes()) {
-        for (var f = e.el_.childNodes, h = f.length, d = [];h--;) {
-          var l = f[h];
-          "track" === l.nodeName.toLowerCase() && (e.featuresNativeTextTracks ? (e.remoteTextTrackEls().addTrackElement_(l), e.remoteTextTracks().addTrack_(l.track), c || e.el_.hasAttribute("crossorigin") || !Sb(l.src) || (c = !0)) : d.push(l));
-        }
-        for (f = 0;f < d.length;f++) {
-          e.el_.removeChild(d[f]);
-        }
-      }
-      ["audio", "video"].forEach(function(b) {
-        var a = e.el()[b + "Tracks"], c = e[b + "Tracks"]();
-        b = U(b);
-        e["featuresNative" + b + "Tracks"] && a && a.addEventListener && (e["handle" + b + "TrackChange_"] = function(b) {
-          c.trigger({type:"change", target:c, currentTarget:c, srcElement:c});
-        }, e["handle" + b + "TrackAdd_"] = function(b) {
-          return c.addTrack(b.track);
-        }, e["handle" + b + "TrackRemove_"] = function(b) {
-          return c.removeTrack(b.track);
-        }, a.addEventListener("change", e["handle" + b + "TrackChange_"]), a.addEventListener("addtrack", e["handle" + b + "TrackAdd_"]), a.addEventListener("removetrack", e["handle" + b + "TrackRemove_"]), e["removeOld" + b + "Tracks_"] = function(b) {
-          return e.removeOldTracks_(c, a);
-        }, e.on("loadstart", e["removeOld" + b + "Tracks_"]));
-      });
-      e.featuresNativeTextTracks && (c && B.warn((m = ["Text Tracks are being loaded from another origin but the crossorigin attribute isn't used.\n            This may prevent text tracks from loading."], m.raw = ["Text Tracks are being loaded from another origin but the crossorigin attribute isn't used.\n            This may prevent text tracks from loading."], nc(m))), e.handleTextTrackChange_ = w(e, e.handleTextTrackChange), e.handleTextTrackAdd_ = w(e, e.handleTextTrackAdd), e.handleTextTrackRemove_ = 
-      w(e, e.handleTextTrackRemove), e.proxyNativeTextTracks_());
-      (Za || vb || Ic) && !0 === b.nativeControlsForTouch && e.setControls(!0);
-      e.proxyWebkitFullscreen_();
-      e.triggerReady();
-      return e;
-      var m;
-    }
-    __extends(c, a);
-    c.prototype.dispose = function() {
-      var b = this;
-      ["audio", "video", "text"].forEach(function(a) {
-        var c = U(a);
-        (a = b.el_[a + "Tracks"]) && a.removeEventListener && (a.removeEventListener("change", b["handle" + c + "TrackChange_"]), a.removeEventListener("addtrack", b["handle" + c + "TrackAdd_"]), a.removeEventListener("removetrack", b["handle" + c + "TrackRemove_"]));
-        a && b.off("loadstart", b["removeOld" + c + "Tracks_"]);
-      });
-      c.disposeMediaElement(this.el_);
-      a.prototype.dispose.call(this);
-    };
-    c.prototype.createEl = function() {
-      var b = this.options_.tag;
-      if (!b || !1 === this.movingMediaElementInDOM) {
-        if (b) {
-          var a = b.cloneNode(!0);
-          b.parentNode.insertBefore(a, b);
-          c.disposeMediaElement(b);
-          b = a;
-        } else {
-          b = x.createElement("video"), a = this.options_.tag && Q(this.options_.tag), a = V({}, a), Za && !0 === this.options_.nativeControlsForTouch || delete a.controls, C(b, O(a, {id:this.options_.techId, "class":"vjs-tech"}));
-        }
-        b.playerId = this.options_.playerId;
-      }
-      for (var a = ["autoplay", "preload", "loop", "muted"], d = a.length - 1;0 <= d;d--) {
-        var f = a[d], h = {};
-        "undefined" !== typeof this.options_[f] && (h[f] = this.options_[f]);
-        C(b, h);
-      }
-      return b;
-    };
-    c.prototype.handleLateInit_ = function(b) {
-      if (0 !== b.networkState && 3 !== b.networkState) {
-        if (0 === b.readyState) {
-          var a = !1, c = function() {
-            a = !0;
-          };
-          this.on("loadstart", c);
-          var d = function() {
-            a || this.trigger("loadstart");
-          };
-          this.on("loadedmetadata", d);
-          this.ready(function() {
-            this.off("loadstart", c);
-            this.off("loadedmetadata", d);
-            a || this.trigger("loadstart");
-          });
-        } else {
-          var f = ["loadstart"];
-          f.push("loadedmetadata");
-          2 <= b.readyState && f.push("loadeddata");
-          3 <= b.readyState && f.push("canplay");
-          4 <= b.readyState && f.push("canplaythrough");
-          this.ready(function() {
-            f.forEach(function(b) {
-              this.trigger(b);
-            }, this);
-          });
-        }
-      }
-    };
-    c.prototype.proxyNativeTextTracks_ = function() {
-      var b = this.el().textTracks;
-      if (b) {
-        for (var a = 0;a < b.length;a++) {
-          this.textTracks().addTrack_(b[a]);
-        }
-        b.addEventListener && (b.addEventListener("change", this.handleTextTrackChange_), b.addEventListener("addtrack", this.handleTextTrackAdd_), b.addEventListener("removetrack", this.handleTextTrackRemove_));
-        this.on("loadstart", this.removeOldTextTracks_);
-      }
-    };
-    c.prototype.handleTextTrackChange = function(b) {
-      b = this.textTracks();
-      this.textTracks().trigger({type:"change", target:b, currentTarget:b, srcElement:b});
-    };
-    c.prototype.handleTextTrackAdd = function(b) {
-      this.textTracks().addTrack_(b.track);
-    };
-    c.prototype.handleTextTrackRemove = function(b) {
-      this.textTracks().removeTrack_(b.track);
-    };
-    c.prototype.removeOldTracks_ = function(b, a) {
-      var c = [];
-      if (a) {
-        for (var e = 0;e < b.length;e++) {
-          for (var d = b[e], f = !1, h = 0;h < a.length;h++) {
-            if (a[h] === d) {
-              f = !0;
-              break;
-            }
-          }
-          f || c.push(d);
-        }
-        for (e = 0;e < c.length;e++) {
-          b.removeTrack_(c[e]);
-        }
-      }
-    };
-    c.prototype.removeOldTextTracks_ = function() {
-      var b = this.textTracks(), a = this.el().textTracks;
-      this.removeOldTracks_(b, a);
-    };
-    c.prototype.play = function() {
-      var b = this.el_.play();
-      void 0 !== b && "function" === typeof b.then && b.then(null, function(b) {
-      });
-    };
-    c.prototype.setCurrentTime = function(b) {
-      try {
-        this.el_.currentTime = b;
-      } catch (e) {
-        B(e, "Video is not ready. (Video.js)");
-      }
-    };
-    c.prototype.duration = function() {
-      return this.el_.duration || 0;
-    };
-    c.prototype.width = function() {
-      return this.el_.offsetWidth;
-    };
-    c.prototype.height = function() {
-      return this.el_.offsetHeight;
-    };
-    c.prototype.proxyWebkitFullscreen_ = function() {
-      var b = this;
-      if ("webkitDisplayingFullscreen" in this.el_) {
-        var a = function() {
-          this.trigger("fullscreenchange", {isFullscreen:!1});
-        }, c = function() {
-          this.one("webkitendfullscreen", a);
-          this.trigger("fullscreenchange", {isFullscreen:!0});
-        };
-        this.on("webkitbeginfullscreen", c);
-        this.on("dispose", function() {
-          b.off("webkitbeginfullscreen", c);
-          b.off("webkitendfullscreen", a);
-        });
-      }
-    };
-    c.prototype.supportsFullScreen = function() {
-      if ("function" === typeof this.el_.webkitEnterFullScreen) {
-        var b = p.navigator && p.navigator.userAgent || "";
-        if (/Android/.test(b) || !/Chrome|Mac OS X 10.5/.test(b)) {
-          return !0;
-        }
-      }
-      return !1;
-    };
-    c.prototype.enterFullScreen = function() {
-      var b = this.el_;
-      b.paused && b.networkState <= b.HAVE_METADATA ? (this.el_.play(), this.setTimeout(function() {
-        b.pause();
-        b.webkitEnterFullScreen();
-      }, 0)) : b.webkitEnterFullScreen();
-    };
-    c.prototype.exitFullScreen = function() {
-      this.el_.webkitExitFullScreen();
-    };
-    c.prototype.src = function(b) {
-      if (void 0 === b) {
-        return this.el_.src;
-      }
-      this.setSrc(b);
-    };
-    c.prototype.reset = function() {
-      c.resetMediaElement(this.el_);
-    };
-    c.prototype.currentSrc = function() {
-      return this.currentSource_ ? this.currentSource_.src : this.el_.currentSrc;
-    };
-    c.prototype.setControls = function(b) {
-      this.el_.controls = !!b;
-    };
-    c.prototype.addTextTrack = function(b, c, d) {
-      return this.featuresNativeTextTracks ? this.el_.addTextTrack(b, c, d) : a.prototype.addTextTrack.call(this, b, c, d);
-    };
-    c.prototype.addRemoteTextTrack = function(b) {
-      void 0 === b && (b = {});
-      if (!this.featuresNativeTextTracks) {
-        return a.prototype.addRemoteTextTrack.call(this, b);
-      }
-      var c = x.createElement("track");
-      b.kind && (c.kind = b.kind);
-      b.label && (c.label = b.label);
-      if (b.language || b.srclang) {
-        c.srclang = b.language || b.srclang;
-      }
-      b["default"] && (c["default"] = b["default"]);
-      b.id && (c.id = b.id);
-      b.src && (c.src = b.src);
-      this.el().appendChild(c);
-      this.remoteTextTrackEls().addTrackElement_(c);
-      this.remoteTextTracks().addTrack_(c.track);
-      return c;
-    };
-    c.prototype.removeRemoteTextTrack = function(b) {
-      if (!this.featuresNativeTextTracks) {
-        return a.prototype.removeRemoteTextTrack.call(this, b);
-      }
-      var c = this.remoteTextTrackEls().getTrackElementByTrack_(b);
-      this.remoteTextTrackEls().removeTrackElement_(c);
-      this.remoteTextTracks().removeTrack_(b);
-      for (var c = this.$$("track"), d = c.length;d--;) {
-        b !== c[d] && b !== c[d].track || this.el().removeChild(c[d]);
-      }
-    };
-    return c;
-  }(F);
-  v.TEST_VID = x.createElement("video");
-  var nb = x.createElement("track");
-  nb.kind = "captions";
-  nb.srclang = "en";
-  nb.label = "English";
-  v.TEST_VID.appendChild(nb);
-  v.isSupported = function() {
-    try {
-      v.TEST_VID.volume = .5;
-    } catch (a) {
-      return !1;
-    }
-    return !!v.TEST_VID.canPlayType;
-  };
-  v.canControlVolume = function() {
-    try {
-      var a = v.TEST_VID.volume;
-      v.TEST_VID.volume = a / 2 + .1;
-      return a !== v.TEST_VID.volume;
-    } catch (c) {
-      return !1;
-    }
-  };
-  v.canControlPlaybackRate = function() {
-    if (Xa && Kc) {
-      return !1;
-    }
-    try {
-      var a = v.TEST_VID.playbackRate;
-      v.TEST_VID.playbackRate = a / 2 + .1;
-      return a !== v.TEST_VID.playbackRate;
-    } catch (c) {
-      return !1;
-    }
-  };
-  v.supportsNativeTextTracks = function() {
-    var a;
-    (a = !!v.TEST_VID.textTracks) && 0 < v.TEST_VID.textTracks.length && (a = "number" !== typeof v.TEST_VID.textTracks[0].mode);
-    a && xb && (a = !1);
-    !a || "onremovetrack" in v.TEST_VID.textTracks || (a = !1);
-    return a;
-  };
-  v.supportsNativeVideoTracks = function() {
-    return !!v.TEST_VID.videoTracks;
-  };
-  v.supportsNativeAudioTracks = function() {
-    return !!v.TEST_VID.audioTracks;
-  };
-  v.Events = "loadstart suspend abort error emptied stalled loadedmetadata loadeddata canplay canplaythrough playing waiting seeking seeked ended durationchange timeupdate progress play pause ratechange volumechange".split(" ");
-  v.prototype.featuresVolumeControl = v.canControlVolume();
-  v.prototype.featuresPlaybackRate = v.canControlPlaybackRate();
-  v.prototype.movingMediaElementInDOM = !wb;
-  v.prototype.featuresFullscreenResize = !0;
-  v.prototype.featuresProgressEvents = !0;
-  v.prototype.featuresTimeupdateEvents = !0;
-  v.prototype.featuresNativeTextTracks = v.supportsNativeTextTracks();
-  v.prototype.featuresNativeVideoTracks = v.supportsNativeVideoTracks();
-  v.prototype.featuresNativeAudioTracks = v.supportsNativeAudioTracks();
-  var ua, Pf = /^application\/(?:x-|vnd\.apple\.)mpegurl/i, Qf = /^video\/mp4/i;
-  v.patchCanPlayType = function() {
-    4 <= Ya && !xb && (ua || (ua = v.TEST_VID.constructor.prototype.canPlayType), v.TEST_VID.constructor.prototype.canPlayType = function(a) {
-      return a && Pf.test(a) ? "maybe" : ua.call(this, a);
-    });
-    Hc && (ua || (ua = v.TEST_VID.constructor.prototype.canPlayType), v.TEST_VID.constructor.prototype.canPlayType = function(a) {
-      return a && Qf.test(a) ? "maybe" : ua.call(this, a);
-    });
-  };
-  v.unpatchCanPlayType = function() {
-    var a = v.TEST_VID.constructor.prototype.canPlayType;
-    v.TEST_VID.constructor.prototype.canPlayType = ua;
-    ua = null;
-    return a;
-  };
-  v.patchCanPlayType();
-  v.disposeMediaElement = function(a) {
-    if (a) {
-      for (a.parentNode && a.parentNode.removeChild(a);a.hasChildNodes();) {
-        a.removeChild(a.firstChild);
-      }
-      a.removeAttribute("src");
-      if ("function" === typeof a.load) {
-        try {
-          a.load();
-        } catch (c) {
-        }
-      }
-    }
-  };
-  v.resetMediaElement = function(a) {
-    if (a) {
-      for (var c = a.querySelectorAll("source"), b = c.length;b--;) {
-        a.removeChild(c[b]);
-      }
-      a.removeAttribute("src");
-      if ("function" === typeof a.load) {
-        try {
-          a.load();
-        } catch (e) {
-        }
-      }
-    }
-  };
-  "paused currentTime buffered volume muted poster preload autoplay controls loop error seeking seekable ended defaultMuted playbackRate played networkState readyState videoWidth videoHeight".split(" ").forEach(function(a) {
-    v.prototype[a] = function() {
-      return this.el_[a];
-    };
-  });
-  "volume muted src poster preload autoplay loop playbackRate".split(" ").forEach(function(a) {
-    v.prototype["set" + U(a)] = function(c) {
-      this.el_[a] = c;
-    };
-  });
-  ["pause", "load"].forEach(function(a) {
-    v.prototype[a] = function() {
-      return this.el_[a]();
-    };
-  });
-  F.withSourceHandlers(v);
-  v.nativeSourceHandler = {};
-  v.nativeSourceHandler.canPlayType = function(a) {
-    try {
-      return v.TEST_VID.canPlayType(a);
-    } catch (c) {
-      return "";
-    }
-  };
-  v.nativeSourceHandler.canHandleSource = function(a, c) {
-    return a.type ? v.nativeSourceHandler.canPlayType(a.type) : a.src ? (a = zd(a.src), v.nativeSourceHandler.canPlayType("video/" + a)) : "";
-  };
-  v.nativeSourceHandler.handleSource = function(a, c, b) {
-    c.setSrc(a.src);
-  };
-  v.nativeSourceHandler.dispose = function() {
-  };
-  v.registerSourceHandler(v.nativeSourceHandler);
-  n.registerComponent("Html5", v);
-  F.registerTech("Html5", v);
-  var Yd = "progress abort suspend emptied stalled loadedmetadata loadeddata timeupdate ratechange volumechange texttrackchange".split(" "), ia = function(a) {
-    function c(b, e, d) {
-      b.id = b.id || "vjs_video_" + xa++;
-      e = O(c.getTagSettings(b), e);
-      e.initChildren = !1;
-      e.createEl = !1;
-      e.reportTouchActivity = !1;
-      if (!e.language) {
-        if ("function" === typeof b.closest) {
-          var f = b.closest("[lang]");
-          f && (e.language = f.getAttribute("lang"));
-        } else {
-          for (f = b;f && 1 === f.nodeType;) {
-            if (Q(f).hasOwnProperty("lang")) {
-              e.language = f.getAttribute("lang");
-              break;
-            }
-            f = f.parentNode;
-          }
-        }
-      }
-      d = a.call(this, null, e, d) || this;
-      if (!d.options_ || !d.options_.techOrder || !d.options_.techOrder.length) {
-        throw Error("No techOrder specified. Did you overwrite videojs.options instead of just changing the properties you want to override?");
-      }
-      d.tag = b;
-      d.tagAttributes = b && Q(b);
-      d.language(d.options_.language);
-      if (e.languages) {
-        var g = {};
-        Object.getOwnPropertyNames(e.languages).forEach(function(b) {
-          g[b.toLowerCase()] = e.languages[b];
-        });
-        d.languages_ = g;
-      } else {
-        d.languages_ = c.prototype.options_.languages;
-      }
-      d.cache_ = {};
-      d.poster_ = e.poster || "";
-      d.controls_ = !!e.controls;
-      b.controls = !1;
-      d.scrubbing_ = !1;
-      d.el_ = d.createEl();
-      f = V(d.options_);
-      if (e.plugins) {
-        var h = e.plugins;
-        Object.getOwnPropertyNames(h).forEach(function(b) {
-          if ("function" === typeof this[b]) {
-            this[b](h[b]);
-          } else {
-            B.error("Unable to find plugin:", b);
-          }
-        }, d);
-      }
-      d.options_.playerOptions = f;
-      d.initChildren();
-      d.isAudio("audio" === b.nodeName.toLowerCase());
-      d.controls() ? d.addClass("vjs-controls-enabled") : d.addClass("vjs-controls-disabled");
-      d.el_.setAttribute("role", "region");
-      d.isAudio() ? d.el_.setAttribute("aria-label", "audio player") : d.el_.setAttribute("aria-label", "video player");
-      d.isAudio() && d.addClass("vjs-audio");
-      d.flexNotSupported_() && d.addClass("vjs-no-flex");
-      wb || d.addClass("vjs-workinghover");
-      c.players[d.id_] = d;
-      d.userActive(!0);
-      d.reportUserActivity();
-      d.listenForUserActivity_();
-      d.on("fullscreenchange", d.handleFullscreenChange_);
-      d.on("stageclick", d.handleStageClick_);
-      return d;
-    }
-    __extends(c, a);
-    c.prototype.dispose = function() {
-      this.trigger("dispose");
-      this.off("dispose");
-      this.styleEl_ && this.styleEl_.parentNode && this.styleEl_.parentNode.removeChild(this.styleEl_);
-      c.players[this.id_] = null;
-      this.tag && this.tag.player && (this.tag.player = null);
-      this.el_ && this.el_.player && (this.el_.player = null);
-      this.tech_ && this.tech_.dispose();
-      a.prototype.dispose.call(this);
-    };
-    c.prototype.createEl = function() {
-      var b = this.el_ = a.prototype.createEl.call(this, "div"), c = this.tag;
-      c.removeAttribute("width");
-      c.removeAttribute("height");
-      var f = Q(c);
-      Object.getOwnPropertyNames(f).forEach(function(a) {
-        "class" === a ? b.className = f[a] : b.setAttribute(a, f[a]);
-      });
-      c.playerId = c.id;
-      c.id += "_html5_api";
-      c.className = "vjs-tech";
-      c.player = b.player = this;
-      this.addClass("vjs-paused");
-      if (!0 !== p.VIDEOJS_NO_DYNAMIC_STYLE) {
-        this.styleEl_ = Nc("vjs-styles-dimensions");
-        var k = Ja(".vjs-styles-defaults"), h = Ja("head");
-        h.insertBefore(this.styleEl_, k ? k.nextSibling : h.firstChild);
-      }
-      this.width(this.options_.width);
-      this.height(this.options_.height);
-      this.fluid(this.options_.fluid);
-      this.aspectRatio(this.options_.aspectRatio);
-      k = c.getElementsByTagName("a");
-      for (h = 0;h < k.length;h++) {
-        var l = k.item(h);
-        M(l, "vjs-hidden");
-        l.setAttribute("hidden", "hidden");
-      }
-      c.initNetworkState_ = c.networkState;
-      c.parentNode && c.parentNode.insertBefore(b, c);
-      d(c, b);
-      this.children_.unshift(c);
-      return this.el_ = b;
-    };
-    c.prototype.width = function(b) {
-      return this.dimension("width", b);
-    };
-    c.prototype.height = function(b) {
-      return this.dimension("height", b);
-    };
-    c.prototype.dimension = function(b, a) {
-      var c = b + "_";
-      if (void 0 === a) {
-        return this[c] || 0;
-      }
-      if ("" === a) {
-        this[c] = void 0;
-      } else {
-        var e = parseFloat(a);
-        if (isNaN(e)) {
-          return B.error('Improper value "' + a + '" supplied for for ' + b), this;
-        }
-        this[c] = e;
-      }
-      this.updateStyleEl_();
-      return this;
-    };
-    c.prototype.fluid = function(b) {
-      if (void 0 === b) {
-        return !!this.fluid_;
-      }
-      this.fluid_ = !!b;
-      b ? this.addClass("vjs-fluid") : this.removeClass("vjs-fluid");
-    };
-    c.prototype.aspectRatio = function(b) {
-      if (void 0 === b) {
-        return this.aspectRatio_;
-      }
-      if (!/^\d+\:\d+$/.test(b)) {
-        throw Error("Improper value supplied for aspect ratio. The format should be width:height, for example 16:9.");
-      }
-      this.aspectRatio_ = b;
-      this.fluid(!0);
-      this.updateStyleEl_();
-    };
-    c.prototype.updateStyleEl_ = function() {
-      if (!0 === p.VIDEOJS_NO_DYNAMIC_STYLE) {
-        var b = "number" === typeof this.width_ ? this.width_ : this.options_.width, a = "number" === typeof this.height_ ? this.height_ : this.options_.height, c = this.tech_ && this.tech_.el();
-        c && (0 <= b && (c.width = b), 0 <= a && (c.height = a));
-      } else {
-        var b = (void 0 !== this.aspectRatio_ && "auto" !== this.aspectRatio_ ? this.aspectRatio_ : this.videoWidth() ? this.videoWidth() + ":" + this.videoHeight() : "16:9").split(":"), d = b[1] / b[0], b = void 0 !== this.width_ ? this.width_ : void 0 !== this.height_ ? this.height_ / d : this.videoWidth() || 300, a = void 0 !== this.height_ ? this.height_ : b * d, c = /^[^a-zA-Z]/.test(this.id()) ? "dimensions-" + this.id() : this.id() + "-dimensions";
-        this.addClass(c);
-        Oc(this.styleEl_, "\n      ." + c + " {\n        width: " + b + "px;\n        height: " + a + "px;\n      }\n\n      ." + c + ".vjs-fluid {\n        padding-top: " + 100 * d + "%;\n      }\n    ");
-      }
-    };
-    c.prototype.loadTech_ = function(b, a) {
-      var c = this;
-      this.tech_ && this.unloadTech_();
-      "Html5" !== b && this.tag && (F.getTech("Html5").disposeMediaElement(this.tag), this.tag = this.tag.player = null);
-      this.techName_ = b;
-      this.isReady_ = !1;
-      var e = O({source:a, nativeControlsForTouch:this.options_.nativeControlsForTouch, playerId:this.id(), techId:this.id() + "_" + b + "_api", videoTracks:this.videoTracks_, textTracks:this.textTracks_, audioTracks:this.audioTracks_, autoplay:this.options_.autoplay, preload:this.options_.preload, loop:this.options_.loop, muted:this.options_.muted, poster:this.poster(), language:this.language(), "vtt.js":this.options_["vtt.js"]}, this.options_[b.toLowerCase()]);
-      this.tag && (e.tag = this.tag);
-      a && (this.currentType_ = a.type, a.src === this.cache_.src && 0 < this.cache_.currentTime && (e.startTime = this.cache_.currentTime), this.cache_.src = a.src);
-      (a = F.getTech(b)) || (a = n.getComponent(b));
-      this.tech_ = new a(e);
-      this.tech_.ready(w(this, this.handleTechReady_), !0);
-      vd.jsonToTextTracks(this.textTracksJson_ || [], this.tech_);
-      Yd.forEach(function(b) {
-        c.on(c.tech_, b, c["handleTech" + U(b) + "_"]);
-      });
-      this.on(this.tech_, "loadstart", this.handleTechLoadStart_);
-      this.on(this.tech_, "waiting", this.handleTechWaiting_);
-      this.on(this.tech_, "canplay", this.handleTechCanPlay_);
-      this.on(this.tech_, "canplaythrough", this.handleTechCanPlayThrough_);
-      this.on(this.tech_, "playing", this.handleTechPlaying_);
-      this.on(this.tech_, "ended", this.handleTechEnded_);
-      this.on(this.tech_, "seeking", this.handleTechSeeking_);
-      this.on(this.tech_, "seeked", this.handleTechSeeked_);
-      this.on(this.tech_, "play", this.handleTechPlay_);
-      this.on(this.tech_, "firstplay", this.handleTechFirstPlay_);
-      this.on(this.tech_, "pause", this.handleTechPause_);
-      this.on(this.tech_, "durationchange", this.handleTechDurationChange_);
-      this.on(this.tech_, "fullscreenchange", this.handleTechFullscreenChange_);
-      this.on(this.tech_, "error", this.handleTechError_);
-      this.on(this.tech_, "loadedmetadata", this.updateStyleEl_);
-      this.on(this.tech_, "posterchange", this.handleTechPosterChange_);
-      this.on(this.tech_, "textdata", this.handleTechTextData_);
-      this.usingNativeControls(this.techGet_("controls"));
-      this.controls() && !this.usingNativeControls() && this.addTechControlsListeners_();
-      this.tech_.el().parentNode === this.el() || "Html5" === b && this.tag || d(this.tech_.el(), this.el());
-      this.tag && (this.tag = this.tag.player = null);
-    };
-    c.prototype.unloadTech_ = function() {
-      this.videoTracks_ = this.videoTracks();
-      this.textTracks_ = this.textTracks();
-      this.audioTracks_ = this.audioTracks();
-      this.textTracksJson_ = vd.textTracksToJson(this.tech_);
-      this.isReady_ = !1;
-      this.tech_.dispose();
-      this.tech_ = !1;
-    };
-    c.prototype.tech = function(b) {
-      if (b && b.IWillNotUseThisInPlugins) {
-        return this.tech_;
-      }
-      p.alert("\n      Please make sure that you are not using this inside of a plugin.\n      To disable this alert and error, please pass in an object with\n      `IWillNotUseThisInPlugins` to the `tech` method. See\n      https://github.com/videojs/video.js/issues/2617 for more info.\n    ");
-      throw Error("\n      Please make sure that you are not using this inside of a plugin.\n      To disable this alert and error, please pass in an object with\n      `IWillNotUseThisInPlugins` to the `tech` method. See\n      https://github.com/videojs/video.js/issues/2617 for more info.\n    ");
-    };
-    c.prototype.addTechControlsListeners_ = function() {
-      this.removeTechControlsListeners_();
-      this.on(this.tech_, "mousedown", this.handleTechClick_);
-      this.on(this.tech_, "touchstart", this.handleTechTouchStart_);
-      this.on(this.tech_, "touchmove", this.handleTechTouchMove_);
-      this.on(this.tech_, "touchend", this.handleTechTouchEnd_);
-      this.on(this.tech_, "tap", this.handleTechTap_);
-    };
-    c.prototype.removeTechControlsListeners_ = function() {
-      this.off(this.tech_, "tap", this.handleTechTap_);
-      this.off(this.tech_, "touchstart", this.handleTechTouchStart_);
-      this.off(this.tech_, "touchmove", this.handleTechTouchMove_);
-      this.off(this.tech_, "touchend", this.handleTechTouchEnd_);
-      this.off(this.tech_, "mousedown", this.handleTechClick_);
-    };
-    c.prototype.handleTechReady_ = function() {
-      this.triggerReady();
-      this.cache_.volume && this.techCall_("setVolume", this.cache_.volume);
-      this.handleTechPosterChange_();
-      this.handleTechDurationChange_();
-      if ((this.src() || this.currentSrc()) && this.tag && this.options_.autoplay && this.paused()) {
-        try {
-          delete this.tag.poster;
-        } catch (b) {
-          B("deleting tag.poster throws in some browsers", b);
-        }
-        this.play();
-      }
-    };
-    c.prototype.handleTechLoadStart_ = function() {
-      this.removeClass("vjs-ended");
-      this.error(null);
-      this.paused() ? (this.hasStarted(!1), this.trigger("loadstart")) : (this.trigger("loadstart"), this.trigger("firstplay"));
-    };
-    c.prototype.hasStarted = function(b) {
-      return void 0 !== b ? (this.hasStarted_ !== b && ((this.hasStarted_ = b) ? (this.addClass("vjs-has-started"), this.trigger("firstplay")) : this.removeClass("vjs-has-started")), this) : !!this.hasStarted_;
-    };
-    c.prototype.handleTechPlay_ = function() {
-      this.removeClass("vjs-ended");
-      this.removeClass("vjs-paused");
-      this.addClass("vjs-playing");
-      this.hasStarted(!0);
-      this.trigger("play");
-    };
-    c.prototype.handleTechWaiting_ = function() {
-      var b = this;
-      this.addClass("vjs-waiting");
-      this.trigger("waiting");
-      this.one("timeupdate", function() {
-        return b.removeClass("vjs-waiting");
-      });
-    };
-    c.prototype.handleTechCanPlay_ = function() {
-      this.removeClass("vjs-waiting");
-      this.trigger("canplay");
-    };
-    c.prototype.handleTechCanPlayThrough_ = function() {
-      this.removeClass("vjs-waiting");
-      this.trigger("canplaythrough");
-    };
-    c.prototype.handleTechPlaying_ = function() {
-      this.removeClass("vjs-waiting");
-      this.trigger("playing");
-    };
-    c.prototype.handleTechSeeking_ = function() {
-      this.addClass("vjs-seeking");
-      this.trigger("seeking");
-    };
-    c.prototype.handleTechSeeked_ = function() {
-      this.removeClass("vjs-seeking");
-      this.trigger("seeked");
-    };
-    c.prototype.handleTechFirstPlay_ = function() {
-      this.options_.starttime && this.currentTime(this.options_.starttime);
-      this.addClass("vjs-has-started");
-      this.trigger("firstplay");
-    };
-    c.prototype.handleTechPause_ = function() {
-      this.removeClass("vjs-playing");
-      this.addClass("vjs-paused");
-      this.trigger("pause");
-    };
-    c.prototype.handleTechEnded_ = function() {
-      this.addClass("vjs-ended");
-      this.options_.loop ? (this.currentTime(0), this.play()) : this.paused() || this.pause();
-      this.trigger("ended");
-    };
-    c.prototype.handleTechDurationChange_ = function() {
-      this.duration(this.techGet_("duration"));
-    };
-    c.prototype.handleTechClick_ = function(b) {
-      0 === b.button && this.controls() && (this.paused() ? this.play() : this.pause());
-    };
-    c.prototype.handleTechTap_ = function() {
-      this.userActive(!this.userActive());
-    };
-    c.prototype.handleTechTouchStart_ = function() {
-      this.userWasActive = this.userActive();
-    };
-    c.prototype.handleTechTouchMove_ = function() {
-      this.userWasActive && this.reportUserActivity();
-    };
-    c.prototype.handleTechTouchEnd_ = function(b) {
-      b.preventDefault();
-    };
-    c.prototype.handleFullscreenChange_ = function() {
-      this.isFullscreen() ? this.addClass("vjs-fullscreen") : this.removeClass("vjs-fullscreen");
-    };
-    c.prototype.handleStageClick_ = function() {
-      this.reportUserActivity();
-    };
-    c.prototype.handleTechFullscreenChange_ = function(b, a) {
-      a && this.isFullscreen(a.isFullscreen);
-      this.trigger("fullscreenchange");
-    };
-    c.prototype.handleTechError_ = function() {
-      var b = this.tech_.error();
-      this.error(b);
-    };
-    c.prototype.handleTechTextData_ = function() {
-      var b = null;
-      1 < arguments.length && (b = arguments[1]);
-      this.trigger("textdata", b);
-    };
-    c.prototype.getCache = function() {
-      return this.cache_;
-    };
-    c.prototype.techCall_ = function(b, a) {
-      if (this.tech_ && !this.tech_.isReady_) {
-        this.tech_.ready(function() {
-          this[b](a);
-        }, !0);
-      } else {
-        try {
-          if (this.tech_) {
-            this.tech_[b](a);
-          }
-        } catch (g) {
-          throw B(g), g;
-        }
-      }
-    };
-    c.prototype.techGet_ = function(b) {
-      if (this.tech_ && this.tech_.isReady_) {
-        try {
-          return this.tech_[b]();
-        } catch (e) {
-          throw void 0 === this.tech_[b] ? B("Video.js: " + b + " method not defined for " + this.techName_ + " playback technology.", e) : "TypeError" === e.name ? (B("Video.js: " + b + " unavailable on " + this.techName_ + " playback technology element.", e), this.tech_.isReady_ = !1) : B(e), e;
-        }
-      }
-    };
-    c.prototype.play = function() {
-      if (this.src() || this.currentSrc()) {
-        this.techCall_("play");
-      } else {
-        this.tech_.one("loadstart", function() {
-          this.play();
-        });
-      }
-      return this;
-    };
-    c.prototype.pause = function() {
-      this.techCall_("pause");
-      return this;
-    };
-    c.prototype.paused = function() {
-      return !1 === this.techGet_("paused") ? !1 : !0;
-    };
-    c.prototype.scrubbing = function(b) {
-      return void 0 !== b ? (this.scrubbing_ = !!b, b ? this.addClass("vjs-scrubbing") : this.removeClass("vjs-scrubbing"), this) : this.scrubbing_;
-    };
-    c.prototype.currentTime = function(b) {
-      if (void 0 !== b) {
-        return this.techCall_("setCurrentTime", b), this;
-      }
-      this.cache_.currentTime = this.techGet_("currentTime") || 0;
-      return this.cache_.currentTime;
-    };
-    c.prototype.duration = function(b) {
-      if (void 0 === b) {
-        return this.cache_.duration || 0;
-      }
-      b = parseFloat(b) || 0;
-      0 > b && (b = Infinity);
-      b !== this.cache_.duration && (this.cache_.duration = b, Infinity === b ? this.addClass("vjs-live") : this.removeClass("vjs-live"), this.trigger("durationchange"));
-      return this;
-    };
-    c.prototype.remainingTime = function() {
-      return this.duration() - this.currentTime();
-    };
-    c.prototype.buffered = function() {
-      var b = this.techGet_("buffered");
-      b && b.length || (b = ma(0, 0));
-      return b;
-    };
-    c.prototype.bufferedPercent = function() {
-      return wc(this.buffered(), this.duration());
-    };
-    c.prototype.bufferedEnd = function() {
-      var b = this.buffered(), a = this.duration(), b = b.end(b.length - 1);
-      b > a && (b = a);
-      return b;
-    };
-    c.prototype.volume = function(b) {
-      if (void 0 !== b) {
-        return b = Math.max(0, Math.min(1, parseFloat(b))), this.cache_.volume = b, this.techCall_("setVolume", b), this;
-      }
-      b = parseFloat(this.techGet_("volume"));
-      return isNaN(b) ? 1 : b;
-    };
-    c.prototype.muted = function(b) {
-      return void 0 !== b ? (this.techCall_("setMuted", b), this) : this.techGet_("muted") || !1;
-    };
-    c.prototype.supportsFullScreen = function() {
-      return this.techGet_("supportsFullScreen") || !1;
-    };
-    c.prototype.isFullscreen = function(b) {
-      return void 0 !== b ? (this.isFullscreen_ = !!b, this) : !!this.isFullscreen_;
-    };
-    c.prototype.requestFullscreen = function() {
-      this.isFullscreen(!0);
-      ta.requestFullscreen ? (I(x, ta.fullscreenchange, w(this, function e(a) {
-        this.isFullscreen(x[ta.fullscreenElement]);
-        !1 === this.isFullscreen() && la(x, ta.fullscreenchange, e);
-        this.trigger("fullscreenchange");
-      })), this.el_[ta.requestFullscreen]()) : this.tech_.supportsFullScreen() ? this.techCall_("enterFullScreen") : (this.enterFullWindow(), this.trigger("fullscreenchange"));
-      return this;
-    };
-    c.prototype.exitFullscreen = function() {
-      this.isFullscreen(!1);
-      if (ta.requestFullscreen) {
-        x[ta.exitFullscreen]();
-      } else {
-        this.tech_.supportsFullScreen() ? this.techCall_("exitFullScreen") : (this.exitFullWindow(), this.trigger("fullscreenchange"));
-      }
-      return this;
-    };
-    c.prototype.enterFullWindow = function() {
-      this.isFullWindow = !0;
-      this.docOrigOverflow = x.documentElement.style.overflow;
-      I(x, "keydown", w(this, this.fullWindowOnEscKey));
-      x.documentElement.style.overflow = "hidden";
-      M(x.body, "vjs-full-window");
-      this.trigger("enterFullWindow");
-    };
-    c.prototype.fullWindowOnEscKey = function(b) {
-      27 === b.keyCode && (!0 === this.isFullscreen() ? this.exitFullscreen() : this.exitFullWindow());
-    };
-    c.prototype.exitFullWindow = function() {
-      this.isFullWindow = !1;
-      la(x, "keydown", this.fullWindowOnEscKey);
-      x.documentElement.style.overflow = this.docOrigOverflow;
-      qa(x.body, "vjs-full-window");
-      this.trigger("exitFullWindow");
-    };
-    c.prototype.canPlayType = function(b) {
-      for (var a, c = 0, d = this.options_.techOrder;c < d.length;c++) {
-        a = U(d[c]);
-        var f = F.getTech(a);
-        f || (f = n.getComponent(a));
-        if (!f) {
-          B.error('The "' + a + '" tech is undefined. Skipped browser support check for that tech.');
-        } else {
-          if (f.isSupported() && (a = f.canPlayType(b))) {
-            return a;
-          }
-        }
-      }
-      return "";
-    };
-    c.prototype.selectSource = function(b) {
-      var a = this, c = this.options_.techOrder.map(U).map(function(b) {
-        return [b, F.getTech(b) || n.getComponent(b)];
-      }).filter(function(b) {
-        var a = b[0];
-        if (b = b[1]) {
-          return b.isSupported();
-        }
-        B.error('The "' + a + '" tech is undefined. Skipped browser support check for that tech.');
-        return !1;
-      }), d = function(b, a, c) {
-        var e;
-        b.some(function(b) {
-          return a.some(function(a) {
-            if (e = c(b, a)) {
-              return !0;
-            }
-          });
-        });
-        return e;
-      }, f = function(b) {
-        return function(a, c) {
-          return b(c, a);
-        };
-      }, h = function(b, c) {
-        var e = b[0];
-        if (b[1].canPlaySource(c, a.options_[e.toLowerCase()])) {
-          return {source:c, tech:e};
-        }
-      };
-      return (this.options_.sourceOrder ? d(b, c, f(h)) : d(c, b, h)) || !1;
-    };
-    c.prototype.src = function(b) {
-      if (void 0 === b) {
-        return this.techGet_("src");
-      }
-      var a = F.getTech(this.techName_);
-      a || (a = n.getComponent(this.techName_));
-      Array.isArray(b) ? this.sourceList_(b) : "string" === typeof b ? this.src({src:b}) : b instanceof Object && (b.type && !a.canPlaySource(b, this.options_[this.techName_.toLowerCase()]) ? this.sourceList_([b]) : (this.cache_.src = b.src, this.currentType_ = b.type || "", this.ready(function() {
-        a.prototype.hasOwnProperty("setSource") ? this.techCall_("setSource", b) : this.techCall_("src", b.src);
-        "auto" === this.options_.preload && this.load();
-        this.options_.autoplay && this.play();
-      }, !0)));
-      return this;
-    };
-    c.prototype.sourceList_ = function(b) {
-      (b = this.selectSource(b)) ? b.tech === this.techName_ ? this.src(b.source) : this.loadTech_(b.tech, b.source) : (this.setTimeout(function() {
-        this.error({code:4, message:this.localize(this.options_.notSupportedMessage)});
-      }, 0), this.triggerReady());
-    };
-    c.prototype.load = function() {
-      this.techCall_("load");
-      return this;
-    };
-    c.prototype.reset = function() {
-      this.loadTech_(U(this.options_.techOrder[0]), null);
-      this.techCall_("reset");
-      return this;
-    };
-    c.prototype.currentSrc = function() {
-      return this.techGet_("currentSrc") || this.cache_.src || "";
-    };
-    c.prototype.currentType = function() {
-      return this.currentType_ || "";
-    };
-    c.prototype.preload = function(b) {
-      return void 0 !== b ? (this.techCall_("setPreload", b), this.options_.preload = b, this) : this.techGet_("preload");
-    };
-    c.prototype.autoplay = function(b) {
-      return void 0 !== b ? (this.techCall_("setAutoplay", b), this.options_.autoplay = b, this) : this.techGet_("autoplay", b);
-    };
-    c.prototype.loop = function(b) {
-      return void 0 !== b ? (this.techCall_("setLoop", b), this.options_.loop = b, this) : this.techGet_("loop");
-    };
-    c.prototype.poster = function(b) {
-      if (void 0 === b) {
-        return this.poster_;
-      }
-      b || (b = "");
-      this.poster_ = b;
-      this.techCall_("setPoster", b);
-      this.trigger("posterchange");
-      return this;
-    };
-    c.prototype.handleTechPosterChange_ = function() {
-      !this.poster_ && this.tech_ && this.tech_.poster && (this.poster_ = this.tech_.poster() || "", this.trigger("posterchange"));
-    };
-    c.prototype.controls = function(b) {
-      return void 0 !== b ? (b = !!b, this.controls_ !== b && (this.controls_ = b, this.usingNativeControls() && this.techCall_("setControls", b), b ? (this.removeClass("vjs-controls-disabled"), this.addClass("vjs-controls-enabled"), this.trigger("controlsenabled"), this.usingNativeControls() || this.addTechControlsListeners_()) : (this.removeClass("vjs-controls-enabled"), this.addClass("vjs-controls-disabled"), this.trigger("controlsdisabled"), this.usingNativeControls() || this.removeTechControlsListeners_())), 
-      this) : !!this.controls_;
-    };
-    c.prototype.usingNativeControls = function(b) {
-      return void 0 !== b ? (b = !!b, this.usingNativeControls_ !== b && ((this.usingNativeControls_ = b) ? (this.addClass("vjs-using-native-controls"), this.trigger("usingnativecontrols")) : (this.removeClass("vjs-using-native-controls"), this.trigger("usingcustomcontrols"))), this) : !!this.usingNativeControls_;
-    };
-    c.prototype.error = function(b) {
-      if (void 0 === b) {
-        return this.error_ || null;
-      }
-      if (null === b) {
-        return this.error_ = b, this.removeClass("vjs-error"), this.errorDisplay && this.errorDisplay.close(), this;
-      }
-      this.error_ = new W(b);
-      this.addClass("vjs-error");
-      B.error("(CODE:" + this.error_.code + " " + W.errorTypes[this.error_.code] + ")", this.error_.message, this.error_);
-      this.trigger("error");
-      return this;
-    };
-    c.prototype.reportUserActivity = function(b) {
-      this.userActivity_ = !0;
-    };
-    c.prototype.userActive = function(b) {
-      if (void 0 !== b) {
-        b = !!b;
-        if (b !== this.userActive_) {
-          if (this.userActive_ = b) {
-            this.userActivity_ = !0, this.removeClass("vjs-user-inactive"), this.addClass("vjs-user-active"), this.trigger("useractive");
-          } else {
-            this.userActivity_ = !1;
-            if (this.tech_) {
-              this.tech_.one("mousemove", function(b) {
-                b.stopPropagation();
-                b.preventDefault();
-              });
-            }
-            this.removeClass("vjs-user-active");
-            this.addClass("vjs-user-inactive");
-            this.trigger("userinactive");
-          }
-        }
-        return this;
-      }
-      return this.userActive_;
-    };
-    c.prototype.listenForUserActivity_ = function() {
-      var b, a, c, d = w(this, this.reportUserActivity);
-      this.on("mousedown", function() {
-        d();
-        this.clearInterval(b);
-        b = this.setInterval(d, 250);
-      });
-      this.on("mousemove", function(b) {
-        if (b.screenX !== a || b.screenY !== c) {
-          a = b.screenX, c = b.screenY, d();
-        }
-      });
-      this.on("mouseup", function(a) {
-        d();
-        this.clearInterval(b);
-      });
-      this.on("keydown", d);
-      this.on("keyup", d);
-      var f;
-      this.setInterval(function() {
-        if (this.userActivity_) {
-          this.userActivity_ = !1;
-          this.userActive(!0);
-          this.clearTimeout(f);
-          var b = this.options_.inactivityTimeout;
-          0 < b && (f = this.setTimeout(function() {
-            this.userActivity_ || this.userActive(!1);
-          }, b));
-        }
-      }, 250);
-    };
-    c.prototype.playbackRate = function(b) {
-      return void 0 !== b ? (this.techCall_("setPlaybackRate", b), this) : this.tech_ && this.tech_.featuresPlaybackRate ? this.techGet_("playbackRate") : 1;
-    };
-    c.prototype.isAudio = function(b) {
-      return void 0 !== b ? (this.isAudio_ = !!b, this) : !!this.isAudio_;
-    };
-    c.prototype.videoTracks = function() {
-      return this.tech_ ? this.tech_.videoTracks() : this.videoTracks_ = this.videoTracks_ || new Fd;
-    };
-    c.prototype.audioTracks = function() {
-      return this.tech_ ? this.tech_.audioTracks() : this.audioTracks_ = this.audioTracks_ || new Gd;
-    };
-    c.prototype.textTracks = function() {
-      if (this.tech_) {
-        return this.tech_.textTracks();
-      }
-    };
-    c.prototype.remoteTextTracks = function() {
-      if (this.tech_) {
-        return this.tech_.remoteTextTracks();
-      }
-    };
-    c.prototype.remoteTextTrackEls = function() {
-      if (this.tech_) {
-        return this.tech_.remoteTextTrackEls();
-      }
-    };
-    c.prototype.addTextTrack = function(b, a, c) {
-      if (this.tech_) {
-        return this.tech_.addTextTrack(b, a, c);
-      }
-    };
-    c.prototype.addRemoteTextTrack = function(b) {
-      if (this.tech_) {
-        return this.tech_.addRemoteTextTrack(b);
-      }
-    };
-    c.prototype.removeRemoteTextTrack = function(b) {
-      var a = (void 0 === b ? {} : b).track;
-      if (this.tech_) {
-        return this.tech_.removeRemoteTextTrack(void 0 === a ? b : a);
-      }
-    };
-    c.prototype.videoWidth = function() {
-      return this.tech_ && this.tech_.videoWidth && this.tech_.videoWidth() || 0;
-    };
-    c.prototype.videoHeight = function() {
-      return this.tech_ && this.tech_.videoHeight && this.tech_.videoHeight() || 0;
-    };
-    c.prototype.language = function(b) {
-      if (void 0 === b) {
-        return this.language_;
-      }
-      this.language_ = String(b).toLowerCase();
-      return this;
-    };
-    c.prototype.languages = function() {
-      return V(c.prototype.options_.languages, this.languages_);
-    };
-    c.prototype.toJSON = function() {
-      var b = V(this.options_), a = b.tracks;
-      b.tracks = [];
-      for (var c = 0;c < a.length;c++) {
-        var d = a[c], d = V(d);
-        d.player = void 0;
-        b.tracks[c] = d;
-      }
-      return b;
-    };
-    c.prototype.createModal = function(b, a) {
-      var c = this;
-      a = a || {};
-      a.content = b || "";
-      var e = new Oa(this, a);
-      this.addChild(e);
-      e.on("dispose", function() {
-        c.removeChild(e);
-      });
-      return e.open();
-    };
-    c.getTagSettings = function(b) {
-      var a = {sources:[], tracks:[]}, c = Q(b), d = c["data-setup"];
-      if (null !== d) {
-        var f = ud(d || "{}"), d = f[0], f = f[1];
-        d && B.error(d);
-        O(c, f);
-      }
-      O(a, c);
-      if (b.hasChildNodes()) {
-        for (b = b.childNodes, c = 0, d = b.length;c < d;c++) {
-          var f = b[c], h = f.nodeName.toLowerCase();
-          "source" === h ? a.sources.push(Q(f)) : "track" === h && a.tracks.push(Q(f));
-        }
-      }
-      return a;
-    };
-    c.prototype.flexNotSupported_ = function() {
-      var a = x.createElement("i");
-      return !("flexBasis" in a.style || "webkitFlexBasis" in a.style || "mozFlexBasis" in a.style || "msFlexBasis" in a.style || "msFlexOrder" in a.style);
-    };
-    return c;
-  }(n);
-  ia.players = {};
-  var Sa = p.navigator;
-  ia.prototype.options_ = {techOrder:["html5", "flash"], html5:{}, flash:{}, defaultVolume:0, inactivityTimeout:2E3, playbackRates:[], children:"mediaLoader posterImage textTrackDisplay loadingSpinner bigPlayButton controlBar errorDisplay textTrackSettings".split(" "), language:Sa && (Sa.languages && Sa.languages[0] || Sa.userLanguage || Sa.language) || "en", languages:{}, notSupportedMessage:"No compatible source was found for this media."};
-  ["ended", "seeking", "seekable", "networkState", "readyState"].forEach(function(a) {
-    ia.prototype[a] = function() {
-      return this.techGet_(a);
-    };
-  });
-  Yd.forEach(function(a) {
-    ia.prototype["handleTech" + U(a) + "_"] = function() {
-      return this.trigger(a);
-    };
-  });
-  n.registerComponent("Player", ia);
-  var Rf = function(a) {
-    function c(b) {
-      void 0 === b && (b = {});
-      b = V(b, {kind:kf[b.kind] || ""});
-      var d = a.call(this, b) || this, f = !1;
-      if (X) {
-        for (var h in c.prototype) {
-          "constructor" !== h && (d[h] = c.prototype[h]);
-        }
-      }
-      Object.defineProperty(d, "enabled", {get:function() {
-        return f;
-      }, set:function(a) {
-        "boolean" === typeof a && a !== f && (f = a, this.trigger("enabledchange"));
-      }});
-      b.enabled && (d.enabled = b.enabled);
-      d.loaded_ = !0;
-      return d;
-    }
-    __extends(c, a);
-    return c;
-  }(Rb), Sf = function(a) {
-    function c(b) {
-      void 0 === b && (b = {});
-      b = V(b, {kind:jf[b.kind] || ""});
-      var d = a.call(this, b) || this, f = !1;
-      if (X) {
-        for (var h in c.prototype) {
-          "constructor" !== h && (d[h] = c.prototype[h]);
-        }
-      }
-      Object.defineProperty(d, "selected", {get:function() {
-        return f;
-      }, set:function(a) {
-        "boolean" === typeof a && a !== f && (f = a, this.trigger("selectedchange"));
-      }});
-      b.selected && (d.selected = b.selected);
-      return d;
-    }
-    __extends(c, a);
-    return c;
-  }(Rb), Tf = function(a, c) {
-    if ("function" !== typeof c && null !== c) {
-      throw new TypeError("Super expression must either be null or a function, not " + typeof c);
-    }
-    a.prototype = Object.create(c && c.prototype, {constructor:{value:a, enumerable:!1, writable:!0, configurable:!0}});
-    c && (a.super_ = c);
-  };
-  "undefined" === typeof HTMLVideoElement && p.document && p.document.createElement && (x.createElement("video"), x.createElement("audio"), x.createElement("track"));
-  if (!0 !== p.VIDEOJS_NO_DYNAMIC_STYLE) {
-    var ob = Ja(".vjs-styles-defaults");
-    if (!ob) {
-      var ob = Nc("vjs-styles-defaults"), ic = Ja("head");
-      ic && ic.insertBefore(ob, ic.firstChild);
-      Oc(ob, "\n      .video-js {\n        width: 300px;\n        height: 150px;\n      }\n\n      .vjs-fluid {\n        padding-top: 56.25%\n      }\n    ");
-    }
-  }
-  y && (Mc = y);
-  setTimeout(Bb, 1);
-  y.VERSION = "5.12.6";
-  y.options = ia.prototype.options_;
-  y.getPlayers = function() {
-    return ia.players;
-  };
-  y.players = ia.players;
-  y.getComponent = n.getComponent;
-  y.registerComponent = function(a, c) {
-    F.isTech(c) && B.warn("The " + a + " tech was registered as a component. It should instead be registered using videojs.registerTech(name, tech)");
-    n.registerComponent.call(n, a, c);
-  };
-  y.getTech = F.getTech;
-  y.registerTech = F.registerTech;
-  y.browser = te;
-  y.TOUCH_ENABLED = Za;
-  y.extend = function(a, c) {
-    void 0 === c && (c = {});
-    var b = function() {
-      a.apply(this, arguments);
-    }, d = {};
-    "object" === typeof c ? ("function" === typeof c.init && (B.warn("Constructor logic via init() is deprecated; please use constructor() instead."), c.constructor = c.init), c.constructor !== Object.prototype.constructor && (b = c.constructor), d = c) : "function" === typeof c && (b = c);
-    Tf(b, a);
-    for (var f in d) {
-      d.hasOwnProperty(f) && (b.prototype[f] = d[f]);
-    }
-    return b;
-  };
-  y.mergeOptions = V;
-  y.bind = w;
-  y.plugin = function(a, c) {
-    ia.prototype[a] = c;
-  };
-  y.addLanguage = function(a, c) {
-    a = ("" + a).toLowerCase();
-    return uc(y.options.languages, (b = {}, b[a] = c, b))[a];
-    var b;
-  };
-  y.log = B;
-  y.createTimeRange = y.createTimeRanges = ma;
-  y.formatTime = ra;
-  y.parseUrl = yd;
-  y.isCrossOrigin = Sb;
-  y.EventTarget = Y;
-  y.on = I;
-  y.one = Ia;
-  y.off = la;
-  y.trigger = Ua;
-  y.xhr = na;
-  y.TextTrack = jb;
-  y.AudioTrack = Rf;
-  y.VideoTrack = Sf;
-  y.isEl = Ea;
-  y.isTextNode = lc;
-  y.createEl = A;
-  y.hasClass = l;
-  y.addClass = M;
-  y.removeClass = qa;
-  y.toggleClass = Ga;
-  y.setAttributes = C;
-  y.getAttributes = Q;
-  y.emptyEl = S;
-  y.appendContent = P;
-  y.insertContent = N;
-  "function" === typeof define && define.amd ? define("videojs", [], function() {
-    return y;
-  }) : "object" === typeof exports && "object" === typeof module && (module.exports = y);
-  return y;
-}();
 
